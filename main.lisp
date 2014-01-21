@@ -17,13 +17,18 @@
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
 
+(defvar *msg-introduction* "Alice Margatroid, do usług.")
+
 ;;; utils
 
 (defun concat-strings (list)
   (format nil "~{~a, ~}" list))
 
+(defun mentions (what string)
+  (search what string))
+
 (defun mentions-name (name string)
-  (search name string))
+  (mentions name string))
 
 ;;; handling
 (defun private-message-p (message)
@@ -39,7 +44,9 @@
 
     ;; default autoresponder
     (if (private-message-p message)
-        (privmsg *connection* destination (concatenate 'string (source message) " :P")))))
+        (cond
+          ((mentions "przedstaw sie" (second (arguments message))) (privmsg *connection* destination *msg-introduction*))
+          (t (privmsg *connection* destination (concatenate 'string (source message) " :P")))))))
 
 
 (defun start-alice (server nick pass &rest channels)
