@@ -15,17 +15,31 @@
 (defvar *connected-channels*)
 
 (defconstant +nickserv+ "NickServ")
-(defconstant +nickserv-identify-msg-template+ "IDENTIFY %a")
+(defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
 
-(defun run-test (nick pass)
-  (let ((connection (irc:connect :nickname nick
-                                 :server "irc.freenode.net")))
-    (irc:read-message-loop connection)
-    (irc:join connection "#trc")
-    (irc:privmsg connection "#trc" "Ta Da!")))
+;;; utils
+
+(defun concat-strings (list)
+  (format nil "~{~a, ~}" list))
+
+(defun mentions-name (name string)
+  (search name string))
+
+;;; handling
 
 (defun msg-hook (message)
-  (format t "~a~%" message))
+  (let ((destination (if (string-equal (first (arguments message)) *nick*)
+                         (source message)
+                         (first (arguments message)))))
+    ;; TODO match commands, questions, etc.
+
+    ;; default autoresponder
+    (if (or (string-equal (first (arguments message))
+                          *nick*)
+            (mentions-name *nick* (second (arguments message))))
+
+        (privmsg *connection* destination (concatenate 'string (source messageo) " :P")))))
+
 
 (defun start-alice (server nick pass &rest channels)
   (setf *nick* nick)
@@ -38,6 +52,7 @@
   (mapcar (lambda (channel) (join *connection* channel)) channels)
 
   (add-hook *connection* 'irc::irc-privmsg-message 'msg-hook)
+
   #+(or sbcl
         openmcl)
   (start-background-message-handler *connection*))
@@ -52,3 +67,6 @@
 (defun unmute ()
   ;; TODO
   )
+
+(defun impersonate-say (destination what)
+  (privmsg *connection* destination what))
