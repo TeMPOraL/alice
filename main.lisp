@@ -42,9 +42,13 @@
         openmcl)
   (start-background-message-handler *connection*))
 
-(defun stop-alice ()
-  (format t "Not yet implemented.~%"))
+(defun stop-alice (&optional (msg "Goodbye!"))
+      (quit *connection* msg))
 
-(defun mute () )
+(defun mute ()
+  ;; TODO
+  )
 
-(defun unmute () )
+(defun unmute ()
+  ;; TODO
+  )
