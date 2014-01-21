@@ -26,6 +26,10 @@
   (search name string))
 
 ;;; handling
+(defun private-message-p (message)
+  (or (string-equal (first (arguments message))
+                    *nick*)
+      (mentions-name *nick* (second (arguments message)))))
 
 (defun msg-hook (message)
   (let ((destination (if (string-equal (first (arguments message)) *nick*)
@@ -34,11 +38,8 @@
     ;; TODO match commands, questions, etc.
 
     ;; default autoresponder
-    (if (or (string-equal (first (arguments message))
-                          *nick*)
-            (mentions-name *nick* (second (arguments message))))
-
-        (privmsg *connection* destination (concatenate 'string (source messageo) " :P")))))
+    (if (private-message-p message)
+        (privmsg *connection* destination (concatenate 'string (source message) " :P")))))
 
 
 (defun start-alice (server nick pass &rest channels)
