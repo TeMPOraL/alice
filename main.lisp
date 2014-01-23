@@ -17,7 +17,22 @@
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
 
+
+
+;; phrases
+
 (defvar *msg-introduction* "Alice Margatroid, do usług.")
+(defvar *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
+                                 ";)" ";)" ";)"";)" ";)" ";)"
+                                 ":P" ":P" ":P" ":P" ":P"
+                                 ":>" ":>" ":>"
+                                 "ta da!"
+                                 "maka paka!"))
+
+
+(defun get-random-friendly-smile ()
+  (elt *friendly-smiles-list*
+       (random (length *friendly-smiles-list*))))
 
 
 ;;; speech related
@@ -59,25 +74,27 @@
                          (first (arguments message)))))
     ;; TODO match commands, questions, etc.
 
-    (if (and (search "fail" (second (arguments message)))
-             (= 0 (random 5)))
-        (privmsg *connection* destination "..."))
+    (let ((is-private (private-message-p message))
+          (is-public (public-message-p message))
+          (is-directed (directed-message-p message)))
 
-    (if (public-message-p message)
-        (privmsg *connection* destination "public!"))
-
-    (if (private-message-p message)
-        (privmsg *connection* destination "private!"))
-
-    (if (directed-message-p message)
-        (privmsg *connection* destination "directed!"))
+      (cond ((and is-directed
+                  (mentions "przedstaw sie" (second (arguments message))))
+             (privmsg *connection* destination *msg-introduction*))
 
 
-    ;; default autoresponder
-    (if (directed-message-p message)
-        (cond
-          ((mentions "przedstaw sie" (second (arguments message))) (privmsg *connection* destination *msg-introduction*))
-          (t (privmsg *connection* destination (concatenate 'string (source message) " :P")))))))
+            ((and is-public
+                  (search "fail" (second (arguments message)))
+                  (/= 0 (random 3)))
+             (privmsg *connection* destination "..."))
+
+
+            ;; default responder
+            (is-directed
+             (if (/= 0 (random 5))
+                 (privmsg *connection* destination (concatenate 'string (source message) " " (get-random-friendly-smile)))))))))
+
+
 
 
 (defun start-alice (server nick pass &rest channels)
