@@ -37,6 +37,14 @@
 
 (defparameter *hatsune-miku* "♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯")
 
+(defparameter *yourewelcome* '("you're welcome"
+                               "nie ma za co"
+                               "sure, np."
+                               "np."
+                               "no problem"
+                               ":)"
+                               "spoko :)"))
+
 (defun get-random-friendly-smile ()
   (elt *friendly-smiles-list*
        (random (length *friendly-smiles-list*))))
@@ -44,6 +52,10 @@
 (defun get-random-who-in-HS-response ()
   (elt *who-in-HS*
        (random (length *who-in-HS*))))
+
+(defun get-random-yourewelcome-resposne ()
+  (elt *yourewelcome*
+       (random (length *yourewelcome*))))
 
 
 ;;; speech related
@@ -110,6 +122,17 @@
                   (mentions "wersję" message-body)))
          (privmsg *connection* destination *msg-version*))
 
+        ;; be nice to thanks
+        ((and is-directed
+              (or (mentions "thx" message-body)
+                  (mentions "thanks" message-body)
+                  (mentions "thank you" message-body)
+                  (mentions "dzieki" message-body)
+                  (mentions "dzięki" message-body)
+                  (mentions "dziekuje" message-body)
+                  (mentions "dziękuje" message-body)
+                  (mentions "dziękuję" message-body)))
+         (privmsg *connection* destination (get-random-yourewelcome-resposne)))
         ;; anyone in HS?
         ((and is-directed
               (mentions "jest w HS" message-body))
@@ -128,6 +151,10 @@
               (or (mentions "czesc" message-body)
                   (mentions "cześć" message-body)
                   (mentions "hi" message-body)
+                  (mentions "hej" message-body)
+                  (mentions "hey" message-body)
+                  (mentions "yo" message-body)
+                  (mentions "joł" message-body)
                   (mentions "hello" message-body)))
          (privmsg *connection* destination (concatenate 'string (source message) ": czeeeeeeeeeść")))
 
