@@ -22,7 +22,7 @@
 ;; phrases
 
 (defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.4. Czy coś takiego.")
+(defparameter *msg-version* "0.0.5. (to ta z wczoraj)")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
@@ -35,6 +35,7 @@
                             "Nie wiem, spytaj kdbot."
                             "!at"))
 
+(defparameter *hatsune-miku* "♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯")
 
 (defun get-random-friendly-smile ()
   (elt *friendly-smiles-list*
@@ -104,6 +105,8 @@
         ((and is-directed
               (or (mentions "numer wersji" message-body)
                   (mentions "wersje" message-body)
+                  (mentions "wersja" message-body)
+                  (mentions "wersją" message-body)
                   (mentions "wersję" message-body)))
          (privmsg *connection* destination *msg-version*))
 
@@ -112,7 +115,13 @@
               (mentions "jest w HS" message-body))
          (privmsg *connection* destination (get-random-who-in-HS-response)))
 
-
+        ;; sing
+        ((and is-directed
+              (or (mentions "spiew" message-body)
+                  (mentions "śpiew" message-body)))
+         (progn (privmsg *connection* destination *hatsune-miku*)
+                (privmsg *connection* destination "Z dedykacją dla Bambuchy :P")))
+         
 
         ;; say hi!
         ((and is-directed
