@@ -21,13 +21,14 @@
 
 ;; phrases
 
-(defvar *msg-introduction* "Alice Margatroid, do usług.")
-(defvar *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
-                                 ";)" ";)" ";)"";)" ";)" ";)"
-                                 ":P" ":P" ":P" ":P" ":P"
-                                 ":>" ":>" ":>"
-                                 "ta da!"
-                                 "maka paka!"))
+(defparameter *msg-introduction* "Alice Margatroid, do usług.")
+(defparameter *msg-version* "0.0.3. Czy coś takiego.")
+(defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
+                                       ";)" ";)" ";)"";)" ";)" ";)"
+                                       ":P" ":P" ":P" ":P" ":P"
+                                       ":>" ":>" ":>"
+                                       "ta da!"
+                                       "maka paka!"))
 
 
 (defun get-random-friendly-smile ()
@@ -76,23 +77,47 @@
 
     (let ((is-private (private-message-p message))
           (is-public (public-message-p message))
-          (is-directed (directed-message-p message)))
+          (is-directed (directed-message-p message))
+          (message-body (second (arguments message))))
 
-      (cond ((and is-directed
-                  (mentions "przedstaw sie" (second (arguments message))))
-             (privmsg *connection* destination *msg-introduction*))
+      (cond
+
+        ;; introductions
+        ((and is-directed
+              (or (mentions "poznaj" message-body)
+                  (mentions "przedstaw się" message-body)
+                  (mentions "przedstaw sie" message-body)
+                  (mentions "przedstawisz"  message-body)))
+
+         (privmsg *connection* destination *msg-introduction*))
+
+        ;; version number
+        ((and is-directed
+              (or (mentions "numer wersji" message-body)
+                  (mentions "wersje" message-body)
+                  (mentions "wersję" message-body)))
+         (privmsg *connection* destination *msg-version*))
 
 
-            ((and is-public
-                  (search "fail" (second (arguments message)))
-                  (/= 0 (random 3)))
-             (privmsg *connection* destination "..."))
+        ;; say hi!
+        ((and is-directed
+              (or (mentions "czesc" message-body)
+                  (mentions "cześć" message-body)
+                  (mentions "hi" message-body)
+                  (mentions "hello" message-body)))
+         (privmsg *connection* destination (concatenate 'string (source message) ": czeeeeeeeeeść")))
+
+        ;; fail -> ... - trolling
+        ((and is-public
+              (search "fail" message-body)
+              (/= 0 (random 3)))
+         (privmsg *connection* destination "..."))
 
 
-            ;; default responder
-            (is-directed
-             (if (/= 0 (random 5))
-                 (privmsg *connection* destination (concatenate 'string (source message) " " (get-random-friendly-smile)))))))))
+        ;; default responder
+        (is-directed
+         (if (/= 0 (random 5))
+             (privmsg *connection* destination (concatenate 'string (source message) " " (get-random-friendly-smile)))))))))
 
 
 
