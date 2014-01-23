@@ -21,6 +21,8 @@
 
 
 ;;; speech related
+
+;; types of message
 (defun public-message-p (message)
   (and
    (not (string-equal *nick* (first (arguments message)))) ; search message
@@ -32,6 +34,11 @@
   (or (string-equal (first (arguments message))
                     *nick*)
       (equal 0 (search *nick* (second (arguments message))))))
+
+(defun directed-message-p (message)
+  (or (string-equal (first (arguments message))
+                    *nick*)
+      (mentions-name *nick* (second (arguments message)))))
 
 ;;; utils
 
@@ -45,10 +52,6 @@
   (mentions name string))
 
 ;;; handling
-(defun directed-message-p (message)
-  (or (string-equal (first (arguments message))
-                    *nick*)
-      (mentions-name *nick* (second (arguments message)))))
 
 (defun msg-hook (message)
   (let ((destination (if (string-equal (first (arguments message)) *nick*)
@@ -65,6 +68,9 @@
 
     (if (private-message-p message)
         (privmsg *connection* destination "private!"))
+
+    (if (directed-message-p message)
+        (privmsg *connection* destination "directed!"))
 
 
     ;; default autoresponder
