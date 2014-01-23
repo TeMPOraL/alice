@@ -22,7 +22,7 @@
 ;; phrases
 
 (defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.6. (ta najnowsza)")
+(defparameter *msg-version* "0.0.7. (ta najnowsza)")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
@@ -144,8 +144,12 @@
                   (mentions "śpiew" message-body)))
          (progn (privmsg *connection* destination *hatsune-miku*)
                 (privmsg *connection* destination "Z dedykacją dla Bambuchy :P")))
-         
 
+        ;; TCP handshake for Bambucha
+        ((and is-directed
+              (mentions "SYN" message-body))
+         (privmsg *connection* destination (concatenate 'string (source message) ": SYN-ACK")))
+         
         ;; say hi!
         ((and is-directed
               (or (mentions "czesc" message-body)
