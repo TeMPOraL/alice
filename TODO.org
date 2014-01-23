@@ -1,0 +1,58 @@
+#+title: Alice Margatroid ToDos
+#+startup: hidestars
+Just a helpul list so I don't forget ideas and concepts.
+
+* Operations
+
+** @at
+   replies:
+   - "A skąd niby mam wiedzieć? Zapytaj kd_bot albo [ten drugi]."
+   - "Nie wiem."
+   - "A czy wyglądam Ci na odźwierną? Spytaj kd_bot albo [ten drugi]."
+   - "Pozwól, że spytam za Ciebie." followed by public: "!at" and "~at" (or however it was)
+
+
+** Auto-Rejoin on Kick
+
+** Noting stuff down
+   Use case:
+   #+BEGIN_EXAMPLE
+     * TeMPOraL musi doczytać więcej o kanbanie na poziomie teoretycznym  [15:12]
+     <TeMPOraL> Alice_M, zapiszesz?
+     <Alice_M> TeMPOraL :P
+     <TeMPOraL> thx
+   #+END_EXAMPLE
+
+** Respond to thanks
+   input: "thx", "thanks", "dzięki", "dzieki", "dziekuje", "thank you", "ty"
+   output: "you're welcome", "nie ma za co", "sure, np.", "np." "no problem", ":)"
+
+* Concepts
+
+** Limited Human Language Recognition
+*** Bayesian classification?
+    Just like spam filtering.
+
+** Bi-linguality
+   Keep localizations of selector groups and localizations of responses.
+
+   Not having to match strings 1:1 would be more flexible.
+
+* Sketchpad
+  #+BEGIN_SRC lisp
+    (add-rule :type :public
+              :match ("fail")
+              :respond ((lambda () (if (= 0 (rand 5))
+                                      ("...")
+                                      nil))))
+    
+    (add-rule :type :direct
+              :match ("kto[sś]{0,1} jest w HS[?]{0,1}"
+                      "at")
+              :respond ("A skąd mam wiedzieć?"
+                        "Czy wyglądam Ci na odźwiernego? Zapytaj kd_bot."
+                        ("Eh... pozwól, że zapytam kd_bot za Ciebie."
+                         "!at")))
+    
+  #+END_SRC
+
