@@ -22,7 +22,7 @@
 ;; phrases
 
 (defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.5. (to ta z wczoraj)")
+(defparameter *msg-version* "0.0.6. (ta najnowsza)")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
