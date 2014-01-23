@@ -22,7 +22,7 @@
 ;; phrases
 
 (defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.3. Czy coś takiego.")
+(defparameter *msg-version* "0.0.4. Czy coś takiego.")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
@@ -30,10 +30,19 @@
                                        "ta da!"
                                        "maka paka!"))
 
+(defparameter *who-in-HS* '("A skąd mam wiedzieć? Spytaj kdbot."
+                            "Czy wyglądam Ci na odźwierną?"
+                            "Nie wiem, spytaj kdbot."
+                            "!at"))
+
 
 (defun get-random-friendly-smile ()
   (elt *friendly-smiles-list*
        (random (length *friendly-smiles-list*))))
+
+(defun get-random-who-in-HS-response ()
+  (elt *who-in-HS*
+       (random (length *who-in-HS*))))
 
 
 ;;; speech related
@@ -97,6 +106,12 @@
                   (mentions "wersje" message-body)
                   (mentions "wersję" message-body)))
          (privmsg *connection* destination *msg-version*))
+
+        ;; anyone in HS?
+        ((and is-directed
+              (mentions "jest w HS" message-body))
+         (privmsg *connection* destination (get-random-who-in-HS-response)))
+
 
 
         ;; say hi!
