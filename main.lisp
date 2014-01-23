@@ -19,6 +19,20 @@
 
 (defvar *msg-introduction* "Alice Margatroid, do usług.")
 
+
+;;; speech related
+(defun public-message-p (message)
+  (and
+   (not (string-equal *nick* (first (arguments message)))) ; search message
+   (not (equal 0
+               (search *nick* (second (arguments message))))))) ; search message target
+       
+
+(defun private-message-p (message)
+  (or (string-equal (first (arguments message))
+                    *nick*)
+      (equal 0 (search *nick* (second (arguments message))))))
+
 ;;; utils
 
 (defun concat-strings (list)
@@ -31,7 +45,7 @@
   (mentions name string))
 
 ;;; handling
-(defun private-message-p (message)
+(defun directed-message-p (message)
   (or (string-equal (first (arguments message))
                     *nick*)
       (mentions-name *nick* (second (arguments message)))))
@@ -42,8 +56,19 @@
                          (first (arguments message)))))
     ;; TODO match commands, questions, etc.
 
-    ;; default autoresponder
+    (if (and (search "fail" (second (arguments message)))
+             (= 0 (random 5)))
+        (privmsg *connection* destination "..."))
+
+    (if (public-message-p message)
+        (privmsg *connection* destination "public!"))
+
     (if (private-message-p message)
+        (privmsg *connection* destination "private!"))
+
+
+    ;; default autoresponder
+    (if (directed-message-p message)
         (cond
           ((mentions "przedstaw sie" (second (arguments message))) (privmsg *connection* destination *msg-introduction*))
           (t (privmsg *connection* destination (concatenate 'string (source message) " :P")))))))
