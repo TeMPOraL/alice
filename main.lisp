@@ -22,7 +22,7 @@
 ;; phrases
 
 (defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.7. (ta najnowsza)")
+(defparameter *msg-version* "0.0.9. (ta przyszła)")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
@@ -44,6 +44,13 @@
                                "no problem"
                                ":)"
                                "spoko :)"))
+
+(defparameter *at-ers* '("lenwe"
+                         "lenwe|bb"
+                         "marchewa"
+                         "rafalt"
+                         "bambucha|tiny"))
+                         
 
 (defun get-random-friendly-smile ()
   (elt *friendly-smiles-list*
@@ -175,6 +182,11 @@
              (privmsg *connection* destination (concatenate 'string (source message) " " (get-random-friendly-smile)))))))))
 
 
+(defun join-hook (message)
+  (let ((who (source message))
+        (where (first (arguments message))))
+    (if (position who *at-ers* :test #'equal)
+        (privmsg *connection* where "!at"))))
 
 
 (defun start-alice (server nick pass &rest channels)
@@ -188,6 +200,7 @@
   (mapcar (lambda (channel) (join *connection* channel)) channels)
 
   (add-hook *connection* 'irc::irc-privmsg-message 'msg-hook)
+  (add-hook *connection* 'irc::irc-join-message 'join-hook)
 
   #+(or sbcl
         openmcl)
