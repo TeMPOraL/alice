@@ -23,7 +23,7 @@
                                    "Alice Margatroid, kłaniam się ;)."
                                    "Mów mi Alice Margatroid."))
 
-(defparameter *msg-version* "0.0.13. (ta porządnie zrefactorowana")
+(defparameter *msg-version* "0.0.13. (ta porządnie zrefactorowana)")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
