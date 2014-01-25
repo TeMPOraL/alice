@@ -17,12 +17,13 @@
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
 
-
-
 ;; phrases
 
-(defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.10. (ta mniej spamująca)")
+(defparameter *msg-introduction* '("Alice Margatroid, do usług."
+                                   "Alice Margatroid, kłaniam się ;)."
+                                   "Mów mi Alice Margatroid."))
+
+(defparameter *msg-version* "0.0.13. (ta porządnie zrefactorowana")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
@@ -30,9 +31,10 @@
                                        "ta da!"
                                        "maka paka!"))
 
-(defparameter *who-in-HS* '("A skąd mam wiedzieć? Spytaj kdbot."
-                            "Czy wyglądam Ci na odźwierną?"
+(defparameter *who-in-HS* '("A skąd mam wiedzieć? Spytaj kdbot." "!at"
+                            #("Czy wyglądam Ci na odźwierną?.." "!at")
                             "Nie wiem, spytaj kdbot."
+                            #("kdbot jest od tego." "!at")
                             "!at"))
 
 (defparameter *hatsune-miku* "♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯")
@@ -51,23 +53,33 @@
                          "rafalt"
                          "bambucha|tiny"))
 
+(defparameter *hello* '("czeeeeeeeeeść"
+                        "oh hai!"
+                        "hej"
+                        "helloł"))
+
 (defparameter *excluded-from-replying-to* '("kdbot"))
-                         
 
-(defun get-random-friendly-smile ()
-  (elt *friendly-smiles-list*
-       (random (length *friendly-smiles-list*))))
+;; tools
+(defun say (to-where what &key to)
+  (cond ((listp what)
+         (say to-where
+              (elt what
+                   (random (length what)))
+              :to to))
 
-(defun get-random-who-in-HS-response ()
-  (elt *who-in-HS*
-       (random (length *who-in-HS*))))
+        ((stringp what)
+         (if (null to)
+             (privmsg *connection* to-where what)
+             (privmsg *connection* to-where (concatenate 'string to ": " what))))
 
-(defun get-random-yourewelcome-resposne ()
-  (elt *yourewelcome*
-       (random (length *yourewelcome*))))
+        ((vectorp what)
+         (map 'nil
+              (lambda (msg)
+                (say to-where msg :to to))
+              what))
 
-
-;;; speech related
+        (t (privmsg *connection* to-where "I just don't know what to say..."))))
 
 ;; types of message
 (defun public-message-p (message)
@@ -89,9 +101,6 @@
 
 ;;; utils
 
-(defun concat-strings (list)
-  (format nil "~{~a, ~}" list))
-
 (defun mentions (what string)
   (search what string))
 
@@ -101,12 +110,10 @@
 ;;; handling
 
 (defun msg-hook (message)
-  (let ((destination (if (string-equal (first (arguments message)) *nick*)
+    (let ((destination (if (string-equal (first (arguments message)) *nick*)
                          (source message)
-                         (first (arguments message)))))
-    ;; TODO match commands, questions, etc.
-
-    (let ((is-private (private-message-p message))
+                         (first (arguments message))))
+          (is-private (private-message-p message))
           (is-public (public-message-p message))
           (is-directed (directed-message-p message))
           (from-who (source message))
@@ -121,7 +128,7 @@
                   (mentions "przedstaw sie" message-body)
                   (mentions "przedstawisz"  message-body)))
 
-         (privmsg *connection* destination *msg-introduction*))
+         (say destination *msg-introduction*))
 
         ;; version number
         ((and is-directed
@@ -130,7 +137,7 @@
                   (mentions "wersja" message-body)
                   (mentions "wersją" message-body)
                   (mentions "wersję" message-body)))
-         (privmsg *connection* destination *msg-version*))
+         (say destination *msg-version*))
 
         ;; be nice to thanks
         ((and is-directed
@@ -142,23 +149,23 @@
                   (mentions "dziekuje" message-body)
                   (mentions "dziękuje" message-body)
                   (mentions "dziękuję" message-body)))
-         (privmsg *connection* destination (get-random-yourewelcome-resposne)))
+         (say destination *yourewelcome*))
         ;; anyone in HS?
         ((and is-directed
               (mentions "jest w HS" message-body))
-         (privmsg *connection* destination (get-random-who-in-HS-response)))
+         (say destination *who-in-HS*))
 
         ;; sing
         ((and is-directed
               (or (mentions "spiew" message-body)
                   (mentions "śpiew" message-body)))
-         (progn (privmsg *connection* destination *hatsune-miku*)
-                (privmsg *connection* destination "Z dedykacją dla Bambuchy :P")))
+         (progn (say destination *hatsune-miku*)
+                (say destination "Z dedykacją dla Bambuchy :P")))
 
         ;; TCP handshake for Bambucha
         ((and is-directed
               (mentions "SYN" message-body))
-         (privmsg *connection* destination (concatenate 'string from-who ": SYN-ACK")))
+         (say destination "SYN-ACK" :to from-who))
          
         ;; say hi!
         ((and is-directed
@@ -170,28 +177,27 @@
                   (mentions "yo" message-body)
                   (mentions "joł" message-body)
                   (mentions "hello" message-body)))
-         (privmsg *connection* destination (concatenate 'string from-who ": czeeeeeeeeeść")))
+         (say destination *hello* :to from-who))
 
         ;; fail -> ... - trolling
         ((and is-public
               (search "fail" message-body)
-              (/= 0 (random 3)))
-         (privmsg *connection* destination "..."))
+              (= 0 (random 4)))
+         (say destination "..."))
 
 
         ;; default responder
         (is-directed
          (if (and (/= 0 (random 5))
                   (not (position from-who *excluded-from-replying-to* :test #'equal)))
-             (privmsg *connection* destination (concatenate 'string from-who " " (get-random-friendly-smile)))))))))
+             (say destination *friendly-smiles-list* :to from-who))))))
 
 
 (defun join-hook (message)
   (let ((who (source message))
         (where (first (arguments message))))
     (if (position who *at-ers* :test #'equal)
-        (privmsg *connection* where "!at"))))
-
+        (say where "!at"))))
 
 (defun start-alice (server nick pass &rest channels)
   (setf *nick* nick)
