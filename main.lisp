@@ -22,7 +22,7 @@
 ;; phrases
 
 (defparameter *msg-introduction* "Alice Margatroid, do usług.")
-(defparameter *msg-version* "0.0.9. (ta przyszła)")
+(defparameter *msg-version* "0.0.10. (ta mniej spamująca)")
 (defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                        ";)" ";)" ";)"";)" ";)" ";)"
                                        ":P" ":P" ":P" ":P" ":P"
@@ -50,6 +50,8 @@
                          "marchewa"
                          "rafalt"
                          "bambucha|tiny"))
+
+(defparameter *excluded-from-replying-to* '("kdbot"))
                          
 
 (defun get-random-friendly-smile ()
@@ -107,6 +109,7 @@
     (let ((is-private (private-message-p message))
           (is-public (public-message-p message))
           (is-directed (directed-message-p message))
+          (from-who (source message))
           (message-body (second (arguments message))))
 
       (cond
@@ -155,7 +158,7 @@
         ;; TCP handshake for Bambucha
         ((and is-directed
               (mentions "SYN" message-body))
-         (privmsg *connection* destination (concatenate 'string (source message) ": SYN-ACK")))
+         (privmsg *connection* destination (concatenate 'string from-who ": SYN-ACK")))
          
         ;; say hi!
         ((and is-directed
@@ -167,7 +170,7 @@
                   (mentions "yo" message-body)
                   (mentions "joł" message-body)
                   (mentions "hello" message-body)))
-         (privmsg *connection* destination (concatenate 'string (source message) ": czeeeeeeeeeść")))
+         (privmsg *connection* destination (concatenate 'string from-who ": czeeeeeeeeeść")))
 
         ;; fail -> ... - trolling
         ((and is-public
@@ -178,8 +181,9 @@
 
         ;; default responder
         (is-directed
-         (if (/= 0 (random 5))
-             (privmsg *connection* destination (concatenate 'string (source message) " " (get-random-friendly-smile)))))))))
+         (if (and (/= 0 (random 5))
+                  (not (position from-who *excluded-from-replying-to* :test #'equal)))
+             (privmsg *connection* destination (concatenate 'string from-who " " (get-random-friendly-smile)))))))))
 
 
 (defun join-hook (message)
