@@ -5,6 +5,9 @@
         :irc)
   (:export :start-alice
            :stop-alice
+           :impersonate-say
+           :impersonate-join
+           :impersonate-part
            :mute
            :unmute))
 
@@ -13,6 +16,8 @@
 (defvar *connection*)
 (defvar *nick* "")
 (defvar *connected-channels*)
+
+(defparameter *muted* nil)
 
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
@@ -24,7 +29,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.14. (ta bardziej deklaratywna)")
+    (:version . "0.0.15. (ta co sprawdza temperaturę)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -50,43 +55,48 @@
                       ":)"
                       "spoko :)"))
 
-    (:at-freaks . ("lenwe"
-                   "lenwe|bb"
-                   "marchewa"
-                   "rafalt"
-                   "bambucha|tiny"))
     (:tcp . "SYN-ACK")
+
+    (:temperature . #("pozwól, że spytam kdbot" "!temp"))
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
                "hej"
                "helloł"))))
 
+(defparameter *at-ers* '("lenwe"
+                        "lenwe|bb"
+                        "marchewa"
+                        "rafalt"
+                        "bambucha|tiny"
+                         "TeMPOraL"))
+
 (defparameter *excluded-from-replying-to* '("kdbot"))
 
 ;; tools
 (defun say (to-where what &key to)
-  (cond ((keywordp what)
-         (say to-where (cdr (assoc what *answers*)) :to to))
-        
-        ((listp what)
-         (say to-where
-              (elt what
-                   (random (length what)))
-              :to to))
+  (if (not *muted*)
+      (cond ((keywordp what)
+             (say to-where (cdr (assoc what *answers*)) :to to))
+            
+            ((listp what)
+             (say to-where
+                  (elt what
+                       (random (length what)))
+                  :to to))
 
-        ((stringp what)
-         (if (null to)
-             (privmsg *connection* to-where what)
-             (privmsg *connection* to-where (concatenate 'string to ": " what))))
+            ((stringp what)
+             (if (null to)
+                 (privmsg *connection* to-where what)
+                 (privmsg *connection* to-where (concatenate 'string to ": " what))))
 
-        ((vectorp what)
-         (map 'nil
-              (lambda (msg)
-                (say to-where msg :to to))
-              what))
+            ((vectorp what)
+             (map 'nil
+                  (lambda (msg)
+                    (say to-where msg :to to))
+                  what))
 
-        (t (privmsg *connection* to-where "I just don't know what to say..."))))
+            (t (privmsg *connection* to-where "I just don't know what to say...")))))
 
 ;; types of message
 (defun public-message-p (message)
@@ -158,8 +168,19 @@
                   (mentions "dziękuję" message-body)))
          (say destination :thanks-reply))
 
+        ;; temp check
+        ((and is-directed
+              (or (mentions "temperatura" message-body)
+                  (mentions "temperature" message-body)
+                  (mentions "temperaturę" message-body)
+                  (mentions "zimno" message-body)
+                  (mentions "cieplo" message-body)
+                  (mentions "ciepło" message-body)))
+         (say destination :temperature))
+
         ;; anyone in HS?
         ((and is-directed
+              (mentions "kto" message-body)
               (mentions "jest w HS" message-body))
          (say destination :who-in-hs))
 
@@ -227,12 +248,18 @@
       (quit *connection* msg))
 
 (defun mute ()
-  ;; TODO
-  )
+  (setf *muted* t))
 
 (defun unmute ()
-  ;; TODO
-  )
+  (setf *muted* nil))
+
+;; impersonate function
 
 (defun impersonate-say (destination what)
   (privmsg *connection* destination what))
+
+(defun impersonate-join (channel &key password)
+  (join *connection* channel :password password))
+
+(defun impersonate-part (channel)
+  (part *connection* channel))
