@@ -76,6 +76,10 @@
               #("jasne :)" "!save")
               "!save"))
 
+    (:nothing-computed . ("Nic się nie policzyło :(."
+                          "Brak wyniku; spytaj o coś innego."
+                          "Nope, nic nie ma."))
+
     (:throttled-message . ("... jest tego więcej, wyświetlić?"
                            "... wyświetlać dalej?"))
 
@@ -108,12 +112,14 @@
 
 (defun do-wolfram-computation (query)
   (flet ((xml-response-to-speechstrings (xml)
-           (map 'vector
-                (lambda (el)
-                  (let ((val (dom:first-child el)))
-                    (if val
-                        (dom:data val))))
-                (dom:get-elements-by-tag-name xml "plaintext")))
+           (coerce (alexandria:flatten (map 'list
+                                            (lambda (el)
+                                              (let ((val (dom:first-child el)))
+                                                (if val
+                                                    (split-sequence:split-sequence #\Newline (dom:data val)))))
+                                            (dom:get-elements-by-tag-name xml "plaintext")))
+                   'vector))
+
          (get-xml-response (query)
            (let ((response (drakma:http-request "http://api.wolframalpha.com/v2/query"
                                                 :external-format-out :UTF-8
@@ -123,7 +129,10 @@
              (cxml:parse-rod response
                              (cxml-dom:make-dom-builder))))
          (clean-up (response)
-           (remove nil response)))
+           (let ((cleaned-up (remove nil response)))
+             (if (= (length cleaned-up) 0)
+                 :nothing-computed
+                 cleaned-up))))
 
     ;; code
     (clean-up (xml-response-to-speechstrings (get-xml-response query)))))
@@ -182,6 +191,13 @@
 
             (t (privmsg *connection* to-where "I just don't know what to say...")))))
 
+;;; utils
+(defun mentions (what string)
+  (search what string))
+
+(defun mentions-name (name string)
+  (mentions name string))
+
 ;; types of message
 (defun public-message-p (message)
   (and
@@ -199,14 +215,6 @@
   (or (string-equal (first (arguments message))
                     *nick*)
       (mentions-name *nick* (second (arguments message)))))
-
-;;; utils
-
-(defun mentions (what string)
-  (search what string))
-
-(defun mentions-name (name string)
-  (mentions name string))
 
 ;;; handling
 
