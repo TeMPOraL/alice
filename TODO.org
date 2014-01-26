@@ -11,6 +11,9 @@ Just a helpul list so I don't forget ideas and concepts.
    - "A czy wyglądam Ci na odźwierną? Spytaj kd_bot albo [ten drugi]."
    - "Pozwól, że spytam za Ciebie." followed by public: "!at" and "~at" (or however it was)
 
+** DONE Throttling output
+
+** TODO Google search
 
 ** TODO Auto-Rejoin on Kick
 
@@ -29,6 +32,12 @@ Just a helpul list so I don't forget ideas and concepts.
 
 ** DONE Send notifications to author
    Via pushover.
+
+* Improvements
+** TODO Refactor user string matcher to use regular expressions
+   Since we already use cl-ppcre, why waste CPU cycles on my dumb matcher?
+
+** TODO ASDF packaging
 
 * Concepts
 
