@@ -37,6 +37,8 @@
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
 
+(defparameter *full-name* "Alice Margatroid")
+
 ;;; phrases
 ;; phrases are defined as an alist of label and possible phrases to speak
 ;; plain-text value will be said directly
@@ -168,6 +170,7 @@
                        :external-format-out :UTF-8
                        :parameters `(("token" . ,*pushover-token*)
                                      ("user" . ,*pushover-user*)
+                                     ("title" . ,*full-name*)
                                      ("message" . ,what))
                        :content "hack"
                        :content-length 4))
