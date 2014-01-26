@@ -98,7 +98,8 @@
                        :external-format-out :UTF-8
                        :parameters `(("token" . ,*pushover-token*)
                                      ("user" . ,*pushover-user*)
-                                     ("message" . ,what))))
+                                     ("message" . ,what))
+                       :content "hack"))
 ;; tools
 (defun say (to-where what &key to)
   (if (not *muted*)
