@@ -50,7 +50,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.22. (ta z dobrym wsparciem Wolfram|Alpha)")
+    (:version . "0.0.23. (ta co zna swoje lalki)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -59,7 +59,7 @@
                 "ta da!"
                 "maka paka!"))
 
-    (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot." "!at"
+    (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot."
                    #("Czy wyglądam Ci na odźwierną?.." "!at")
                    "Nie wiem, spytaj kdbot."
                    #("kdbot jest od tego." "!at")
@@ -83,6 +83,12 @@
     (:save . (#("pewnie ;)" "!save")
               #("jasne :)" "!save")
               "!save"))
+
+    (:notification-sent . ("ok, przekazałam"
+                         "jasne, przekazuję"
+                         "sure, już przekazuję"
+                         "przekazane"))
+
     (:nothing-to-compute . ("Ale co mam obliczyć? Umieść to w cudzysłowiach."
                             "Co mam przeliczyć? Umieść to w cudzysłowiach."))
 
@@ -92,6 +98,10 @@
 
     (:throttled-message . ("... jest tego więcej, wyświetlić?"
                            "... wyświetlać dalej?"))
+
+    (:kdbot . ("kdbot? jest moją ulubioną lalką."
+               "kdbot to bardzo umiejęŧna lalka."
+               "kdbot to świetna lalka"))
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
@@ -343,8 +353,13 @@
                        (mentions "powiadom" message-body)
                        (mentions "przeka" message-body)
                        (mentions "pingnij" message-body))))
-         (progn (say destination "ok, przekazałam")
+         (progn (say destination :notification-sent)
                 (send-notification message-body)))
+
+        ;; kdbot is a doll
+        ((and is-directed
+              (mentions "kdbot" message-body))
+         (say destination :kdbot))
 
         ;; is this an accident?
         ((and (or is-public
