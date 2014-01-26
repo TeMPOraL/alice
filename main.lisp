@@ -86,11 +86,14 @@
                         "lenwe|bb"
                         "marchewa"
                         "rafalt"
-                        "bambucha|tiny"))
+                        "bambucha|tiny")
+  "People who, when joining, will cause auto-!at response.")
 
-(defparameter *excluded-from-replying-to* '("kdbot"))
+(defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")
 
-(defparameter *wolfram-query-regexp* "\"(.*)\"")
+(defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
+
+(defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 
 ;; LOAD LOCAL CONFIG
 (load "local-config.lisp")
@@ -134,7 +137,7 @@
   (if (not *muted*)
       (cond ((null what)
              t)
-            
+
             ((keywordp what)
              (say to-where (cdr (assoc what *answers*)) :to to))
             
