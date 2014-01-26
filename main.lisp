@@ -110,13 +110,6 @@
                "hej"
                "helloł"))))
 
-(defparameter *at-ers* '("lenwe"
-                        "lenwe|bb"
-                        "marchewa"
-                        "rafalt"
-                        "bambucha|tiny")
-  "People who, when joining, will cause auto-!at response.")
-
 (defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")
 
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
@@ -385,8 +378,7 @@
 (defun join-hook (message)
   (let ((who (source message))
         (where (first (arguments message))))
-    (if (position who *at-ers* :test #'equal)
-        (say where "!at"))))
+    nil))
 
 (defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
   (setf *nick* nick)
