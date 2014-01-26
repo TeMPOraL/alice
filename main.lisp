@@ -52,7 +52,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.23. (ta co zna swoje lalki)")
+    (:version . "0.0.24. (ta tolerancyjna dla ludzi z PMSem)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
