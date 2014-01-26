@@ -40,7 +40,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.17. (ta z pushoverem)")
+    (:version . "0.0.18. (ta crosslispowa)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -92,15 +92,10 @@
 (load "local-config.lisp")
 
 ;; functions
-
-
-(defun utf-encoder (what ignore)
-  (drakma:url-encode what :utf-8))
-
 (defun send-notification (what)
   (drakma:http-request "https://api.pushover.net/1/messages.json"
                        :method :post
-                       :url-encoder #'utf-encoder
+                       :external-format-out :UTF-8
                        :parameters `(("token" . ,*pushover-token*)
                                      ("user" . ,*pushover-user*)
                                      ("message" . ,what))))
