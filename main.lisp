@@ -247,7 +247,9 @@
         ((and is-directed
               (and (or (mentions "TeMPOraL" message-body)
                        (mentions "temporal" message-body))
-                   (or (mentions "powiadom" message-body)
+                   (or (mentions "zawiadom" message-body)
+                       (mentions "powiadom" message-body)
+                       (mentions "przeka" message-body)
                        (mentions "pingnij" message-body))))
          (progn (say destination "ok, przekazałam")
                 (send-notification message-body)))
