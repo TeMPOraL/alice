@@ -4,7 +4,7 @@ Just a helpul list so I don't forget ideas and concepts.
 
 * Operations
 
-** @at
+** DONE @at
    replies:
    - "A skąd niby mam wiedzieć? Zapytaj kd_bot albo [ten drugi]."
    - "Nie wiem."
@@ -12,9 +12,9 @@ Just a helpul list so I don't forget ideas and concepts.
    - "Pozwól, że spytam za Ciebie." followed by public: "!at" and "~at" (or however it was)
 
 
-** Auto-Rejoin on Kick
+** TODO Auto-Rejoin on Kick
 
-** Noting stuff down
+** TODO Noting stuff down
    Use case:
    #+BEGIN_EXAMPLE
      * TeMPOraL musi doczytać więcej o kanbanie na poziomie teoretycznym  [15:12]
@@ -23,7 +23,7 @@ Just a helpul list so I don't forget ideas and concepts.
      <TeMPOraL> thx
    #+END_EXAMPLE
 
-** Respond to thanks
+** TODO Respond to thanks
    input: "thx", "thanks", "dzięki", "dzieki", "dziekuje", "thank you", "ty"
    output: "you're welcome", "nie ma za co", "sure, np.", "np." "no problem", ":)"
 

@@ -1,4 +1,5 @@
 (ql:quickload :cl-irc)
+(ql:quickload :drakma)
 
 (defpackage :alice
   (:use :common-lisp
@@ -14,14 +15,24 @@
 (in-package :alice)
 
 (defvar *connection*)
-(defvar *nick* "")
 (defvar *connected-channels*)
+
+;; configurables
+(defparameter *server* "")
+(defvar *nick* "")
+(defparameter *password* "")
+
+(defparameter *pushover-token* "")
+(defparameter *pushover-user* "")
+
+(defparameter *autojoin-channels* '())
+
+
 
 (defparameter *muted* nil)
 
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
-
 
 ;; phrases
 (defparameter *answers* 
@@ -73,11 +84,26 @@
                         "lenwe|bb"
                         "marchewa"
                         "rafalt"
-                        "bambucha|tiny"
-                         "TeMPOraL"))
+                        "bambucha|tiny"))
 
 (defparameter *excluded-from-replying-to* '("kdbot"))
 
+;; LOAD LOCAL CONFIG
+(load "local-config.lisp")
+
+;; functions
+
+
+(defun utf-encoder (what ignore)
+  (drakma:url-encode what :utf-8))
+
+(defun send-notification (what)
+  (drakma:http-request "https://api.pushover.net/1/messages.json"
+                       :method :post
+                       :url-encoder #'utf-encoder
+                       :parameters `(("token" . ,*pushover-token*)
+                                     ("user" . ,*pushover-user*)
+                                     ("message" . ,what))))
 ;; tools
 (defun say (to-where what &key to)
   (if (not *muted*)
@@ -219,6 +245,21 @@
                   (mentions "joł" message-body)
                   (mentions "hello" message-body)))
          (say destination :hello :to from-who))
+
+        ;; ping temporal
+        ((and is-directed
+              (and (or (mentions "TeMPOraL" message-body)
+                       (mentions "temporal" message-body))
+                   (or (mentions "powiadom" message-body)
+                       (mentions "pingnij" message-body))))
+         (progn (say destination "ok, przekazałam")
+                (send-notification message-body)))
+
+        ;; is this an accident?
+        ((and (or is-public
+                  is-directed)
+              (mentions "przypadek?" message-body))
+         (say destination "nie sądzę."))
 
         ;; fail -> ... - trolling
         ((and is-public
