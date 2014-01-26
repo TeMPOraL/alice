@@ -42,7 +42,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.19. (ta bardziej crosslispowa)")
+    (:version . "0.0.21. (ta z throttlingiem komunikatów)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -75,7 +75,9 @@
     (:save . (#("pewnie ;)" "!save")
               #("jasne :)" "!save")
               "!save"))
-     
+
+    (:throttled-message . ("... jest tego więcej, wyświetlić?"
+                           "... wyświetlać dalej?"))
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
@@ -95,6 +97,8 @@
 
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 
+(defparameter *max-output-sequence-length* 4)
+
 ;; LOAD LOCAL CONFIG
 (load "local-config.lisp")
 
@@ -112,13 +116,17 @@
                 (dom:get-elements-by-tag-name xml "plaintext")))
          (get-xml-response (query)
            (let ((response (drakma:http-request "http://api.wolframalpha.com/v2/query"
+                                                :external-format-out :UTF-8
                                                 :parameters `(("appid" . ,*wolfram-app-id*)
                                                               ("input" . ,query)
                                                               ("format" . "plaintext")))))
              (cxml:parse-rod response
-                             (cxml-dom:make-dom-builder)))))
+                             (cxml-dom:make-dom-builder))))
+         (clean-up (response)
+           (remove nil response)))
+
     ;; code
-    (xml-response-to-speechstrings (get-xml-response query))))
+    (clean-up (xml-response-to-speechstrings (get-xml-response query)))))
 
 (defun parse-message-for-wolfram-computation (text)
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
@@ -133,6 +141,19 @@
                        :content "hack"
                        :content-length 4))
 ;; tools
+(defun throttle (messages)
+  (let ((len (length messages)))
+    (if (> len *max-output-sequence-length*)
+        (let* ((split-point (min *max-output-sequence-length*
+                                 len))
+               (to-say (subseq messages 0 split-point))
+               (to-buffer (subseq messages split-point)))
+          (setf *throttled-output* (and (> (length to-buffer) 0) to-buffer))
+          (concatenate 'vector to-say #(:throttled-message)))
+        (progn
+          (setf *throttled-output* nil)
+          messages))))
+
 (defun say (to-where what &key to)
   (if (not *muted*)
       (cond ((null what)
@@ -153,10 +174,11 @@
                  (privmsg *connection* to-where (concatenate 'string to ": " what))))
 
             ((vectorp what)
-             (map 'nil
-                  (lambda (msg)
-                    (say to-where msg :to to))
-                  what))
+             (let ((tosay (throttle what)))
+               (map 'nil
+                    (lambda (msg)
+                      (say to-where msg :to to))
+                    tosay)))
 
             (t (privmsg *connection* to-where "I just don't know what to say...")))))
 
@@ -270,6 +292,15 @@
               (or (mentions "licz" message-body)
                   (mentions "compute" message-body)))
          (say destination (do-wolfram-computation (parse-message-for-wolfram-computation message-body))))
+
+
+        ;; continue throttled output
+        ((and is-directed
+              (or (mentions "tak" message-body)
+                  (mentions "yes" message-body)
+                  (mentions "pros" message-body))
+              (not (null *throttled-output*)))
+         (say destination *throttled-output*))
          
         ;; say hi!
         ((and is-directed
