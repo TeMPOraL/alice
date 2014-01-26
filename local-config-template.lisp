@@ -2,6 +2,7 @@
 
 (setf *pushover-token* "insert token"
       *pushover-user* "insert user"
+      *wolfram-app-id* "insert app id"
 
       *server* "irc.freenode.net"
       *nick* "Alice_M"

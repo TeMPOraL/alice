@@ -1,5 +1,7 @@
 (ql:quickload :cl-irc)
 (ql:quickload :drakma)
+(ql:quickload :cl-ppcre)
+(ql:quickload :cxml)
 
 (defpackage :alice
   (:use :common-lisp
@@ -25,9 +27,9 @@
 (defparameter *pushover-token* "")
 (defparameter *pushover-user* "")
 
+(defparameter *wolfram-app-id* "")
+
 (defparameter *autojoin-channels* '())
-
-
 
 (defparameter *muted* nil)
 
@@ -88,10 +90,36 @@
 
 (defparameter *excluded-from-replying-to* '("kdbot"))
 
+(defparameter *wolfram-query-regexp* "\"(.*)\"")
+
 ;; LOAD LOCAL CONFIG
 (load "local-config.lisp")
 
 ;; functions
+(defun do-google-search (query)
+  )
+
+(defun do-wolfram-computation (query)
+  (flet ((xml-response-to-speechstrings (xml)
+           (map 'vector
+                (lambda (el)
+                  (let ((val (dom:first-child el)))
+                    (if val
+                        (dom:data val))))
+                (dom:get-elements-by-tag-name xml "plaintext")))
+         (get-xml-response (query)
+           (let ((response (drakma:http-request "http://api.wolframalpha.com/v2/query"
+                                                :parameters `(("appid" . ,*wolfram-app-id*)
+                                                              ("input" . ,query)
+                                                              ("format" . "plaintext")))))
+             (cxml:parse-rod response
+                             (cxml-dom:make-dom-builder)))))
+    ;; code
+    (xml-response-to-speechstrings (get-xml-response query))))
+
+(defun parse-message-for-wolfram-computation (text)
+  (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
+
 (defun send-notification (what)
   (drakma:http-request "https://api.pushover.net/1/messages.json"
                        :method :post
@@ -104,7 +132,10 @@
 ;; tools
 (defun say (to-where what &key to)
   (if (not *muted*)
-      (cond ((keywordp what)
+      (cond ((null what)
+             t)
+            
+            ((keywordp what)
              (say to-where (cdr (assoc what *answers*)) :to to))
             
             ((listp what)
@@ -230,6 +261,12 @@
         ((and is-directed
               (mentions "SYN" message-body))
          (say destination :tcp :to from-who))
+
+        ;; Wolfram|Alpha
+        ((and is-directed
+              (or (mentions "licz" message-body)
+                  (mentions "compute" message-body)))
+         (say destination (do-wolfram-computation (parse-message-for-wolfram-computation message-body))))
          
         ;; say hi!
         ((and is-directed

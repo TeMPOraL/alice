@@ -23,9 +23,12 @@ Just a helpul list so I don't forget ideas and concepts.
      <TeMPOraL> thx
    #+END_EXAMPLE
 
-** TODO Respond to thanks
+** DONE Respond to thanks
    input: "thx", "thanks", "dzięki", "dzieki", "dziekuje", "thank you", "ty"
    output: "you're welcome", "nie ma za co", "sure, np.", "np." "no problem", ":)"
+
+** DONE Send notifications to author
+   Via pushover.
 
 * Concepts
 
