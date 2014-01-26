@@ -40,7 +40,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.18. (ta crosslispowa)")
+    (:version . "0.0.19. (ta bardziej crosslispowa)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -99,7 +99,8 @@
                        :parameters `(("token" . ,*pushover-token*)
                                      ("user" . ,*pushover-user*)
                                      ("message" . ,what))
-                       :content "hack"))
+                       :content "hack"
+                       :content-length 4))
 ;; tools
 (defun say (to-where what &key to)
   (if (not *muted*)
