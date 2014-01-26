@@ -42,7 +42,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.21. (ta z throttlingiem komunikatów)")
+    (:version . "0.0.22. (ta z dobrym wsparciem Wolfram|Alpha)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -75,6 +75,8 @@
     (:save . (#("pewnie ;)" "!save")
               #("jasne :)" "!save")
               "!save"))
+    (:nothing-to-compute . ("Ale co mam obliczyć? Umieść to w cudzysłowiach."
+                            "Co mam przeliczyć? Umieść to w cudzysłowiach."))
 
     (:nothing-computed . ("Nic się nie policzyło :(."
                           "Brak wyniku; spytaj o coś innego."
@@ -135,7 +137,9 @@
                  cleaned-up))))
 
     ;; code
-    (clean-up (xml-response-to-speechstrings (get-xml-response query)))))
+    (if query
+        (clean-up (xml-response-to-speechstrings (get-xml-response query)))
+        :nothing-to-compute)))
 
 (defun parse-message-for-wolfram-computation (text)
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
