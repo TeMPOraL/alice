@@ -17,52 +17,59 @@
 (defconstant +nickserv+ "NickServ")
 (defconstant +nickserv-identify-msg-template+ "IDENTIFY ~a")
 
+
 ;; phrases
+(defparameter *answers* 
+  '((:introduction . ("Alice Margatroid, do usług."
+                       "Alice Margatroid, kłaniam się ;)."
+                       "Mów mi Alice Margatroid."))
 
-(defparameter *msg-introduction* '("Alice Margatroid, do usług."
-                                   "Alice Margatroid, kłaniam się ;)."
-                                   "Mów mi Alice Margatroid."))
+    (:version . "0.0.14. (ta bardziej deklaratywna)")
 
-(defparameter *msg-version* "0.0.13. (ta porządnie zrefactorowana)")
-(defparameter *friendly-smiles-list* '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
-                                       ";)" ";)" ";)"";)" ";)" ";)"
-                                       ":P" ":P" ":P" ":P" ":P"
-                                       ":>" ":>" ":>"
-                                       "ta da!"
-                                       "maka paka!"))
+    (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
+                ";)" ";)" ";)"";)" ";)" ";)"
+                ":P" ":P" ":P" ":P" ":P"
+                ":>" ":>" ":>"
+                "ta da!"
+                "maka paka!"))
 
-(defparameter *who-in-HS* '("A skąd mam wiedzieć? Spytaj kdbot." "!at"
-                            #("Czy wyglądam Ci na odźwierną?.." "!at")
-                            "Nie wiem, spytaj kdbot."
-                            #("kdbot jest od tego." "!at")
-                            "!at"))
+    (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot." "!at"
+                   #("Czy wyglądam Ci na odźwierną?.." "!at")
+                   "Nie wiem, spytaj kdbot."
+                   #("kdbot jest od tego." "!at")
+                   "!at"))
 
-(defparameter *hatsune-miku* "♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯")
+    (:songs . #("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
+                "Z dedykacją dla Bambuchy :P"))
 
-(defparameter *yourewelcome* '("you're welcome"
-                               "nie ma za co"
-                               "sure, np."
-                               "np."
-                               "no problem"
-                               ":)"
-                               "spoko :)"))
+    (:thanks-reply . ("you're welcome"
+                      "nie ma za co"
+                      "sure, np."
+                      "np."
+                      "no problem"
+                      ":)"
+                      "spoko :)"))
 
-(defparameter *at-ers* '("lenwe"
-                         "lenwe|bb"
-                         "marchewa"
-                         "rafalt"
-                         "bambucha|tiny"))
+    (:at-freaks . ("lenwe"
+                   "lenwe|bb"
+                   "marchewa"
+                   "rafalt"
+                   "bambucha|tiny"))
+    (:tcp . "SYN-ACK")
 
-(defparameter *hello* '("czeeeeeeeeeść"
-                        "oh hai!"
-                        "hej"
-                        "helloł"))
+    (:hello . ("czeeeeeeeeeść"
+               "oh hai!"
+               "hej"
+               "helloł"))))
 
 (defparameter *excluded-from-replying-to* '("kdbot"))
 
 ;; tools
 (defun say (to-where what &key to)
-  (cond ((listp what)
+  (cond ((keywordp what)
+         (say to-where (cdr (assoc what *answers*)) :to to))
+        
+        ((listp what)
          (say to-where
               (elt what
                    (random (length what)))
@@ -128,7 +135,7 @@
                   (mentions "przedstaw sie" message-body)
                   (mentions "przedstawisz"  message-body)))
 
-         (say destination *msg-introduction*))
+         (say destination :introduction))
 
         ;; version number
         ((and is-directed
@@ -137,7 +144,7 @@
                   (mentions "wersja" message-body)
                   (mentions "wersją" message-body)
                   (mentions "wersję" message-body)))
-         (say destination *msg-version*))
+         (say destination :version))
 
         ;; be nice to thanks
         ((and is-directed
@@ -149,23 +156,23 @@
                   (mentions "dziekuje" message-body)
                   (mentions "dziękuje" message-body)
                   (mentions "dziękuję" message-body)))
-         (say destination *yourewelcome*))
+         (say destination :thanks-reply))
+
         ;; anyone in HS?
         ((and is-directed
               (mentions "jest w HS" message-body))
-         (say destination *who-in-HS*))
+         (say destination :who-in-hs))
 
         ;; sing
         ((and is-directed
               (or (mentions "spiew" message-body)
                   (mentions "śpiew" message-body)))
-         (progn (say destination *hatsune-miku*)
-                (say destination "Z dedykacją dla Bambuchy :P")))
+         (progn (say destination :songs)))
 
         ;; TCP handshake for Bambucha
         ((and is-directed
               (mentions "SYN" message-body))
-         (say destination "SYN-ACK" :to from-who))
+         (say destination :tcp :to from-who))
          
         ;; say hi!
         ((and is-directed
@@ -177,7 +184,7 @@
                   (mentions "yo" message-body)
                   (mentions "joł" message-body)
                   (mentions "hello" message-body)))
-         (say destination *hello* :to from-who))
+         (say destination :hello :to from-who))
 
         ;; fail -> ... - trolling
         ((and is-public
@@ -190,7 +197,7 @@
         (is-directed
          (if (and (/= 0 (random 5))
                   (not (position from-who *excluded-from-replying-to* :test #'equal)))
-             (say destination *friendly-smiles-list* :to from-who))))))
+             (say destination :smiles :to from-who))))))
 
 
 (defun join-hook (message)
