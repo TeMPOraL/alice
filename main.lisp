@@ -279,13 +279,13 @@
     (if (position who *at-ers* :test #'equal)
         (say where "!at"))))
 
-(defun start-alice (server nick pass &rest channels)
+(defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
   (setf *nick* nick)
   (setf *connection* (connect :nickname *nick*
                               :server server))
   (setf *connected-channels* channels)
 
-  (privmsg *connection* +nickserv+ (format nil +nickserv-identify-msg-template+ pass))
+  (privmsg *connection* +nickserv+ (format nil +nickserv-identify-msg-template+ password))
 
   (mapcar (lambda (channel) (join *connection* channel)) channels)
 
