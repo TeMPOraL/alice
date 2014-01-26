@@ -29,7 +29,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.15. (ta co sprawdza temperaturę)")
+    (:version . "0.0.15. (ta co udaje, że zapisuje ;))")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -58,6 +58,11 @@
     (:tcp . "SYN-ACK")
 
     (:temperature . #("pozwól, że spytam kdbot" "!temp"))
+    
+    (:save . (#("pewnie ;)" "!save")
+              #("jasne :)" "!save")
+              "!save"))
+     
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
@@ -178,6 +183,14 @@
                   (mentions "ciepło" message-body)))
          (say destination :temperature))
 
+
+        ;; save
+        ((and is-directed
+              (or (mentions "pisz" message-body)
+                  (mentions "notuj" message-body)))
+         (say destination :save))
+                  
+
         ;; anyone in HS?
         ((and is-directed
               (mentions "kto" message-body)
@@ -213,13 +226,11 @@
               (= 0 (random 4)))
          (say destination "..."))
 
-
         ;; default responder
         (is-directed
          (if (and (/= 0 (random 5))
                   (not (position from-who *excluded-from-replying-to* :test #'equal)))
              (say destination :smiles :to from-who))))))
-
 
 (defun join-hook (message)
   (let ((who (source message))
