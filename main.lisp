@@ -280,9 +280,7 @@
 
         ;; temp check
         ((and is-directed
-              (or (mentions "temperatura" message-body)
-                  (mentions "temperature" message-body)
-                  (mentions "temperaturę" message-body)
+              (or (mentions "temperatur" message-body)
                   (mentions "zimno" message-body)
                   (mentions "cieplo" message-body)
                   (mentions "ciepło" message-body)))
