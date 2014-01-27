@@ -304,7 +304,7 @@
         ((and is-directed
               (or (mentions "spiew" message-body)
                   (mentions "śpiew" message-body)))
-         (progn (say destination :songs)))
+         (say destination :songs))
 
         ;; TCP handshake for Bambucha
         ((and is-directed
