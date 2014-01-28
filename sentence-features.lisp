@@ -19,6 +19,12 @@
     :documentation "All the nicknames identified in the sentence that the bot ever heard, even if not present on particular channel.")
 
 
+   (tone
+    :initarg :tone
+    :accessor tone
+    :documentation "Tone of the sentence; i.e. whether it is recognized as nice, angry, etc.")
+
+
    ;; IRC-related
    (channel
     :initarg :channel
