@@ -52,7 +52,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.24. (ta tolerancyjna dla ludzi z PMSem)")
+    (:version . "0.0.25. (ta co już nie mówi nieprzydatnych rzeczy)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -360,12 +360,6 @@
                   is-directed)
               (mentions "przypadek?" message-body))
          (say destination "nie sądzę."))
-
-        ;; fail -> ... - trolling
-        ((and is-public
-              (search "fail" message-body)
-              (= 0 (random 4)))
-         (say destination "..."))
 
         ;; default responder
         (is-directed
