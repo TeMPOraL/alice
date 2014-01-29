@@ -52,7 +52,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.25. (ta co już nie mówi nieprzydatnych rzeczy)")
+    (:version . "0.0.26. (ta co ma odrobinę godności)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -104,6 +104,10 @@
     (:kdbot . ("kdbot? jest moją ulubioną lalką."
                "kdbot to bardzo umiejęŧna lalka."
                "kdbot to świetna lalka"))
+
+    (:notitsforyou . ("Chyba żartujesz."
+                      "Nie pozwalaj sobie na za dużo."
+                      "Może sam pokaż swoje najpierw."))
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
@@ -354,6 +358,10 @@
         ((and is-directed
               (mentions "kdbot" message-body))
          (say destination :kdbot))
+
+        ((and is-directed
+              (mentions "cycki" message-body))
+         (say destination :notitsforyou :to from-who))
 
         ;; is this an accident?
         ((and (or is-public
