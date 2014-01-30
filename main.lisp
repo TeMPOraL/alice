@@ -52,7 +52,7 @@
                        "Alice Margatroid, kłaniam się ;)."
                        "Mów mi Alice Margatroid."))
 
-    (:version . "0.0.26. (ta co ma odrobinę godności)")
+    (:version . "0.0.27. (ta co lepiej przekazuje)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -161,14 +161,14 @@
 (defun parse-message-for-wolfram-computation (text)
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
 
-(defun send-notification (what)
+(defun send-notification (what &optional (from ""))
   (drakma:http-request "https://api.pushover.net/1/messages.json"
                        :method :post
                        :external-format-out :UTF-8
                        :parameters `(("token" . ,*pushover-token*)
                                      ("user" . ,*pushover-user*)
                                      ("title" . ,*full-name*)
-                                     ("message" . ,what))
+                                     ("message" . ,(concatenate 'string "<" from "> " what)))
                        :content "hack"
                        :content-length 4))
 ;; tools
@@ -330,6 +330,19 @@
                   (mentions "pros" message-body))
               (not (null *throttled-output*)))
          (say destination *throttled-output*))
+
+
+        ;; ping temporal
+        ((and is-directed
+              (and (or (mentions "TeMPOraL" message-body)
+                       (mentions "temporal" message-body))
+                   (or (mentions "zawiadom" message-body)
+                       (mentions "powiadom" message-body)
+                       (mentions "przeka" message-body)
+                       (mentions "pingnij" message-body))))
+         (progn (say destination :notification-sent)
+                (send-notification message-body from-who)))
+
          
         ;; say hi!
         ((and is-directed
@@ -342,17 +355,6 @@
                   (mentions "joł" message-body)
                   (mentions "hello" message-body)))
          (say destination :hello :to from-who))
-
-        ;; ping temporal
-        ((and is-directed
-              (and (or (mentions "TeMPOraL" message-body)
-                       (mentions "temporal" message-body))
-                   (or (mentions "zawiadom" message-body)
-                       (mentions "powiadom" message-body)
-                       (mentions "przeka" message-body)
-                       (mentions "pingnij" message-body))))
-         (progn (say destination :notification-sent)
-                (send-notification message-body)))
 
         ;; kdbot is a doll
         ((and is-directed
