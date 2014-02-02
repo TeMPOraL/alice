@@ -1,6 +1,7 @@
 (ql:quickload :cl-irc)
 (ql:quickload :alexandria)
 (ql:quickload :drakma)
+(ql:quickload :cl-unicode)
 (ql:quickload :cl-ppcre)
 (ql:quickload :cxml)
 

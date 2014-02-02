@@ -50,7 +50,21 @@
     :initarg :publicp
     :accessor publicp
     :documentation "Is this message send publicly on the channel (as opposed to direct messages)?")
-  
-
-   ;; TODO
 ))
+
+(defun extract-words (text)
+  (delete-duplicates
+   (cl-ppcre:all-matches-as-strings "\\w{2,}" text)
+   :test #'string=))
+
+(defun extract-message-features (from message)
+  (make-instance 'sentence-features
+                 :words (extract-words message)
+                 :nicks-present nil
+                 :nicks-known nil
+                 :tone nil
+                 :channel nil
+                 :source nil
+                 :directedp nil
+                 :mentionsp nil
+                 :publicp nil))
