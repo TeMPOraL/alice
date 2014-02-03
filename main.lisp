@@ -48,17 +48,19 @@
 ;; values are read recursively, i.e. encoding a symbol will cause bot to find the proper phrase in
 ;; this alist, and e.g. list of vector means "pick a sequence of things to say at random"
 (defparameter *answers* 
-  '((:introduction . ("Alice Margatroid, do usług."
-                       "Alice Margatroid, kłaniam się ;)."
-                       "Mów mi Alice Margatroid."))
+  '((:introduction . ("Alice Margatroid."
+                      "Alice Margatroid, w czym mogę pomóc?."
+                      "Mów mi Alice Margatroid."
+                      "Alice Margatroid, the Seven-Colored Puppeteer."
+                      "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.27. (ta co lepiej przekazuje)")
+    (:version . "0.0.28. (bardziej prawdziwa swojemu charakterowi)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
                 ":P" ":P" ":P" ":P" ":P"
                 ":>" ":>" ":>"
-                "ta da!"
+                "*sigh*" "*sigh*" "*sigh*"
                 "maka paka!"))
 
     (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot."
@@ -67,8 +69,9 @@
                    #("kdbot jest od tego." "!at")
                    "!at"))
 
-    (:songs . #("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
-                "Z dedykacją dla Bambuchy :P"))
+    (:songs . (#("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
+                 "Z dedykacją dla Bambuchy :P")
+               "la la la"))
 
     (:thanks-reply . ("you're welcome"
                       "nie ma za co"
