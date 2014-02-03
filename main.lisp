@@ -63,6 +63,7 @@
                 ":P" ":P" ":P" ":P" ":P"
                 ":>" ":>" ":>"
                 "*sigh*" "*sigh*" "*sigh*"
+                "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!"
                 "maka paka!"))
 
     (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot."
