@@ -48,13 +48,15 @@
 ;; values are read recursively, i.e. encoding a symbol will cause bot to find the proper phrase in
 ;; this alist, and e.g. list of vector means "pick a sequence of things to say at random"
 (defparameter *answers* 
-  '((:introduction . ("Alice Margatroid."
+  '((:introduction . (#("Alice Margatroid."
+                        "You mustn't consider me a normal human. I'm normal, just not human!")
+
                       "Alice Margatroid, w czym mogę pomóc?."
                       "Mów mi Alice Margatroid."
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.29. (bardziej jeszcze prawdziwa swojemu charakterowi)")
+    (:version . "0.0.30. (The Girl Who Played With People's Shapes)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -77,6 +79,7 @@
 
                #("http://www.youtube.com/watch?v=rAbhJk4YJns"
                  ("*sigh*"
+                  "*sob*"
                   "btw. jak ktoś widział Marisę, to niech da znać..."
                   "true story *sigh*"
                   "\"Shanghai Shanghai Shanghai Shanghai Hourai Hourai Hourai Hourai! ♫♪♬\""
@@ -94,7 +97,7 @@
 
     (:temperature . #("pozwól, że spytam kdbot" "!temp"))
     
-    (:save . (#("pewnie ;)" "!save")
+    (:save . (#("mhm" "!save")
               #("jasne :)" "!save")
               "!save"))
 
@@ -119,7 +122,8 @@
 
     (:notitsforyou . ("Chyba żartujesz."
                       "Nie pozwalaj sobie na za dużo."
-                      "Może sam pokaż swoje najpierw."))
+                      "Może sam pokaż swoje najpierw."
+                      "Troszkę przesadzasz."))
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
