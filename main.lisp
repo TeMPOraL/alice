@@ -54,7 +54,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.28. (bardziej prawdziwa swojemu charakterowi)")
+    (:version . "0.0.29. (bardziej jeszcze prawdziwa swojemu charakterowi)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -71,7 +71,16 @@
 
     (:songs . (#("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
                  "Z dedykacją dla Bambuchy :P")
-               "la la la"))
+               "♫♭ http://www.youtube.com/watch?v=mN8JTgTs1i4 ♩♫"
+               "http://www.youtube.com/watch?v=26Mat6YDpHE ♫♪"
+               "♫♪ http://www.youtube.com/watch?v=W5ESyEzS1tA ♪𝅘𝅥𝅯"
+
+               #("http://www.youtube.com/watch?v=rAbhJk4YJns"
+                 ("*sigh*"
+                  "btw. jak ktoś widział Marisę, to niech da znać..."
+                  "true story *sigh*"
+                  "\"Shanghai Shanghai Shanghai Shanghai Hourai Hourai Hourai Hourai! ♫♪♬\""
+                  "Why-why-why-why-why don't I miss you a lot forever? ♩♫♪...  *sigh*"))))
 
     (:thanks-reply . ("you're welcome"
                       "nie ma za co"
