@@ -19,10 +19,10 @@
   (say "TeMPOraL" (concatenate 'string "NAMES: " names " (" channel ")")))
 
 (defun join-channel (channel &key password)
-  (join *connection* channel :password password)
+  (irc:join *connection* channel :password password)
   (pushnew channel *connected-channels* :test #'string=))
 
 (defun part-channel (channel)
-  (part *connection* channel)
+  (irc:part *connection* channel)
   (setf *connected-channels* (remove-if (lambda (x) (string= x channel)) *connected-channels*)))
   

@@ -6,8 +6,7 @@
 (ql:quickload :cxml)
 
 (defpackage :alice
-  (:use :common-lisp
-        :irc)
+  (:use :common-lisp)
   (:export :start-alice
            :stop-alice
            :impersonate-say
@@ -177,8 +176,8 @@
 
             ((stringp what)
              (if (null to)
-                 (privmsg *connection* to-where what)
-                 (privmsg *connection* to-where (concatenate 'string to ": " what))))
+                 (irc:privmsg *connection* to-where what)
+                 (irc:privmsg *connection* to-where (concatenate 'string to ": " what))))
 
             ((vectorp what)
              (let ((tosay (throttle what)))
@@ -187,7 +186,7 @@
                       (say to-where msg :to to))
                     tosay)))
 
-            (t (privmsg *connection* to-where "I just don't know what to say...")))))
+            (t (irc:privmsg *connection* to-where "I just don't know what to say...")))))
 
 ;;; utils
 (defun mentions (what string)
@@ -199,32 +198,32 @@
 ;; types of message
 (defun public-message-p (message)
   (and
-   (not (string-equal *nick* (first (arguments message)))) ; search message
+   (not (string-equal *nick* (first (irc:arguments message)))) ; search message
    (not (equal 0
-               (search *nick* (second (arguments message))))))) ; search message target
+               (search *nick* (second (irc:arguments message))))))) ; search message target
        
 
 (defun private-message-p (message)
-  (or (string-equal (first (arguments message))
+  (or (string-equal (first (irc:arguments message))
                     *nick*)
-      (equal 0 (search *nick* (second (arguments message))))))
+      (equal 0 (search *nick* (second (irc:arguments message))))))
 
 (defun directed-message-p (message)
-  (or (string-equal (first (arguments message))
+  (or (string-equal (first (irc:arguments message))
                     *nick*)
-      (mentions-name *nick* (second (arguments message)))))
+      (mentions-name *nick* (second (irc:arguments message)))))
 
 ;;; handling
 
 (defun msg-hook (message)
-    (let ((destination (if (string-equal (first (arguments message)) *nick*)
-                         (source message)
-                         (first (arguments message))))
+    (let ((destination (if (string-equal (first (irc:arguments message)) *nick*)
+                         (irc:source message)
+                         (first (irc:arguments message))))
           (is-private (private-message-p message))
           (is-public (public-message-p message))
           (is-directed (directed-message-p message))
-          (from-who (source message))
-          (message-body (second (arguments message))))
+          (from-who (irc:source message))
+          (message-body (second (irc:arguments message))))
 
       (cond
 
@@ -321,7 +320,7 @@
 
         ((and is-directed
               (mentions "names" message-body))
-         (names *connection* destination))
+         (irc:names *connection* destination))
          
         ;; say hi!
         ((and is-directed
@@ -358,18 +357,18 @@
 
 ;; those hooks handle world state
 (defun join-hook (message)
-  (let ((who (source message))
-        (where (first (arguments message))))
+  (let ((who (irc:source message))
+        (where (first (irc:arguments message))))
     (store-joining-name where who)))
 
 (defun part-hook (message)
-  (let ((who (source message))
-        (where (first (arguments message))))
+  (let ((who (irc:source message))
+        (where (first (irc:arguments message))))
     (store-parting-name where who)))
 
 (defun names-hook (message)
-  (let ((channel (third (arguments message)))
-        (nicks (fourth (arguments message))))
+  (let ((channel (third (irc:arguments message)))
+        (nicks (fourth (irc:arguments message))))
     (store-names channel nicks)))
 
 ;; entry point
@@ -377,24 +376,24 @@
 (defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
   (clear-nonpersistent-worldstate)
   (setf *nick* nick)
-  (setf *connection* (connect :nickname *nick*
-                              :server server))
+  (setf *connection* (irc:connect :nickname *nick*
+                                  :server server))
 
-  (privmsg *connection* +nickserv+ (format nil +nickserv-identify-msg-template+ password))
+  (irc:privmsg *connection* +nickserv+ (format nil +nickserv-identify-msg-template+ password))
 
   (mapcar (lambda (channel) (join-channel channel)) channels)
 
-  (add-hook *connection* 'irc::irc-privmsg-message 'msg-hook)
-  (add-hook *connection* 'irc::irc-join-message 'join-hook)
-  (add-hook *connection* 'irc::irc-part-message 'part-hook)
-  (add-hook *connection* 'irc::irc-rpl_namreply-message 'names-hook)
+  (irc:add-hook *connection* 'irc:irc-privmsg-message 'msg-hook)
+  (irc:add-hook *connection* 'irc:irc-join-message 'join-hook)
+  (irc:add-hook *connection* 'irc:irc-part-message 'part-hook)
+  (irc:add-hook *connection* 'irc:irc-rpl_namreply-message 'names-hook)
 
   #+(or sbcl
         openmcl)
-  (start-background-message-handler *connection*))
+  (irc:start-background-message-handler *connection*))
 
 (defun stop-alice (&optional (msg "Goodbye!"))
-      (quit *connection* msg))
+      (irc:quit *connection* msg))
 
 (defun mute ()
   (setf *muted* t))
@@ -405,7 +404,7 @@
 ;; impersonate function
 
 (defun impersonate-say (destination what)
-  (privmsg *connection* destination what))
+  (irc:privmsg *connection* destination what))
 
 (defun impersonate-join (channel &key password)
   (join-channel channel :password password))
