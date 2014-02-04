@@ -2,9 +2,9 @@
 
 (asdf:defsystem #:alice
   :serial t
-  :description "Describe alice here"
+  :description "Alice Margatroid, the Doll Maker of Bucuresti. An IRC-bot that pretends to be human."
   :author "Jacek Złydach"
-  :license "Specify license here"
+  :license "Teaware - do whatever you want with it, but I wouldn't mind getting invited for a cup of tea ;)."
   :depends-on (#:cl-irc
                #:alexandria
                #:drakma
