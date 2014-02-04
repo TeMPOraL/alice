@@ -1,7 +1,7 @@
 ;;;; Alice (currently) lives in the IRC realm; here she keeps her model in her mind
 ;;;; of the IRC reality she is in.
 
-(in-package :alice)
+(in-package #:alice)
 
 (defvar *connected-channels* '() "Channels the bot is currently at.")
 
@@ -14,12 +14,15 @@
 
 ;; names tracking
 (defun store-joining-name (channel name)
+  (declare (ignore channel name))
   nil)
 
 (defun store-parting-name (channel name)
+  (declare (ignore channel name))
   nil) 
 
 (defun store-names (channel names)
+  (declare (ignore channel names))
   nil)
 
 ;; channel tracking

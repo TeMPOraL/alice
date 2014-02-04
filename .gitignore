@@ -1,4 +1,7 @@
 *.fasl
 local-config.lisp
 *.xml
+*.ufasl
+*.*~
+\#*.*\#
 

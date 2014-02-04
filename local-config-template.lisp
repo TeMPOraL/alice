@@ -1,4 +1,4 @@
-(in-package :alice)
+(in-package #:alice)
 
 (setf *pushover-token* "insert token"
       *pushover-user* "insert user"

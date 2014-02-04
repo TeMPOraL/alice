@@ -1,7 +1,8 @@
 ;;;; Alice's Grimoire, the source of her more powerful magic.
-(in-package :alice)
+(in-package #:alice)
 
 (defun do-google-search (query)
+  (declare (ignore query))
   )
 
 (defun do-wolfram-computation (query)
