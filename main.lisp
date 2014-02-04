@@ -49,17 +49,22 @@
 ;; values are read recursively, i.e. encoding a symbol will cause bot to find the proper phrase in
 ;; this alist, and e.g. list of vector means "pick a sequence of things to say at random"
 (defparameter *answers* 
-  '((:introduction . ("Alice Margatroid, do usług."
-                       "Alice Margatroid, kłaniam się ;)."
-                       "Mów mi Alice Margatroid."))
+  '((:introduction . (#("Alice Margatroid."
+                        "You mustn't consider me a normal human. I'm normal, just not human!")
 
-    (:version . "0.0.24. (ta tolerancyjna dla ludzi z PMSem)")
+                      "Alice Margatroid, w czym mogę pomóc?."
+                      "Mów mi Alice Margatroid."
+                      "Alice Margatroid, the Seven-Colored Puppeteer."
+                      "Pozornie Zapracowana Youkai, Alice Margatroid."))
+
+    (:version . "0.0.30. (The Girl Who Played With People's Shapes)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
                 ":P" ":P" ":P" ":P" ":P"
                 ":>" ":>" ":>"
-                "ta da!"
+                "*sigh*" "*sigh*" "*sigh*"
+                "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!"
                 "maka paka!"))
 
     (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot."
@@ -68,8 +73,19 @@
                    #("kdbot jest od tego." "!at")
                    "!at"))
 
-    (:songs . #("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
-                "Z dedykacją dla Bambuchy :P"))
+    (:songs . (#("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
+                 "Z dedykacją dla Bambuchy :P")
+               "♫♭ http://www.youtube.com/watch?v=mN8JTgTs1i4 ♩♫"
+               "http://www.youtube.com/watch?v=26Mat6YDpHE ♫♪"
+               "♫♪ http://www.youtube.com/watch?v=W5ESyEzS1tA ♪𝅘𝅥𝅯"
+
+               #("http://www.youtube.com/watch?v=rAbhJk4YJns"
+                 ("*sigh*"
+                  "*sob*"
+                  "btw. jak ktoś widział Marisę, to niech da znać..."
+                  "true story *sigh*"
+                  "\"Shanghai Shanghai Shanghai Shanghai Hourai Hourai Hourai Hourai! ♫♪♬\""
+                  "Why-why-why-why-why don't I miss you a lot forever? ♩♫♪...  *sigh*"))))
 
     (:thanks-reply . ("you're welcome"
                       "nie ma za co"
@@ -83,7 +99,7 @@
 
     (:temperature . #("pozwól, że spytam kdbot" "!temp"))
     
-    (:save . (#("pewnie ;)" "!save")
+    (:save . (#("mhm" "!save")
               #("jasne :)" "!save")
               "!save"))
 
@@ -105,6 +121,11 @@
     (:kdbot . ("kdbot? jest moją ulubioną lalką."
                "kdbot to bardzo umiejęŧna lalka."
                "kdbot to świetna lalka"))
+
+    (:notitsforyou . ("Chyba żartujesz."
+                      "Nie pozwalaj sobie na za dużo."
+                      "Może sam pokaż swoje najpierw."
+                      "Troszkę przesadzasz."))
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
@@ -158,14 +179,14 @@
 (defun parse-message-for-wolfram-computation (text)
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
 
-(defun send-notification (what)
+(defun send-notification (what &optional (from ""))
   (drakma:http-request "https://api.pushover.net/1/messages.json"
                        :method :post
                        :external-format-out :UTF-8
                        :parameters `(("token" . ,*pushover-token*)
                                      ("user" . ,*pushover-user*)
                                      ("title" . ,*full-name*)
-                                     ("message" . ,what))
+                                     ("message" . ,(concatenate 'string "<" from "> " what)))
                        :content "hack"
                        :content-length 4))
 ;; tools
@@ -327,6 +348,19 @@
                   (mentions "pros" message-body))
               (not (null *throttled-output*)))
          (say destination *throttled-output*))
+
+
+        ;; ping temporal
+        ((and is-directed
+              (and (or (mentions "TeMPOraL" message-body)
+                       (mentions "temporal" message-body))
+                   (or (mentions "zawiadom" message-body)
+                       (mentions "powiadom" message-body)
+                       (mentions "przeka" message-body)
+                       (mentions "pingnij" message-body))))
+         (progn (say destination :notification-sent)
+                (send-notification message-body from-who)))
+
          
         ;; say hi!
         ((and is-directed
@@ -340,33 +374,20 @@
                   (mentions "hello" message-body)))
          (say destination :hello :to from-who))
 
-        ;; ping temporal
-        ((and is-directed
-              (and (or (mentions "TeMPOraL" message-body)
-                       (mentions "temporal" message-body))
-                   (or (mentions "zawiadom" message-body)
-                       (mentions "powiadom" message-body)
-                       (mentions "przeka" message-body)
-                       (mentions "pingnij" message-body))))
-         (progn (say destination :notification-sent)
-                (send-notification message-body)))
-
         ;; kdbot is a doll
         ((and is-directed
               (mentions "kdbot" message-body))
          (say destination :kdbot))
+
+        ((and is-directed
+              (mentions "cycki" message-body))
+         (say destination :notitsforyou :to from-who))
 
         ;; is this an accident?
         ((and (or is-public
                   is-directed)
               (mentions "przypadek?" message-body))
          (say destination "nie sądzę."))
-
-        ;; fail -> ... - trolling
-        ((and is-public
-              (search "fail" message-body)
-              (= 0 (random 4)))
-         (say destination "..."))
 
         ;; default responder
         (is-directed
