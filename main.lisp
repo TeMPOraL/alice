@@ -19,7 +19,6 @@
 (in-package :alice)
 
 (defvar *connection*)
-(defvar *connected-channels*)
 
 ;; configurables
 (defparameter *server* "")
@@ -376,14 +375,14 @@
 ;; entry point
 
 (defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
+  (clear-nonpersistent-worldstate)
   (setf *nick* nick)
   (setf *connection* (connect :nickname *nick*
                               :server server))
-  (setf *connected-channels* channels)
 
   (privmsg *connection* +nickserv+ (format nil +nickserv-identify-msg-template+ password))
 
-  (mapcar (lambda (channel) (join *connection* channel)) channels)
+  (mapcar (lambda (channel) (join-channel channel)) channels)
 
   (add-hook *connection* 'irc::irc-privmsg-message 'msg-hook)
   (add-hook *connection* 'irc::irc-join-message 'join-hook)
@@ -409,7 +408,7 @@
   (privmsg *connection* destination what))
 
 (defun impersonate-join (channel &key password)
-  (join *connection* channel :password password))
+  (join-channel channel :password password))
 
 (defun impersonate-part (channel)
-  (part *connection* channel))
+  (part-channel channel))
