@@ -1,4 +1,4 @@
-(in-package :alice)
+(in-package #:alice)
 
 
 (defclass sentence-features ()
