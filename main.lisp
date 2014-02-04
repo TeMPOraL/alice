@@ -145,6 +145,12 @@
               (mentions "SYN" message-body))
          (say destination :tcp :to from-who))
 
+        ;; URL shortener
+        ((and is-directed
+              (or (mentions "skró" message-body)
+                  (mentions "skracaj" message-body)))
+         (say destination (shorten-url (parse-message-for-url-shortening message-body))))
+
         ;; Wolfram|Alpha
         ((and is-directed
               (or (mentions "licz" message-body)

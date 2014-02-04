@@ -38,7 +38,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.32. (The Girl with Grimoire)")
+    (:version . "0.0.33. (The Girl Which Shortened Stuff)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -88,6 +88,11 @@
                          "jasne, przekazuję"
                          "sure, już przekazuję"
                          "przekazane"))
+    (:nothing-to-shorten . #(("Jak mi nie powiesz co, to nic nie skrócę."
+                              "Ta, a niby co?"
+                              "*sigh*")
+                             ("pro tip: URLe do skrócenia zaczynają się od http://"
+                              "Jak mi napiszesz ładny URL zaczynający się od http:// to pomyślimy.")))
 
     (:nothing-to-compute . ("Ale co mam obliczyć? Umieść to w cudzysłowiach."
                             "Co mam przeliczyć? Umieść to w cudzysłowiach."))
@@ -115,6 +120,7 @@
 
 (defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")
 
+(defparameter *url-shortening-regexp* "(http.*)")
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
 
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")

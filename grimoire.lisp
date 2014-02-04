@@ -5,6 +5,16 @@
   (declare (ignore query))
   )
 
+(defun shorten-url (url)
+  (if url
+      (drakma::http-request "http://tinyurl.com/api-create.php"
+                            :external-format-out :UTF-8
+                            :parameters `(("url" . ,url)))
+      :nothing-to-shorten))
+
+(defun parse-message-for-url-shortening (text)
+  (cl-ppcre:scan-to-strings *url-shortening-regexp* text))
+
 (defun do-wolfram-computation (query)
   (flet ((xml-response-to-speechstrings (xml)
            (coerce (alexandria:flatten (map 'list
