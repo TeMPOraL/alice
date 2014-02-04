@@ -244,8 +244,6 @@
 (defun store-names (channel names)
   (say "TeMPOraL" (concatenate 'string "NAMES: " names " (" channel ")")))
 
-;; 
-
 ;;; utils
 (defun mentions (what string)
   (search what string))
