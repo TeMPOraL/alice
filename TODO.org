@@ -37,7 +37,8 @@ Just a helpul list so I don't forget ideas and concepts.
 ** TODO Refactor user string matcher to use regular expressions
    Since we already use cl-ppcre, why waste CPU cycles on my dumb matcher?
 
-** TODO ASDF packaging
+** DONE ASDF packaging
+   Thanks to mrSpec.
 
 * Concepts
 
