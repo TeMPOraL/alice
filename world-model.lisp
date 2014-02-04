@@ -1,3 +1,6 @@
+;;;; Alice (currently) lives in the IRC realm; here she keeps her model in her mind
+;;;; of the IRC reality she is in.
+
 (in-package :alice)
 
 (defun store-joining-name (channel name)
@@ -8,4 +11,3 @@
 
 (defun store-names (channel names)
   (say "TeMPOraL" (concatenate 'string "NAMES: " names " (" channel ")")))
-
