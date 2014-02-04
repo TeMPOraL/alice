@@ -18,7 +18,6 @@
     :accessor nicks-known
     :documentation "All the nicknames identified in the sentence that the bot ever heard, even if not present on particular channel.")
 
-
    (tone
     :initarg :tone
     :accessor tone

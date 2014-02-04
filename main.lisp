@@ -57,7 +57,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.30. (The Girl Who Played With People's Shapes)")
+    (:version . "0.0.31. (The Girl Who Played With People's Shapes and could also hear their names)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -231,6 +231,21 @@
 
             (t (privmsg *connection* to-where "I just don't know what to say...")))))
 
+
+
+;; WORLD STATE
+;; (todo move elsewhere)
+(defun store-joining-name (channel name)
+  (say "TeMPOraL" (concatenate 'string "JOINING: " name " (" channel ")")))
+
+(defun store-parting-name (channel name)
+  (say "TeMPOraL" (concatenate 'string "LEAVING: " name " (" channel ")")))
+
+(defun store-names (channel names)
+  (say "TeMPOraL" (concatenate 'string "NAMES: " names " (" channel ")")))
+
+;; 
+
 ;;; utils
 (defun mentions (what string)
   (search what string))
@@ -361,6 +376,9 @@
          (progn (say destination :notification-sent)
                 (send-notification message-body from-who)))
 
+        ((and is-directed
+              (mentions "names" message-body))
+         (names *connection* destination))
          
         ;; say hi!
         ((and is-directed
@@ -395,10 +413,23 @@
                   (not (position from-who *excluded-from-replying-to* :test #'equal)))
              (say destination :smiles :to from-who))))))
 
+;; those hooks handle world state
 (defun join-hook (message)
   (let ((who (source message))
         (where (first (arguments message))))
-    nil))
+    (store-joining-name where who)))
+
+(defun part-hook (message)
+  (let ((who (source message))
+        (where (first (arguments message))))
+    (store-parting-name where who)))
+
+(defun names-hook (message)
+  (let ((channel (third (arguments message)))
+        (nicks (fourth (arguments message))))
+    (store-names channel nicks)))
+
+;; entry point
 
 (defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
   (setf *nick* nick)
@@ -412,6 +443,8 @@
 
   (add-hook *connection* 'irc::irc-privmsg-message 'msg-hook)
   (add-hook *connection* 'irc::irc-join-message 'join-hook)
+  (add-hook *connection* 'irc::irc-part-message 'part-hook)
+  (add-hook *connection* 'irc::irc-rpl_namreply-message 'names-hook)
 
   #+(or sbcl
         openmcl)
