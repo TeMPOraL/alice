@@ -318,10 +318,6 @@
          (progn (say destination :notification-sent)
                 (send-notification message-body from-who)))
 
-        ((and is-directed
-              (mentions "names" message-body))
-         (irc:names *connection* destination))
-         
         ;; say hi!
         ((and is-directed
               (or (mentions "czesc" message-body)

@@ -10,13 +10,13 @@
   (setf *connected-channels* '()))
 
 (defun store-joining-name (channel name)
-  (say "TeMPOraL" (concatenate 'string "JOINING: " name " (" channel ")")))
+  nil)
 
 (defun store-parting-name (channel name)
-  (say "TeMPOraL" (concatenate 'string "LEAVING: " name " (" channel ")")))
+  nil) 
 
 (defun store-names (channel names)
-  (say "TeMPOraL" (concatenate 'string "NAMES: " names " (" channel ")")))
+  nil)
 
 (defun join-channel (channel &key password)
   (irc:join *connection* channel :password password)
