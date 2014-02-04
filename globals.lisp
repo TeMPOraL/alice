@@ -38,7 +38,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.33. (The Girl Which Shortened Stuff)")
+    (:version . "0.0.34. (The Girl Which Shortened Some Stuff)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -88,6 +88,13 @@
                          "jasne, przekazuję"
                          "sure, już przekazuję"
                          "przekazane"))
+
+    (:not-yet-implemented . ("Not in my Grimoire yet."
+                             "Jeszcze nie. Sprawdź pojutrze."
+                             "Nie dzisiaj."
+                             "Nope. Może następnym razem."
+                             "Zawsze masz takie dziwne wymagania?"))
+
     (:nothing-to-shorten . #(("Jak mi nie powiesz co, to nic nie skrócę."
                               "Ta, a niby co?"
                               "*sigh*")

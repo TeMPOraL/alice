@@ -145,6 +145,14 @@
               (mentions "SYN" message-body))
          (say destination :tcp :to from-who))
 
+        ;; URL advanced shortener (not yet implemented)
+        ((and is-directed
+              (and (or (mentions "skró" message-body)
+                       (mentions "skracaj" message-body))
+                   (or (mentions "poprzedni" message-body)
+                       (mentions "ostatni" message-body))))
+         (say destination :not-yet-implemented))
+
         ;; URL shortener
         ((and is-directed
               (or (mentions "skró" message-body)
