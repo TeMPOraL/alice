@@ -14,6 +14,6 @@
   :components ((:file "package")
                (:file "globals" :depends-on ("package"))
                (:file "local-config" :depends-on ("globals"))
-               (:file "world-model" :depends-on ("local-config-template"))
+               (:file "world-model" :depends-on ("local-config"))
                (:file "grimoire" :depends-on ("world-model"))
                (:file "main" :depends-on ("grimoire"))))
