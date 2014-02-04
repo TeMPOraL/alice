@@ -367,10 +367,17 @@
         (nicks (fourth (irc:arguments message))))
     (store-names channel nicks)))
 
+(defun nick-hook (message)
+  (let ((from (irc:source message))
+        (to (first (irc:arguments message))))
+    (register-nick-change from to)))
+
 ;; entry point
 
 (defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
   (clear-nonpersistent-worldstate)
+  (load-persistent-world-model-data)
+
   (setf *nick* nick)
   (setf *connection* (irc:connect :nickname *nick*
                                   :server server))
@@ -383,6 +390,7 @@
   (irc:add-hook *connection* 'irc:irc-join-message 'join-hook)
   (irc:add-hook *connection* 'irc:irc-part-message 'part-hook)
   (irc:add-hook *connection* 'irc:irc-rpl_namreply-message 'names-hook)
+  (irc:add-hook *connection* 'irc:irc-nick-message 'nick-hook)
 
   #+(or sbcl
         openmcl)
