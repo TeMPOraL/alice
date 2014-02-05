@@ -46,7 +46,7 @@
 
 ;;; utils
 (defun mentions (what string)
-  (search what string))
+  (search (string-downcase what) (string-downcase string)))
 
 (defun mentions-name (name string)
   (mentions name string))
