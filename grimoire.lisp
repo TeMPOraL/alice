@@ -1,6 +1,15 @@
 ;;;; Alice's Grimoire, the source of her more powerful magic.
 (in-package #:alice)
 
+(defun check-for-spelling-mistakes (message)
+  (let* ((mistakes (find-if (lambda (test)
+                              (not (null (cl-ppcre:all-matches (car test)
+                                                               message))))
+                            *spelling-tests*)))
+    (if mistakes
+        (cdr mistakes)
+        nil)))
+
 (defun do-google-search (query)
   (declare (ignore query))
   )
