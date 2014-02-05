@@ -41,7 +41,7 @@
 
     ;; code
     (if query
-        (clean-up (xml-response-to-speechstrings (get-xml-response query)))
+        (ignore-errors (clean-up (xml-response-to-speechstrings (get-xml-response query))))
         :nothing-to-compute)))
 
 (defun parse-message-for-wolfram-computation (text)

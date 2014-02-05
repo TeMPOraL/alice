@@ -38,7 +38,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.35. (The Girl Who Didn't Give a Single Damn About the Case)")
+    (:version . "0.0.36. (The Girl Who Just Doesn't Care If Something Goes Wrong)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
