@@ -58,23 +58,25 @@
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
 
 (defun send-notification (what &optional (from ""))
-  (drakma:http-request "https://api.pushover.net/1/messages.json"
-                       :method :post
-                       :external-format-out :UTF-8
-                       :parameters `(("token" . ,*pushover-token*)
-                                     ("user" . ,*pushover-user*)
-                                     ("title" . ,*full-name*)
-                                     ("message" . ,(concatenate 'string "<" from "> " what)))
-                       :content "hack"
-                       :content-length 4))
+  (or (ignore-errors (drakma:http-request "https://api.pushover.net/1/messages.json"
+                                          :method :post
+                                          :external-format-out :UTF-8
+                                          :parameters `(("token" . ,*pushover-token*)
+                                                        ("user" . ,*pushover-user*)
+                                                        ("title" . ,*full-name*)
+                                                        ("message" . ,(concatenate 'string "<" from "> " what)))
+                                          :content "hack"
+                                          :content-length 4))
+      :failed-in-sending-notification))
 
 
 (defun send-email (where-to text)
-  (ignore-errors (drakma:http-request (concatenate 'string "https://api.mailgun.net/v2/" *mailgun-domain* "/messages")
-                       :method :post
-                       :basic-authorization `("api" ,*mailgun-key*)
-                       :parameters `(("from" . ,(concatenate 'string "Alice Margatroid <alice.margatroid@" *mailgun-domain* ">"))
-                                     ("to" . ,where-to)
-                                     ("subject" . "Alice Margatroid here; got a notification for you.")
-                                     ("text" . ,text))
-                       :external-format-out :UTF-8)))
+  (or (ignore-errors (drakma:http-request (concatenate 'string "https://api.mailgun.net/v2/" *mailgun-domain* "/messages")
+                                          :method :post
+                                          :basic-authorization `("api" ,*mailgun-key*)
+                                          :parameters `(("from" . ,(concatenate 'string "Alice Margatroid <alice.margatroid@" *mailgun-domain* ">"))
+                                                        ("to" . ,where-to)
+                                                        ("subject" . "Alice Margatroid here; got a notification for you.")
+                                                        ("text" . ,text))
+                                          :external-format-out :UTF-8))
+      :failed-in-sending-notification))

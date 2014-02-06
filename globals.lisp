@@ -42,7 +42,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.38. (The Girl Who Knows How To Call Wiktor)")
+    (:version . "0.0.39. (The Girl Who Knows How To Call Wiktor Or Not Die Trying)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -92,6 +92,10 @@
                          "jasne, przekazuję"
                          "sure, już przekazuję"
                          "przekazane"))
+    
+    (:failed-in-sending-notification . ("Coś się spsuło :(."
+                                        "Coś nie działa. *sigh*"
+                                        "Nie umiem w notyfikacje. *sob*"))
 
     (:not-yet-implemented . ("Not in my Grimoire yet."
                              "Jeszcze nie. Sprawdź pojutrze."
