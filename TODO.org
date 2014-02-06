@@ -17,6 +17,20 @@ Just a helpul list so I don't forget ideas and concepts.
 
 ** TODO Auto-Rejoin on Kick
 
+** TODO ↑ (up)
+   When I say "↑" or "up", I want Alice to backtrack through last few
+   non-directed messages on channel and try to find something to do
+   with them.
+
+   #+BEGIN_EXAMPLE
+   <MakaPaka> http://google.com/
+   <MakaPaka> blah blah blah
+   <TeMPOraL> Alice_M: ↑↑↑
+   <Alice_M> http://tinyurl.com/whatever
+   #+END_EXAMPLE
+
+   This, I guess, will go together with refactoring out command parsing from privmsg hook.
+
 ** TODO Noting stuff down
    Use case:
    #+BEGIN_EXAMPLE

@@ -10,6 +10,10 @@
 (defparameter *pushover-token* "")
 (defparameter *pushover-user* "")
 
+(defparameter *mailgun-domain* "")
+(defparameter *mailgun-key* "")
+(defparameter *wiktor-email* "")        ;temporary
+
 (defparameter *wolfram-app-id* "")
 
 (defparameter *autojoin-channels* '())
@@ -38,7 +42,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.37. (The Girl Who Still Doesn't Care If Something Goes Wrong, Just In A Bit More Elaborate Way)")
+    (:version . "0.0.38. (The Girl Who Knows How To Call Wiktor)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -138,3 +142,6 @@
 
 (defparameter *max-output-sequence-length* 4)
 
+;; FIXME figure out a regexp that treats only whole words as mistakes.
+(defparameter *spelling-tests* '((".*óje" "uje")
+                                 ("wogule" "wogul")))

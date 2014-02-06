@@ -1,6 +1,15 @@
 ;;;; Alice's Grimoire, the source of her more powerful magic.
 (in-package #:alice)
 
+(defun check-for-spelling-mistakes (message)
+  (let* ((mistakes (find-if (lambda (test)
+                              (not (null (cl-ppcre:all-matches (car test)
+                                                               message))))
+                            *spelling-tests*)))
+    (if mistakes
+        (cdr mistakes)
+        nil)))
+
 (defun do-google-search (query)
   (declare (ignore query))
   )
@@ -59,3 +68,13 @@
                        :content "hack"
                        :content-length 4))
 
+
+(defun send-email (where-to text)
+  (ignore-errors (drakma:http-request (concatenate 'string "https://api.mailgun.net/v2/" *mailgun-domain* "/messages")
+                       :method :post
+                       :basic-authorization `("api" ,*mailgun-key*)
+                       :parameters `(("from" . ,(concatenate 'string "Alice Margatroid <alice.margatroid@" *mailgun-domain* ">"))
+                                     ("to" . ,where-to)
+                                     ("subject" . "Alice Margatroid here; got a notification for you.")
+                                     ("text" . ,text))
+                       :external-format-out :UTF-8)))
