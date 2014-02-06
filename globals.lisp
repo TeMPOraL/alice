@@ -109,6 +109,10 @@
                              ("pro tip: URLe do skrócenia zaczynają się od http://"
                               "Jak mi napiszesz ładny URL zaczynający się od http:// to pomyślimy.")))
 
+    (:failed-in-shortening . ("Nie skróciło się... *sigh*"
+                              "http://cos.nie.dzia.la :/"
+                              "Nie umiem w skracanie linków. *sob*"))
+
     (:nothing-to-compute . ("Ale co mam obliczyć? Umieść to w cudzysłowiach."
                             "Co mam przeliczyć? Umieść to w cudzysłowiach."))
 

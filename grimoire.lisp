@@ -16,9 +16,10 @@
 
 (defun shorten-url (url)
   (if url
-      (drakma::http-request "http://tinyurl.com/api-create.php"
-                            :external-format-out :UTF-8
-                            :parameters `(("url" . ,url)))
+      (or (ignore-errors (drakma::http-request "http://tinyurl.com/api-create.php"
+                                               :external-format-out :UTF-8
+                                               :parameters `(("url" . ,url))))
+          :failed-in-shortening)
       :nothing-to-shorten))
 
 (defun parse-message-for-url-shortening (text)
