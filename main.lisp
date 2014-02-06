@@ -187,6 +187,16 @@
          (progn (say destination :notification-sent)
                 (send-notification message-body from-who)))
 
+        ((and is-directed
+              (and (or (mentions "Wiktor" message-body)
+                       (mentions "wiktor" message-body))
+                   (or (mentions "zawiadom" message-body)
+                       (mentions "powiadom" message-body)
+                       (mentions "przeka" message-body)
+                       (mentions "pingnij" message-body))))
+         (progn (say destination :notification-sent)
+                (send-email *wiktor-email* (concatenate 'string "<" from-who "> - " message-body))))
+
         ;; say hi!
         ((and is-directed
               (or (mentions "czesc" message-body)

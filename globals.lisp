@@ -10,6 +10,10 @@
 (defparameter *pushover-token* "")
 (defparameter *pushover-user* "")
 
+(defparameter *mailgun-domain* "")
+(defparameter *mailgun-key* "")
+(defparameter *wiktor-email* "")        ;temporary
+
 (defparameter *wolfram-app-id* "")
 
 (defparameter *autojoin-channels* '())
@@ -38,7 +42,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.35. (The Girl Who Didn't Give a Single Damn About the Case)")
+    (:version . "0.0.37. (The Girl Who Knows How To Call Wiktor)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
