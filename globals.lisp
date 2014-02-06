@@ -38,7 +38,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.36. (The Girl Who Just Doesn't Care If Something Goes Wrong)")
+    (:version . "0.0.37. (The Girl Who Still Doesn't Care If Something Goes Wrong, Just In A Bit More Elaborate Way)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -103,6 +103,10 @@
 
     (:nothing-to-compute . ("Ale co mam obliczyć? Umieść to w cudzysłowiach."
                             "Co mam przeliczyć? Umieść to w cudzysłowiach."))
+
+    (:failed-in-computing . ("Nie umiem w Wolframa *sob*"
+                             "Musisz zawsze pytać o takie dziwne rzeczy? *sigh*"
+                             "Sorry, nie wyszło. *sigh*"))
 
     (:nothing-computed . ("Nic się nie policzyło :(."
                           "Brak wyniku; spytaj o coś innego."
