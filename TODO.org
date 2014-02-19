@@ -82,6 +82,18 @@ Just a helpul list so I don't forget ideas and concepts.
 ** TODO Facebook transport
    One day.
 
+
+** TODO Creativity helper
+   When you're stuck you could ask Alice for a creativity tip. It
+   would be one of the many "mind whack" words/phrases/ideas, like
+   "reverse relation between the things you're consicering", etc. -
+   some tip to get people unstuck.
+
+
+** TODO Deppresion supporter
+   Hook up elementary CBT tests from "Feeling Good" to use to track my
+   own (or other peoples') depression level.
+
 * Improvements
 ** TODO Refactor user string matcher to use regular expressions
    Since we already use cl-ppcre, why waste CPU cycles on my dumb matcher?
