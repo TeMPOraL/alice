@@ -71,3 +71,9 @@ Creates the object if not found."
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
   alias)                                ;temporary
 
+
+
+(defun save-memo (channel who what from-who)
+  "Save a memo for user."
+  ;; append a memo
+  nil)

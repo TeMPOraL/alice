@@ -91,9 +91,6 @@
 (defun pick-notifier (channel who is-global)
   "Select notification method for given user."
   (gethash who *user-notification-medium* (lambda (who what from-who)
-                                            (memo (and is-global channel)
-                                                  who what from-who))))
+                                            (save-memo (and is-global channel)
+                                                       who what from-who))))
 
-(defun memo (channel who what from-who)
-  "Save a memo for user."
-  nil)
