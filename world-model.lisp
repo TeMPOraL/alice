@@ -5,6 +5,8 @@
 
 (defvar *connected-channels* '() "Channels the bot is currently at.")
 
+(defvar *memos* (make-hash-table :test 'equalp))
+
 (defun clear-nonpersistent-worldstate ()
   "Cleans up the world state when (re)connecting the bot."
   (setf *connected-channels* '()))
@@ -62,3 +64,10 @@ Creates the object if not found."
 
 (defun register-nick-change (from to)
   nil)
+
+
+;; people tracking - skeletal
+(defun identify-person-canonical-name (alias)
+  "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
+  alias)                                ;temporary
+

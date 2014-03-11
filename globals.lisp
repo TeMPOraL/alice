@@ -42,7 +42,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.39. (The Girl Who Knows How To Call Wiktor Or Not Die Trying)")
+    (:version . "0.0.40. (Ta co ma memos under development)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -89,9 +89,13 @@
               "!save"))
 
     (:notification-sent . ("ok, przekazałam"
-                         "jasne, przekazuję"
+                         "jasne, przekazane"
                          "sure, już przekazuję"
                          "przekazane"))
+
+    (:memo-saved . ("zapisałam jako memo"
+                    "zapisane; przekażę jak zobaczę"
+                    "jasne, przekażę jak zobaczę"))
     
     (:failed-in-sending-notification . ("Coś się spsuło :(."
                                         "Coś nie działa. *sigh*"
@@ -153,3 +157,5 @@
 ;; FIXME figure out a regexp that treats only whole words as mistakes.
 (defparameter *spelling-tests* '((".*óje" "uje")
                                  ("wogule" "wogul")))
+
+(defparameter *user-notification-medium* (make-hash-table :test 'equalp))

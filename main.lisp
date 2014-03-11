@@ -80,7 +80,6 @@
           (is-directed (directed-message-p message))
           (from-who (irc:source message))
           (message-body (second (irc:arguments message))))
-      (declare (ignore is-private))
       (cond
         ;; introductions
         ((and is-directed
@@ -175,6 +174,17 @@
               (not (null *throttled-output*)))
          (say destination *throttled-output*))
 
+        ((and is-directed
+              (or (mentions "zawiadom" message-body)
+                       (mentions "powiadom" message-body)
+                       (mentions "przeka" message-body)
+                       (mentions "pingnij" message-body)))
+         (progn (say destination :memo-saved)
+                (notify-person destination
+                               (identify-person message-body)
+                               message-body
+                               from-who
+                               is-private)))
 
         ;; ping temporal
         ((and is-directed

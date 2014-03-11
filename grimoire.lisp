@@ -81,3 +81,19 @@
                                                         ("text" . ,text))
                                           :external-format-out :UTF-8))
       :failed-in-sending-notification))
+
+
+(defun notify-person (channel who what from-who is-global)
+  "Notify a person using the most suitable medium available."
+  (apply (pick-notifier channel who is-global)
+         who what from-who))
+
+(defun pick-notifier (channel who is-global)
+  "Select notification method for given user."
+  (gethash who *user-notification-medium* (lambda (who what from-who)
+                                            (memo (and is-global channel)
+                                                  who what from-who))))
+
+(defun memo (channel who what from-who)
+  "Save a memo for user."
+  nil)
