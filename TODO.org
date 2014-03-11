@@ -49,6 +49,28 @@ Just a helpul list so I don't forget ideas and concepts.
    output: "you're welcome", "nie ma za co", "sure, np.", "np." "no problem", ":)"
 
 ** TODO Memos
+   - memos have two components
+     1. recording
+     2. replying
+   - memos are stored per channel or globally
+
+*** Use cases
+    Skeletal:
+    #+BEGIN_EXAMPLE
+    <TeMPOraL> Alice_M, memo skrzyp maka paka.
+    <skrzyp> ojej
+    <Alice_M> Skrzyp: memo from TeMPOraL: maka paka
+    #+END_EXAMPLE
+
+    More advanced:
+    #+BEGIN_EXAMPLE
+    <TeMPOraL> Alice_M, przekaż skrzypowi, że maka paka
+    <skrzyp> ojej
+    <Alice_M> Skrzyp: TeMPOraL kazał przekazać, że maka paka.
+    #+END_EXAMPLE
+
+*** TODO include memo timestamp?
+    Yes, definitely.
 
 ** TODO Random Number Generator / Dice Roll
 
@@ -77,7 +99,6 @@ Just a helpul list so I don't forget ideas and concepts.
    - SMSAPI
    - Twilio? :D.
    - ... some other stuff.
-
 
 ** TODO Facebook transport
    One day.
