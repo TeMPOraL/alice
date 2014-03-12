@@ -5,8 +5,6 @@
 
 (defvar *connected-channels* '() "Channels the bot is currently at.")
 
-(defvar *memos* (make-hash-table :test 'equalp))
-
 (defun clear-nonpersistent-worldstate ()
   "Cleans up the world state when (re)connecting the bot."
   (setf *connected-channels* '()))
@@ -65,15 +63,14 @@ Creates the object if not found."
 (defun register-nick-change (from to)
   nil)
 
+;; resolving people from free-form text
+(defun identify-person-mentioned (message-body)
+  ;; TODO replace current code with proper references to sentece-features when the latter are done.
+  (let ((words (extract-words message-body)))
+    ;; TODO iterate over every element of `WORDS' and try to apply `IDENTIFY-PERSON-MENTIONED' until a match is found; return nil otherwise.
+    nil
+    ))
 
-;; people tracking - skeletal
 (defun identify-person-canonical-name (alias)
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
   alias)                                ;temporary
-
-
-
-(defun save-memo (channel who what from-who)
-  "Save a memo for user."
-  ;; append a memo
-  nil)

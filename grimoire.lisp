@@ -83,6 +83,39 @@
       :failed-in-sending-notification))
 
 
+;; MEMOS
+;; FIXME move this somewhere?
+(defvar *memos* (make-hash-table :test 'equalp))
+
+(defun make-memo (channel who what from-who)
+  )
+
+(defun memo-to-string (memo)
+  )
+
+(defun save-memo (channel who what from-who)
+  "Save a memo for user."
+  
+  nil)
+
+(defun find-first-memo (destination memos)
+  ;; FIXME TODO if `DESTINATION' is nil, find first global memo; otherwise find first memo that has destination component either nil or equal to `DESTINATION'.
+  (declare (ignore destination))
+  (values (first memos) (rest memos)))
+
+(defun check-for-memos (destination from-who)
+  "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her."
+  (let* ((who (identify-person-canonical-name from-who))
+         (memos (gethash who *memos*)))
+    (if (not (null memos))
+        (multiple-value-bind (memo remaining-memos) (find-first-memo destination memos)
+          (setf (gethash who *memos*) remaining-memos)
+          (say destination memo :to from-who)
+          (if (not (null remaining-memos))
+              (say destination :more-memos :to from-who))))))
+
+;; GENERAL NOTIFICATIONS
+
 (defun notify-person (channel who what from-who is-global)
   "Notify a person using the most suitable medium available."
   (apply (pick-notifier channel who is-global)

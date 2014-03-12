@@ -96,10 +96,16 @@
     (:memo-saved . ("zapisałam jako memo"
                     "zapisane; przekażę jak zobaczę"
                     "jasne, przekażę jak zobaczę"))
+
     
     (:failed-in-sending-notification . ("Coś się spsuło :(."
                                         "Coś nie działa. *sigh*"
                                         "Nie umiem w notyfikacje. *sob*"))
+
+    (:more-memos . ("Są też kolejne powiadomienia."
+                    "Mam Ci coś więcej do przekazania."
+                    "Shanghai mówi, że jest do Ciebie więcej powiadomień."
+                    "Shanghai przyniosła więcej powiadomień."))
 
     (:not-yet-implemented . ("Not in my Grimoire yet."
                              "Jeszcze nie. Sprawdź pojutrze."

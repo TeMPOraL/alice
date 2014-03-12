@@ -80,6 +80,8 @@
           (is-directed (directed-message-p message))
           (from-who (irc:source message))
           (message-body (second (irc:arguments message))))
+
+      (check-for-memos destination from-who)
       (cond
         ;; introductions
         ((and is-directed
@@ -181,7 +183,7 @@
                        (mentions "pingnij" message-body)))
          (progn (say destination :memo-saved)
                 (notify-person destination
-                               (identify-person message-body)
+                               (identify-person-mentioned message-body)
                                message-body
                                from-who
                                is-private)))
