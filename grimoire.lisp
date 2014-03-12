@@ -88,31 +88,43 @@
 (defvar *memos* (make-hash-table :test 'equalp))
 
 (defun make-memo (channel who what from-who)
-  )
+  (list channel who what from-who))
 
 (defun memo-to-string (memo)
-  )
+  (format nil "memo od ~A - ~A" (fourth memo) (third memo)))
 
-(defun save-memo (channel who what from-who)
+(defun save-memo (memo)
   "Save a memo for user."
-  
-  nil)
+  (let ((memos (gethash (second memo) *memos*)))
+    (setf (gethash (second memo) *memos*)
+          (cons memo memos))))
 
-(defun find-first-memo (destination memos)
-  ;; FIXME TODO if `DESTINATION' is nil, find first global memo; otherwise find first memo that has destination component either nil or equal to `DESTINATION'.
-  (declare (ignore destination))
-  (values (first memos) (rest memos)))
+(defun find-matching-memos (user destination memos)
+  (remove-if-not (lambda (memo)
+                   (and (or (equalp destination (first memo))
+                            (null (first memo)))
+                        (equalp user (second memo))))
+                 memos))
 
-(defun check-for-memos (destination from-who)
+(defun remove-memo (memo memos)
+  (remove-if (lambda (m)
+               (and (or (equalp (first memo) (first m))
+                        (null (first m)))
+                    (equalp (second memo) (second m))))
+             memos
+             :count 1))
+
+(defun check-for-memos (destination for-who)
   "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her."
-  (let* ((who (identify-person-canonical-name from-who))
-         (memos (gethash who *memos*)))
-    (if (not (null memos))
-        (multiple-value-bind (memo remaining-memos) (find-first-memo destination memos)
-          (setf (gethash who *memos*) remaining-memos)
-          (say destination memo :to from-who)
-          (if (not (null remaining-memos))
-              (say destination :more-memos :to from-who))))))
+  (let* ((who (identify-person-canonical-name for-who))
+         (all-memos (gethash who *memos*))
+         (matching-memos (find-matching-memos for-who destination all-memos))
+         (memo (first matching-memos)))
+    (if (not (null memo))
+        (progn (setf (gethash who *memos*) (remove-memo memo all-memos))
+               (say destination (memo-to-string memo) :to for-who)
+               (if (> (length matching-memos) 1)
+                   (say destination :more-memos :to for-who)))))))
 
 ;; GENERAL NOTIFICATIONS
 
@@ -124,6 +136,6 @@
 (defun pick-notifier (channel who is-global)
   "Select notification method for given user."
   (gethash who *user-notification-medium* (lambda (who what from-who)
-                                            (save-memo (and is-global channel)
-                                                       who what from-who))))
+                                            (save-memo (make-memo (and is-global channel)
+                                                       who what from-who)))))
 
