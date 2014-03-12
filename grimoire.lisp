@@ -138,4 +138,3 @@
   (gethash who *user-notification-medium* (lambda (who what from-who)
                                             (save-memo (make-memo (and is-global channel)
                                                        who what from-who)))))
-
