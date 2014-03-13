@@ -124,14 +124,14 @@
         (progn (setf (gethash who *memos*) (remove-memo memo all-memos))
                (say destination (memo-to-string memo) :to for-who)
                (if (> (length matching-memos) 1)
-                   (say destination :more-memos :to for-who)))))))
+                   (say destination :more-memos :to for-who))))))
 
 ;; GENERAL NOTIFICATIONS
 
 (defun notify-person (channel who what from-who is-global)
   "Notify a person using the most suitable medium available."
   (apply (pick-notifier channel who is-global)
-         who what from-who))
+          (list who what from-who)))
 
 (defun pick-notifier (channel who is-global)
   "Select notification method for given user."

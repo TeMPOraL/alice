@@ -180,7 +180,8 @@
               (or (mentions "zawiadom" message-body)
                        (mentions "powiadom" message-body)
                        (mentions "przeka" message-body)
-                       (mentions "pingnij" message-body)))
+                       (mentions "pingnij" message-body)
+                       (mentions "memo" message-body)))
          (progn (say destination :memo-saved)
                 (notify-person destination
                                (identify-person-mentioned message-body)

@@ -59,18 +59,38 @@ Creates the object if not found."
     (setf (slot-value new-guy 'irc-names) (list nickname))
     new-guy))
 
-
 (defun register-nick-change (from to)
   nil)
 
+
+;;; CANONICAL NAME STUFF (MOSTLY TEST / TEMPORARY)
+
+(defvar *canonical-nicks* (make-hash-table :test 'equalp))
+
+(defun known-nick (nick)
+  (not (null (gethash nick *canonical-nicks*))))
+
+(defun learn-canonical-name (nick canonical-name)
+  (setf (gethash nick *canonical-nicks*) canonical-name))
+
+(defun remember-seen-nick (nick)
+  (if (not (known-nick nick))
+      (setf (gethash nick *canonical-nicks*) nick))))
+
 ;; resolving people from free-form text
+;; TODO replace current code with proper references to sentece-features when the latter are done.
 (defun identify-person-mentioned (message-body)
-  ;; TODO replace current code with proper references to sentece-features when the latter are done.
+  "Take `MESSAGE-BODY', return canonical name of a first recognized person inside the message."
   (let ((words (extract-words message-body)))
-    ;; TODO iterate over every element of `WORDS' and try to apply `IDENTIFY-PERSON-MENTIONED' until a match is found; return nil otherwise.
-    nil
-    ))
+    (identify-person-canonical-name (find-if (lambda (word)
+                                               (and (known-nick word)
+                                                    (not (equalp word *nick*))
+                                                    (not (null (identify-person-canonical-name word)))))
+                                             words))))
 
 (defun identify-person-canonical-name (alias)
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
-  alias)                                ;temporary
+  (gethash alias *canonical-nicks*))                                ;temporary
+
+
+
