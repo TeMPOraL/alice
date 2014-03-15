@@ -126,15 +126,24 @@
                (if (> (length matching-memos) 1)
                    (say destination :more-memos :to for-who))))))
 
+
+(defun notify-via-memo (channel who what from-who is-global)
+  (let ((memo (save-memo (make-memo (and is-global channel)
+                               who what from-who))))
+    (if (not (null memo))
+        :memo-saved
+        :memo-failed)))
+
+;; (defun notify-via-pushover (channel who what from-who is-global)
+;;   )
+
 ;; GENERAL NOTIFICATIONS
 
-(defun notify-person (channel who what from-who is-global)
+(defun notify-person (channel target-user message-body from-who is-global)
   "Notify a person using the most suitable medium available."
-  (apply (pick-notifier channel who is-global)
-          (list who what from-who)))
+  (funcall (pick-notifier channel target-user message-body from-who is-global)
+           channel target-user message-body from-who is-global))
 
-(defun pick-notifier (channel who is-global)
+(defun pick-notifier (channel target-user message-body from-who is-global)
   "Select notification method for given user."
-  (gethash who *user-notification-medium* (lambda (who what from-who)
-                                            (save-memo (make-memo (and is-global channel)
-                                                       who what from-who)))))
+  (gethash target-user *user-notification-medium* #'notify-via-memo))

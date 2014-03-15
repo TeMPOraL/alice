@@ -97,6 +97,9 @@
                     "zapisane; przekażę jak zobaczę"
                     "jasne, przekażę jak zobaczę"))
 
+    (:memo-failed . ("Nie umiem wysłać tego mema. Chyba nie wiem o kogo Ci chodzi."
+                     "Nie wiem komu co mamy wysłać."))
+
     
     (:failed-in-sending-notification . ("Coś się spsuło :(."
                                         "Coś nie działa. *sigh*"
