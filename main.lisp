@@ -183,10 +183,10 @@
                        (mentions "pingnij" message-body)
                        (mentions "memo" message-body)))
          (progn (say destination (notify-person destination
-                               (identify-person-mentioned message-body)
-                               message-body
-                               from-who
-                               is-private))))
+                                                (identify-person-mentioned message-body)
+                                                message-body
+                                                from-who
+                                                is-private))))
 
         ;; ping temporal
         ((and is-directed

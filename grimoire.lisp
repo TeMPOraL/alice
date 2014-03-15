@@ -59,7 +59,7 @@
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
 
 (defun send-notification (what &optional (from ""))
-  (or (ignore-errors (drakma:http-request "https://api.pushover.net/1/messages.json"
+  (if (ignore-errors (drakma:http-request "https://api.pushover.net/1/messages.json"
                                           :method :post
                                           :external-format-out :UTF-8
                                           :parameters `(("token" . ,*pushover-token*)
@@ -68,11 +68,12 @@
                                                         ("message" . ,(concatenate 'string "<" from "> " what)))
                                           :content "hack"
                                           :content-length 4))
+      :notification-sent
       :failed-in-sending-notification))
 
 
 (defun send-email (where-to text)
-  (or (ignore-errors (drakma:http-request (concatenate 'string "https://api.mailgun.net/v2/" *mailgun-domain* "/messages")
+  (if (ignore-errors (drakma:http-request (concatenate 'string "https://api.mailgun.net/v2/" *mailgun-domain* "/messages")
                                           :method :post
                                           :basic-authorization `("api" ,*mailgun-key*)
                                           :parameters `(("from" . ,(concatenate 'string "Alice Margatroid <alice.margatroid@" *mailgun-domain* ">"))
@@ -80,6 +81,7 @@
                                                         ("subject" . "Alice Margatroid here; got a notification for you.")
                                                         ("text" . ,text))
                                           :external-format-out :UTF-8))
+      :notification-sent
       :failed-in-sending-notification))
 
 
@@ -136,8 +138,13 @@
                :memo-saved)
         :memo-failed)))
 
-;; (defun notify-via-pushover (channel who what from-who is-global)
-;;   )
+(defun notify-via-pushover (channel who what from-who is-global)
+  (declare (ignore channel who is-global))
+  (send-notification what from-who))
+
+(defun notify-via-email (channel who what from-who is-global)
+  (declare (ignore channel who is-global))
+  (send-email what from-who))
 
 ;; GENERAL NOTIFICATIONS
 
