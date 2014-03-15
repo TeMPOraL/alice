@@ -75,7 +75,7 @@ Creates the object if not found."
 
 (defun remember-seen-nick (nick)
   (if (not (known-nick nick))
-      (setf (gethash nick *canonical-nicks*) nick))))
+      (setf (gethash nick *canonical-nicks*) nick)))
 
 ;; resolving people from free-form text
 ;; TODO replace current code with proper references to sentece-features when the latter are done.
@@ -87,6 +87,9 @@ Creates the object if not found."
                     (not (equalp word *nick*))
                     (not (null (identify-person-canonical-name word)))))
              words)))
+
+
+;; Canonical names
 
 (defun identify-person-canonical-name (alias)
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."

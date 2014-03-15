@@ -88,7 +88,8 @@
 (defvar *memos* (make-hash-table :test 'equalp))
 
 (defun make-memo (channel who what from-who)
-  (list channel who what from-who))
+  (let ((target (identify-person-canonical-name who)))
+     (if target (list channel (identify-person-canonical-name who) what from-who))))
 
 (defun memo-to-string (memo)
   (format nil "memo od ~A - ~A" (fourth memo) (third memo)))
@@ -128,10 +129,11 @@
 
 
 (defun notify-via-memo (channel who what from-who is-global)
-  (let ((memo (save-memo (make-memo (and is-global channel)
-                               who what from-who))))
+  (let ((memo (make-memo (and is-global channel)
+                               who what from-who)))
     (if (not (null memo))
-        :memo-saved
+        (progn (save-memo memo)
+               :memo-saved)
         :memo-failed)))
 
 ;; (defun notify-via-pushover (channel who what from-who is-global)
@@ -146,4 +148,4 @@
 
 (defun pick-notifier (channel target-user message-body from-who is-global)
   "Select notification method for given user."
-  (gethash target-user *user-notification-medium* #'notify-via-memo))
+  (gethash (identify-person-canonical-name target-user) *user-notification-medium* #'notify-via-memo))
