@@ -82,11 +82,11 @@ Creates the object if not found."
 (defun identify-person-mentioned (message-body)
   "Take `MESSAGE-BODY', return canonical name of a first recognized person inside the message."
   (let ((words (extract-words message-body)))
-    (identify-person-canonical-name (find-if (lambda (word)
-                                               (and (known-nick word)
-                                                    (not (equalp word *nick*))
-                                                    (not (null (identify-person-canonical-name word)))))
-                                             words))))
+    (find-if (lambda (word)
+               (and (known-nick word)
+                    (not (equalp word *nick*))
+                    (not (null (identify-person-canonical-name word)))))
+             words)))
 
 (defun identify-person-canonical-name (alias)
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
