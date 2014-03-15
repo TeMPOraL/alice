@@ -188,27 +188,6 @@
                                                 from-who
                                                 is-private))))
 
-        ;; ping temporal
-        ((and is-directed
-              (and (or (mentions "TeMPOraL" message-body)
-                       (mentions "temporal" message-body))
-                   (or (mentions "zawiadom" message-body)
-                       (mentions "powiadom" message-body)
-                       (mentions "przeka" message-body)
-                       (mentions "pingnij" message-body))))
-         (progn (say destination :notification-sent)
-                (send-notification message-body from-who)))
-
-        ((and is-directed
-              (and (or (mentions "Wiktor" message-body)
-                       (mentions "wiktor" message-body))
-                   (or (mentions "zawiadom" message-body)
-                       (mentions "powiadom" message-body)
-                       (mentions "przeka" message-body)
-                       (mentions "pingnij" message-body))))
-         (progn (say destination :notification-sent)
-                (send-email *wiktor-email* (concatenate 'string "<" from-who "> - " message-body))))
-
         ;; say hi!
         ((and is-directed
               (or (mentions "czesc" message-body)
@@ -256,7 +235,7 @@
 (defun names-hook (message)
   (let ((channel (third (irc:arguments message)))
         (nicks (fourth (irc:arguments message))))
-    (store-names channel nicks)))
+    (store-names channel (split-sequence:split-sequence #\Space nicks))))
 
 (defun nick-hook (message)
   (let ((from (irc:source message))
