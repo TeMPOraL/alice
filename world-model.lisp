@@ -14,16 +14,19 @@
 
 ;; names tracking
 (defun store-joining-name (channel name)
-  (declare (ignore channel name))
-  nil)
+  (declare (ignore channel))
+  (remember-seen-nick (strip-nick-mode-chars name)))
 
 (defun store-parting-name (channel name)
-  (declare (ignore channel name))
-  nil) 
+  (declare (ignore channel))
+  (remember-seen-nick (strip-nick-mode-chars name)))
 
 (defun store-names (channel names)
-  (declare (ignore channel names))
-  nil)
+  (declare (ignore channel))
+  (map nil (lambda (name) (remember-seen-nick (strip-nick-mode-chars name))) names))
+
+(defun strip-nick-mode-chars (name)
+  (cl-ppcre:regex-replace "^[@\+]" name ""))
 
 ;; channel tracking
 (defun join-channel (channel &key password)
