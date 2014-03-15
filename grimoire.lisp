@@ -81,6 +81,7 @@
                                                         ("subject" . "Alice Margatroid here; got a notification for you.")
                                                         ("text" . ,text))
                                           :external-format-out :UTF-8))
+      ;; 
       :notification-sent
       :failed-in-sending-notification))
 
@@ -143,8 +144,8 @@
   (send-notification what from-who))
 
 (defun notify-via-email (channel who what from-who is-global)
-  (declare (ignore channel who is-global))
-  (send-email what from-who))
+  (declare (ignore channel who from-who is-global))
+  (send-email *wiktor-email* what))
 
 ;; GENERAL NOTIFICATIONS
 
