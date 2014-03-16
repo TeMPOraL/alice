@@ -95,7 +95,7 @@
      (if target (list channel (identify-person-canonical-name who) what from-who))))
 
 (defun memo-to-string (memo)
-  (format nil "memo od ~A - ~A" (fourth memo) (third memo)))
+  (format nil "~A ma dla Ciebie wiadomość:- ~A" (fourth memo) (third memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
