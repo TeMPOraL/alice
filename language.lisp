@@ -3,11 +3,15 @@
 ;; functions related to language processing
 
 (defun stem-matches-p (word-checked target)
-  (let* ((len (length target))
-         (suffixless-target (subseq target 0 (- len 1))))
-    (or (equalp word-checked target)
-        (matches-regexp-p (make-stem-regexp target) word-checked)
-        (matches-regexp-p (make-stem-regexp suffixless-target) word-checked))))
+  (and (stringp word-checked)
+       (stringp target)
+       (let* ((lowcase-word-checked (string-downcase word-checked))
+              (lowcase-target (string-downcase target))
+              (len (length lowcase-target))
+              (suffixless-target (subseq lowcase-target 0 (- len 1))))
+         (or (equalp lowcase-word-checked lowcase-target)
+             (matches-regexp-p (make-stem-regexp lowcase-target) lowcase-word-checked)
+             (matches-regexp-p (make-stem-regexp suffixless-target) lowcase-word-checked)))))
 
 
 (defun make-stem-regexp (base-word)

@@ -79,14 +79,21 @@ Creates the object if not found."
   (if (not (known-nick nick))
       (setf (gethash nick *canonical-nicks*) nick)))
 
+
+(defun find-canonical-entry-with-stem-matching (name)
+  (with-hash-table-iterator (generator *canonical-nicks*)
+    (loop (multiple-value-bind (more? key value) (generator)
+            (unless more? (return nil))
+            (if (stem-matches-p name key)
+                (return key))))))
+
 ;; resolving people from free-form text
 ;; TODO replace current code with proper references to sentece-features when the latter are done.
 (defun identify-person-mentioned (message-body)
   "Take `MESSAGE-BODY', return canonical name of a first recognized person inside the message."
   (let ((words (extract-words message-body)))
     (find-if (lambda (word)
-               (and (known-nick word)
-                    (not (equalp word *nick*))
+               (and (not (equalp word *nick*))
                     (not (null (identify-person-canonical-name word)))))
              words)))
 
@@ -94,5 +101,6 @@ Creates the object if not found."
 
 (defun identify-person-canonical-name (alias)
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
-  (gethash alias *canonical-nicks*))                                ;temporary
+  (let ((name (find-canonical-entry-with-stem-matching alias)))
+    (gethash name *canonical-nicks*)))
 
