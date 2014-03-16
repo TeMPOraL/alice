@@ -120,14 +120,6 @@
                   (mentions "ciepło" message-body)))
          (say destination :temperature))
 
-
-        ;; save
-        ((and is-directed
-              (or (mentions "pisz" message-body)
-                  (mentions "notuj" message-body)))
-         (say destination :save))
-                  
-
         ;; anyone in HS?
         ((and is-directed
               (mentions "kto" message-body)
@@ -186,6 +178,12 @@
                                                 message-body
                                                 from-who
                                                 is-private))))
+
+        ;; save
+        ((and is-directed
+              (or (mentions "pisz" message-body)
+                  (mentions "notuj" message-body)))
+         (say destination :save))
 
         ;; say hi!
         ((and is-directed
