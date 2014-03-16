@@ -17,4 +17,5 @@
                (:file "language" :depends-on ("globals"))
                (:file "world-model" :depends-on ("local-config"))
                (:file "grimoire" :depends-on ("world-model"))
+               (:file "sentence-features" :depends-on ("world-model"))
                (:file "main" :depends-on ("grimoire"))))

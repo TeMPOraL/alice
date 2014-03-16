@@ -1,6 +1,5 @@
 (in-package #:alice)
 
-
 (defclass sentence-features ()
   ;; sentence-understanding-related
   ((words
