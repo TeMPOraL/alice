@@ -65,7 +65,6 @@ Creates the object if not found."
 (defun register-nick-change (from to)
   nil)
 
-
 ;;; CANONICAL NAME STUFF (MOSTLY TEST / TEMPORARY)
 
 (defvar *canonical-nicks* (make-hash-table :test 'equalp))
@@ -91,12 +90,9 @@ Creates the object if not found."
                     (not (null (identify-person-canonical-name word)))))
              words)))
 
-
 ;; Canonical names
 
 (defun identify-person-canonical-name (alias)
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
   (gethash alias *canonical-nicks*))                                ;temporary
-
-
 

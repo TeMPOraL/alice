@@ -58,7 +58,6 @@
    (not (equal 0
                (search *nick* (second (irc:arguments message))))))) ; search message target
        
-
 (defun private-message-p (message)
   (or (string-equal (first (irc:arguments message))
                     *nick*)
