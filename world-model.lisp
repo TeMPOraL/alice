@@ -79,7 +79,6 @@ Creates the object if not found."
   (if (not (known-nick nick))
       (setf (gethash nick *canonical-nicks*) nick)))
 
-
 (defun find-canonical-entry-with-stem-matching (name)
   (with-hash-table-iterator (generator *canonical-nicks*)
     (loop (multiple-value-bind (more? key value) (generator)

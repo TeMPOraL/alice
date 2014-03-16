@@ -214,6 +214,18 @@
               (mentions "przypadek?" message-body))
          (say destination "nie sądzę."))
 
+        ;; temporary control for remembering names
+        ((and is-private
+              (mentions "zapamiętaj:" message-body))
+         (let* ((names (extract-words message-body))
+                (alias (second names))
+                (canonical (third names)))
+           (if (and alias canonical)
+               (progn
+                 (learn-canonical-name alias canonical)
+                 (say destination (format nil "Zapamiętałam ~A jako ~A." alias canonical)))
+               (say destination "You fail at wydawanie poleceń. *sigh*"))))
+
         ;; default responder
         (is-directed
          (if (and (/= 0 (random 5))
