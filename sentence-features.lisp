@@ -52,7 +52,7 @@
 
 (defun extract-words (text)
   (delete-duplicates
-   (cl-ppcre:all-matches-as-strings "\\w{2,}" text)
+   (cl-ppcre:all-matches-as-strings "[\\w\\|]{2,}" text)
    :test #'string=))
 
 (defun extract-message-features (from message)
