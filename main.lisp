@@ -80,7 +80,6 @@
 
       (check-for-memos destination from-who)
       (cond
-
         ((and is-directed
               (or (mentions "zawiadom" message-body)
                        (mentions "powiadom" message-body)

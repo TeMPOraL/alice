@@ -168,8 +168,4 @@
 
 (defparameter *max-output-sequence-length* 4)
 
-;; FIXME figure out a regexp that treats only whole words as mistakes.
-(defparameter *spelling-tests* '((".*óje" "uje")
-                                 ("wogule" "wogul")))
-
 (defparameter *user-notification-medium* (make-hash-table :test 'equalp))

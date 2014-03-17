@@ -1,15 +1,6 @@
 ;;;; Alice's Grimoire, the source of her more powerful magic.
 (in-package #:alice)
 
-(defun check-for-spelling-mistakes (message)
-  (let* ((mistakes (find-if (lambda (test)
-                              (not (null (cl-ppcre:all-matches (car test)
-                                                               message))))
-                            *spelling-tests*)))
-    (if mistakes
-        (cdr mistakes)
-        nil)))
-
 (defun do-google-search (query)
   (declare (ignore query))
   )
@@ -95,7 +86,7 @@
      (when target (list channel (identify-person-canonical-name who) what from-who))))
 
 (defun memo-to-string (memo)
-  (format nil "~A ma dla Ciebie wiadomość:- ~A" (fourth memo) (third memo)))
+  (format nil "~A ma dla Ciebie wiadomość: ~A" (fourth memo) (third memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
