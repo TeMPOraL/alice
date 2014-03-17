@@ -8,13 +8,12 @@
 (defparameter *password* "")
 
 (defparameter *pushover-token* "")
-(defparameter *pushover-user* "")
+(defparameter *pushover-admin-user* "")
+
+(defparameter *wolfram-app-id* "")
 
 (defparameter *mailgun-domain* "")
 (defparameter *mailgun-key* "")
-(defparameter *wiktor-email* "")        ;temporary
-
-(defparameter *wolfram-app-id* "")
 
 (defparameter *autojoin-channels* '())
 
@@ -42,14 +41,14 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.41. (Ta z testowymi zintegrowanymi powiadomieniami)")
+    (:version . "0.0.42. (Ta z bardziej uniwersalnymi powiadomieniami.)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
                 ":P" ":P" ":P" ":P" ":P"
                 ":>" ":>" ":>"
                 "*sigh*" "*sigh*" "*sigh*"
-                "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!"
+                "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!"
                 "maka paka!"))
 
     (:who-in-hs . ("A skąd mam wiedzieć? Spytaj kdbot."
@@ -89,16 +88,19 @@
               "!save"))
 
     (:notification-sent . ("ok, przekazałam"
-                         "jasne, przekazane"
-                         "sure, już przekazuję"
-                         "przekazane"))
+                           "jasne, przekazane"
+                           "sure, już przekazuję"
+                           "Shanghai posłana z wiadomością"
+                           "przekazane"))
 
     (:memo-saved . ("zapisałam jako memo"
+                    "memo zapisane"
                     "zapisane; przekażę jak zobaczę"
                     "jasne, przekażę jak zobaczę"))
 
     (:memo-failed . ("Nie umiem wysłać tego memo. Chyba nie wiem o kogo Ci chodzi."
-                     "Nie wiem komu co mamy wysłać."))
+                     "Nie wiem komu co mamy wysłać."
+                     "Shanghai wróciła i mówi, że nie wie komu przekazać..."))
 
     
     (:failed-in-sending-notification . ("Coś się spsuło :(."
@@ -106,6 +108,7 @@
                                         "Nie umiem w notyfikacje. *sob*"))
 
     (:more-memos . ("Są też kolejne powiadomienia."
+                    "Są kolejne mema! :)"
                     "Mam Ci coś więcej do przekazania."
                     "Shanghai mówi, że jest do Ciebie więcej powiadomień."
                     "Shanghai przyniosła więcej powiadomień."))

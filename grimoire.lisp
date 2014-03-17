@@ -58,12 +58,12 @@
 (defun parse-message-for-wolfram-computation (text)
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
 
-(defun send-notification (what &optional (from ""))
+(defun send-notification (what to-token from)
   (if (ignore-errors (drakma:http-request "https://api.pushover.net/1/messages.json"
                                           :method :post
                                           :external-format-out :UTF-8
                                           :parameters `(("token" . ,*pushover-token*)
-                                                        ("user" . ,*pushover-user*)
+                                                        ("user" . ,to-token)
                                                         ("title" . ,*full-name*)
                                                         ("message" . ,(concatenate 'string "<" from "> " what)))
                                           :content "hack"
@@ -139,13 +139,15 @@
                :memo-saved)
         :memo-failed)))
 
-(defun notify-via-pushover (channel who what from-who is-global)
-  (declare (ignore channel who is-global))
-  (send-notification what from-who))
+(defun make-pushover-notifier (pushover-key)
+  (lambda (channel who what from-who is-global)
+    (declare (ignore channel who is-global))
+    (send-notification what pushover-key from-who)))
 
-(defun notify-via-email (channel who what from-who is-global)
-  (declare (ignore channel who from-who is-global))
-  (send-email *wiktor-email* what))
+(defun make-email-notifier (email)
+  (lambda (channel who what from-who is-global)
+    (declare (ignore channel who from-who is-global))
+    (send-email email what)))
 
 ;; GENERAL NOTIFICATIONS
 
