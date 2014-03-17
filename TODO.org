@@ -48,11 +48,12 @@ Just a helpul list so I don't forget ideas and concepts.
    input: "thx", "thanks", "dzięki", "dzieki", "dziekuje", "thank you", "ty"
    output: "you're welcome", "nie ma za co", "sure, np.", "np." "no problem", ":)"
 
-** TODO Memos
+** DONE Memos
    - memos have two components
      1. recording
      2. replying
    - memos are stored per channel or globally
+     global memos discarded for now.
 
 *** Use cases
     Skeletal:
@@ -69,8 +70,7 @@ Just a helpul list so I don't forget ideas and concepts.
     <Alice_M> Skrzyp: TeMPOraL kazał przekazać, że maka paka.
     #+END_EXAMPLE
 
-*** TODO include memo timestamp?
-    Yes, definitely.
+** TODO include memo timestamp
 
 ** TODO Random Number Generator / Dice Roll
 
@@ -91,7 +91,7 @@ Just a helpul list so I don't forget ideas and concepts.
 ** DONE Send notifications to author
    Via pushover.
 
-** TODO Generalized notifications
+** DONE Generalized notifications
    Send notification to any reocgnized person by the best means available.
    This means hooking up to:
    - mailgun
