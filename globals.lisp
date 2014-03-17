@@ -41,7 +41,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.42. (Ta z bardziej uniwersalnymi powiadomieniami.)")
+    (:version . "0.0.43. (Ta z bardziej uniwersalnymi powiadomieniami)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
