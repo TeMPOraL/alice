@@ -13,6 +13,10 @@
           :failed-in-shortening)
       :nothing-to-shorten))
 
+(defun extract-urls-from-message (message-body)
+  (remove nil (mapcar (lambda (str)(cl-ppcre::scan-to-strings *url-regexp* str))
+                      (split-sequence:split-sequence #\Space message-body))))
+
 (defun parse-message-for-url-shortening (text)
   (cl-ppcre:scan-to-strings *url-shortening-regexp* text))
 
