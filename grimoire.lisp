@@ -30,8 +30,8 @@
            (coerce (alexandria:flatten (map 'list
                                             (lambda (el)
                                               (let ((val (dom:first-child el)))
-                                                (if val
-                                                    (split-sequence:split-sequence #\Newline (dom:data val)))))
+                                                (when val
+                                                  (split-sequence:split-sequence #\Newline (dom:data val)))))
                                             (dom:get-elements-by-tag-name xml "plaintext")))
                    'vector))
 
@@ -92,7 +92,7 @@
 
 (defun make-memo (channel who what from-who)
   (let ((target (identify-person-canonical-name who)))
-     (if target (list channel (identify-person-canonical-name who) what from-who))))
+     (when target (list channel (identify-person-canonical-name who) what from-who))))
 
 (defun memo-to-string (memo)
   (format nil "~A ma dla Ciebie wiadomość:- ~A" (fourth memo) (third memo)))
@@ -124,17 +124,17 @@
          (all-memos (gethash who *memos*))
          (matching-memos (find-matching-memos for-who destination all-memos))
          (memo (first matching-memos)))
-    (if (not (null memo))
-        (progn (setf (gethash who *memos*) (remove-memo memo all-memos))
-               (say destination (memo-to-string memo) :to for-who)
-               (if (> (length matching-memos) 1)
-                   (say destination :more-memos :to for-who))))))
+    (when memo
+      (progn (setf (gethash who *memos*) (remove-memo memo all-memos))
+             (say destination (memo-to-string memo) :to for-who)
+             (if (> (length matching-memos) 1)
+                 (say destination :more-memos :to for-who))))))
 
 
 (defun notify-via-memo (channel who what from-who is-global)
   (let ((memo (make-memo (and is-global channel)
                                who what from-who)))
-    (if (not (null memo))
+    (if memo
         (progn (save-memo memo)
                :memo-saved)
         :memo-failed)))

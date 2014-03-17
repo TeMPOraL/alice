@@ -24,6 +24,8 @@
 
 (defparameter *full-name* "Alice Margatroid")
 
+(defparameter *default-phrase* "Nie wiem co powiedzieć...")
+
 ;;; phrases
 ;; phrases are defined as an alist of label and possible phrases to speak
 ;; plain-text value will be said directly

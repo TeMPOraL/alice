@@ -23,7 +23,7 @@
 
 (defun store-names (channel names)
   (declare (ignore channel))
-  (map nil (lambda (name) (remember-seen-nick (strip-nick-mode-chars name))) names))
+  (mapc (lambda (name) (remember-seen-nick (strip-nick-mode-chars name))) names))
 
 (defun strip-nick-mode-chars (name)
   (cl-ppcre:regex-replace "^[@\+]" name ""))
@@ -76,7 +76,7 @@ Creates the object if not found."
   (setf (gethash nick *canonical-nicks*) canonical-name))
 
 (defun remember-seen-nick (nick)
-  (if (not (known-nick nick))
+  (unless (known-nick nick)
       (setf (gethash nick *canonical-nicks*) nick)))
 
 (defun find-canonical-entry-with-stem-matching (name)

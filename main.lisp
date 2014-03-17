@@ -17,32 +17,30 @@
           messages))))
 
 (defun say (to-where what &key to)
-  (if (not *muted*)
-      (cond ((null what)
-             t)
+  (unless *muted*
+    (typecase what
+      (null t)
 
-            ((keywordp what)
-             (say to-where (cdr (assoc what *answers*)) :to to))
-            
-            ((listp what)
-             (say to-where
-                  (elt what
-                       (random (length what)))
-                  :to to))
+      (keyword (say to-where (cdr (assoc what *answers*)) :to to))
 
-            ((stringp what)
-             (if (null to)
-                 (irc:privmsg *connection* to-where what)
-                 (irc:privmsg *connection* to-where (concatenate 'string to ": " what))))
+      (list (say to-where
+                 (elt what
+                      (random (length what)))
+                 :to to))
 
-            ((vectorp what)
-             (let ((tosay (throttle what)))
-               (map 'nil
-                    (lambda (msg)
-                      (say to-where msg :to to))
-                    tosay)))
+      (string
+       (if (null to)
+           (irc:privmsg *connection* to-where what)
+           (irc:privmsg *connection* to-where (concatenate 'string to ": " what))))
 
-            (t (irc:privmsg *connection* to-where "I just don't know what to say...")))))
+      (vector
+       (let ((tosay (throttle what)))
+         (map 'nil
+              (lambda (msg)
+                (say to-where msg :to to))
+              tosay)))
+
+      (t (irc:privmsg *connection* to-where *default-phrase*)))))
 
 ;;; utils
 (defun mentions (what string)
