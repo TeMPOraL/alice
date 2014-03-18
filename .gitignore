@@ -4,4 +4,4 @@ local-config.lisp
 *.ufasl
 *.*~
 \#*.*\#
-
+*.dat
