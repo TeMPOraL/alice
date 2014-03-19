@@ -43,7 +43,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.47. (Ta co przekazuje pytania)")
+    (:version . "0.0.48. (Ta co rob^H^H^Hma sens)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -153,6 +153,11 @@
                       "Nie pozwalaj sobie na za dużo."
                       "Może sam pokaż swoje najpierw."
                       "Troszkę przesadzasz."))
+
+    (:point-out-making-sense . ("!!! szybko !!!"
+                                "!! ↑↑"
+                                "↑↑↑↑"))
+    
 
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
