@@ -85,6 +85,8 @@
                        (mentions "powiadom" message-body)
                        (mentions "przeka" message-body)
                        (mentions "pingnij" message-body)
+                       (mentions "zapyta" message-body)
+                       (mentions "spyta" message-body)
                        (mentions "memo" message-body)))
          (progn (say destination (notify-person destination
                                                 (identify-person-mentioned message-body)
