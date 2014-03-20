@@ -16,7 +16,7 @@
 
 
 (defun make-stem-regexp (base-word)
-  (concatenate 'string "^" base-word "(y|i|a|ie|owi|e|ę|iowi)$"))
+  (concatenate 'string "^" base-word "(y|i|a|ie|owi|e|ę|iowi|ce)$"))
 
 (defun matches-regexp-p (regexp string)
   (not (null (cl-ppcre:scan regexp string))))
