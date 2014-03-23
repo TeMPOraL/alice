@@ -206,6 +206,15 @@
               (mentions "cycki" message-body))
          (say destination :notitsforyou :to from-who))
 
+        ((and (or is-public
+                  is-directed)
+              (equalp destination "#hackerspace-krk")
+              (or (mentions "robi sens" message-body)
+                  (mentions "robią sens" message-body)
+                  (mentions "robić sens" message-body)))
+         (say destination :point-out-making-sense :to "Wiktor"))
+
+
         ;; is this an accident?
         ((and (or is-public
                   is-directed)
