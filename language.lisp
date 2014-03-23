@@ -16,10 +16,22 @@
 
 
 (defun make-stem-regexp (base-word)
-  (concatenate 'string "^" base-word "(y|i|a|ie|owi|e|ę|iowi)$"))
+  (concatenate 'string "^" (escape-for-regexp base-word) "(y|i|a|ie|owi|e|ę|iowi)$"))
 
 (defun matches-regexp-p (regexp string)
   (not (null (cl-ppcre:scan regexp string))))
+
+(defun escape-for-regexp (text)
+  (cl-ppcre:regex-replace-all +regexp-escape-special-characters-regexp-part+ text "\\\\\\1"))
+
+
+(defconstant +regexp-special-characters+ ".^$*+?()[{\|\\")
+(defconstant +regexp-escape-special-characters-regexp-part+ (concatenate 'string
+                                                                         "(["
+                                                                         (coerce (mapcan (lambda (x) (list #\\ x))
+                                                                                         (coerce +regexp-special-characters+ 'list))
+                                                                                 'string)
+                                                                         "])"))
 
 ;;; stems
 ;; wiktor owi

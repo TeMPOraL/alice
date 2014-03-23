@@ -43,7 +43,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.48. (Ta co rob^H^H^Hma sens)")
+    (:version . "0.0.49. (Ta bez głupiego regexp-injection w parserze do memos)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
