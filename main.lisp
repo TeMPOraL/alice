@@ -206,6 +206,10 @@
               (mentions "cycki" message-body))
          (say destination :notitsforyou :to from-who))
 
+        ((and is-public
+              (mentions "!votekick" message-body))
+         (say destination "y"))
+
         ((and (or is-public
                   is-directed)
               (equalp destination "#hackerspace-krk")
