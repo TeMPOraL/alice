@@ -225,6 +225,14 @@
               (mentions "przypadek?" message-body))
          (say destination "nie sądzę."))
 
+        ((and (or is-public
+                 is-directed)
+             (mentions "yolo" message-body)
+             (mentions "jolo" message-body))
+         (if (= 0 (random 3))
+             (say destination :yolo :to from-who)))
+             
+
         ;; temporary control for remembering names
         ((and is-private
               (mentions "zapamiętaj:" message-body))
