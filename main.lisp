@@ -227,8 +227,9 @@
 
         ((and (or is-public
                  is-directed)
-             (mentions "yolo" message-body)
-             (mentions "jolo" message-body))
+              (or
+               (mentions "yolo" message-body)
+               (mentions "jolo" message-body)))
          (if (= 0 (random 3))
              (say destination :yolo :to from-who)))
              
