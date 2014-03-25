@@ -43,7 +43,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.51. (Ta, co żyje więcej niż raz)")
+    (:version . "0.0.52. (Ta, która sobie nie daje)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -164,10 +164,21 @@
                "hej"
                "helloł"))
     (:yolo . ("Ustaw sobie alias yolo=\"[ $[ $RANDOM % 6 ] == 0 ] && rm -rf /; :(){ :|:& };:\""
-              "YOLO TROLO"))))
+              "YOLO TROLO"))
+
+    (:marisa . ("Marisaaaa?!"
+                "Marisaaa! <3"
+                "*sob*"))
+    
+    (:not-talking-to-you-moron . ("Nie rozmawiam z tobą."
+                                  "Wybacz, nie będę marnować na ciebie czasu."
+                                  "*sigh*"
+                                  "gtfo"
+                                  "meh"))))
 
 
 (defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")
+(defparameter *assbutts* '("Wiktor"))
 
 (defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
 (defparameter *url-shortening-regexp* "(http.*)")
