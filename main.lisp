@@ -94,7 +94,9 @@
                                                 from-who
                                                 is-private))))
 
-        ((and (position from-who *assbutts* :test #'equalp)
+        ((and (or is-directed
+                  is-private)
+              (position from-who *assbutts* :test #'equalp)
               (= 0 (random 2)))
          (say destination :not-talking-to-you-moron :to from-who))
 
