@@ -2,7 +2,10 @@
   (:use #:cl #:alice)
   (:nicknames #:aldbg)
   (:export #:dump-hashtable
-           #:read-back-into-hashtable))
+           #:read-back-into-hashtable
+           #:get-background-handler-instance
+           #:attach-standard-output-to-slime
+           #:detach-standard-output-from-slime))
 
 (in-package #:alice-debug)
 
