@@ -34,13 +34,13 @@
 (defun attach-standard-output-to-slime (handler-process)
   "Rebind `HANDLER-PROCESS''s `*STANDARD-OUTPUT' to the one of current context; effectively making it output into SLIME's REPL."
   #-openmcl (error "This function works only in Clozure CL (which I happen to use on my VPS)")
-  #+openmcl(let ((so *standard-output*))
-             (ccl:process-interrupt handler-process (lambda ()
-                                                      (setf *backup-so* *standard-output*
-                                                            *standard-output* so)))))
+  #+openmcl (let ((so *standard-output*))
+              (ccl:process-interrupt handler-process (lambda ()
+                                                       (setf *backup-so* *standard-output*
+                                                             *standard-output* so)))))
 
 (defun detach-standard-output-from-slime (handler-process)
   "Reverse the effects of `ATTACH-STANDARD-OUTPUT-TO-SLIME', restoring the original value of `HANDLER-PROCESS''s `*STANDARD-OUTPUT*'."
   #-openmcl (error "This function works only in Clozure CL (which I happen to use on my VPS)")
-  #+openmcl(ccl:process-interrupt handler-process (lambda ()
-                                                    (setf *standard-output* *backup-so*))))
+  #+openmcl (ccl:process-interrupt handler-process (lambda ()
+                                                     (setf *standard-output* *backup-so*))))
