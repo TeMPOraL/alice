@@ -327,3 +327,6 @@
 
 (defun impersonate-part (channel)
   (part-channel channel))
+
+(defun impersonate-slap (channel user)
+  (irc::action alice::*connection* channel (concatenate 'string "slaps " user " with a Shanghai doll.")))

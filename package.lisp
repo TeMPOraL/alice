@@ -7,6 +7,7 @@
            #:impersonate-say
            #:impersonate-join
            #:impersonate-part
+           #:impersonate-slap
            #:mute
            #:unmute))
 
