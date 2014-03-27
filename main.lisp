@@ -133,7 +133,10 @@
                   (mentions "dziekuje" message-body)
                   (mentions "dziękuje" message-body)
                   (mentions "dziękuję" message-body)))
-         (say destination :thanks-reply))
+         (progn (say destination :thanks-reply)
+                (if (or (mentions ":*" message-body)
+                        (mentions "sło" message-body))
+                    (say destination :blush))))
 
         ;; temp check
         ((and is-directed

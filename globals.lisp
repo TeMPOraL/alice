@@ -43,7 +43,7 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.52. (Ta, która sobie nie daje)")
+    (:version . "0.0.53. (Ta, zdalnie bardziej czuła)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -80,6 +80,10 @@
                       "no problem"
                       ":)"
                       "spoko :)"))
+
+    (:blush . ("aww :)"
+               "*blush*"
+               "<3"))
 
     (:tcp . "SYN-ACK")
 
