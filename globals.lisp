@@ -176,17 +176,10 @@
 
     (:marisa . ("Marisaaaa?!"
                 "Marisaaa! <3"
-                "*sob*"))
-    
-    (:not-talking-to-you-moron . ("Nie rozmawiam z tobą."
-                                  "Wybacz, nie będę marnować na ciebie czasu."
-                                  "*sigh*"
-                                  "gtfo"
-                                  "meh"))))
+                "*sob*"))))
 
 
 (defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")
-(defparameter *assbutts* '("Wiktor"))
 
 (defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
 (defparameter *url-shortening-regexp* "(http.*)")

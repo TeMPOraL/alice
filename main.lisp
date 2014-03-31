@@ -94,13 +94,6 @@
                                                 from-who
                                                 is-private))))
 
-        ((and (or is-directed
-                  is-private)
-              (position from-who *assbutts* :test #'equalp))
-         (if (= 0 (random 2))
-             (say destination :not-talking-to-you-moron :to from-who)))
-
-
         ((or (mentions "kirisame" message-body)
              (mentions "marisa" message-body))
          (say destination :marisa))
