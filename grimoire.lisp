@@ -96,7 +96,8 @@
   "Save a memo for user."
   (let ((memos (gethash (second memo) *memos*)))
     (setf (gethash (second memo) *memos*)
-          (cons memo memos))))
+          (cons memo memos)))
+  (alice-debug:dump-hashtable *memos* "memos.dat"))
 
 (defun find-matching-memos (user destination memos)
   (remove-if-not (lambda (memo)
