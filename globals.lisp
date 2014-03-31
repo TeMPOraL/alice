@@ -43,7 +43,11 @@
                       "Alice Margatroid, the Seven-Colored Puppeteer."
                       "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-    (:version . "0.0.53. (Ta, zdalnie bardziej czuła)")
+    (:wolfram-turned-off . ("Skoro nie chcecie, żebym cokolwiek liczyła to o to nie proście."
+                            "Takiego wała."
+                            "http://wolframalpha.com, samemu sobie policz."))
+
+    (:version . "0.0.54. (Why do you care anyway?)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
