@@ -77,6 +77,10 @@
                   "\"Shanghai Shanghai Shanghai Shanghai Hourai Hourai Hourai Hourai! ♫♪♬\""
                   "Why-why-why-why-why don't I miss you a lot forever? ♩♫♪...  *sigh*"))))
 
+    (:mentioned-my-name . ("hmm?"
+                           "tak?"
+                           "co ja?"))
+
     (:thanks-reply . ("you're welcome"
                       "nie ma za co"
                       "sure, np."

@@ -151,6 +151,14 @@
                   (mentions "śpiew" message-body)))
          (say destination :songs))
 
+        ;; talking about
+        ((and (or is-public
+                  is-directed)
+              (or (mentions "アリス・マーガトロイド" message-body)
+                  (mentions "Arisu māgatoroido" message-body)
+                  (mentions "Margatroid" message-body)))
+         (say destination :mentioned-my-name))
+
         ;; TCP handshake for Bambucha
         ((and is-directed
               (mentions "SYN" message-body))
