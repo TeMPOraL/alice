@@ -10,7 +10,8 @@
                #:drakma
                #:cl-unicode
                #:cl-ppcre
-               #:cxml)
+               #:cxml
+               #:local-time)
   :components ((:file "package")
                (:file "globals" :depends-on ("package"))
                (:file "language" :depends-on ("globals"))

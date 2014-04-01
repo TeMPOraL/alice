@@ -80,6 +80,12 @@
       :notification-sent
       :failed-in-sending-notification))
 
+(defvar +timestring-format+ '((:DAY 2) #\. (:MONTH 2) #\. (:YEAR 4)  #\  (:HOUR 2) #\: (:MIN 2)
+ #\: (:SEC 2)))
+
+;; time utils
+(defun make-timestamp ()
+  (local-time:format-timestring nil (local-time:now) :format +timestring-format+))
 
 ;; MEMOS
 ;; FIXME move this somewhere?
