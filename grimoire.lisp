@@ -93,17 +93,17 @@
 
 (defun make-memo (channel who what from-who)
   (let ((target (identify-person-canonical-name who)))
-     (when target (list channel (identify-person-canonical-name who) what from-who))))
+     (when target (list channel (identify-person-canonical-name who) what from-who (local-time:now)))))
 
 (defun memo-to-string (memo)
-  (format nil "~A ma dla Ciebie wiadomość: ~A" (fourth memo) (third memo)))
+  (format nil "~A ma dla Ciebie wiadomość z ~A ⇒ ~A" (fourth memo) (local-time:format-timestring nil (fifth memo) :format +timestring-format+) (third memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
   (let ((memos (gethash (second memo) *memos*)))
     (setf (gethash (second memo) *memos*)
           (append memos (list memo))))
-  (alice-debug:dump-hashtable *memos* "memos.dat"))
+  (alice-debug:dump-memos))
 
 (defun find-matching-memos (user destination memos)
   (remove-if-not (lambda (memo)
@@ -124,7 +124,7 @@
   "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her."
   (let* ((who (identify-person-canonical-name for-who))
          (all-memos (gethash who *memos*))
-         (matching-memos (find-matching-memos for-who destination all-memos))
+         (matching-memos (find-matching-memos who destination all-memos))
          (memo (first matching-memos)))
     (when memo
       (progn (setf (gethash who *memos*) (remove-memo memo all-memos))
