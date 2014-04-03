@@ -58,8 +58,7 @@
        
 (defun private-message-p (message)
   (or (string-equal (first (irc:arguments message))
-                    *nick*)
-      (equal 0 (search *nick* (second (irc:arguments message))))))
+                    *nick*)))
 
 (defun directed-message-p (message)
   (or (string-equal (first (irc:arguments message))
@@ -248,7 +247,6 @@
                (mentions "jolo" message-body)))
          (if (= 0 (random 3))
              (say destination :yolo :to from-who)))
-             
 
         ;; temporary control for remembering names
         ((and is-private
