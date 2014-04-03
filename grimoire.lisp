@@ -104,42 +104,40 @@
     (setf (gethash (second memo) *memos*)
           (append memos (list memo)))))
 
+(defun make-memo-matcher (user destination)
+  (lambda (memo)
+    (and (equalp destination (first memo))
+         (equalp user (second memo)))))
+
 (defun find-matching-memos (user destination memos)
-  (remove-if-not (lambda (memo)
-                   (and (equalp destination (first memo))
-                        (equalp user (second memo))))
+  (remove-if-not (make-memo-matcher user destination)
                  memos))
 
 (defun remove-memo (memo memos)
-  (remove-if (lambda (m)
-               (and (equalp (first memo) (first m))
-                    (equalp (second memo) (second m))))
+  (remove-if (make-memo-matcher (second memo) (first memo))
              memos
              :count 1))
 
-(defun check-for-private-memos (for-who)
-  "See if user `FROM-WHO' writing anywhere has any pending private memos and if so, grab the first one and write it to him/her in private."
- (let* ((who (identify-person-canonical-name for-who))
-         (all-memos (gethash who *memos*))
-         (matching-memos (find-matching-memos who nil all-memos))
-         (memo (first matching-memos)))
-    (when memo
-      (setf (gethash who *memos*) (remove-memo memo all-memos))
-      (say for-who (memo-to-string memo) :to for-who)
-      (if (> (length matching-memos) 1)
-          (say for-who :more-memos :to for-who)))))
-
 (defun check-for-memos (destination for-who)
-  "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her."
-  (let* ((who (identify-person-canonical-name for-who))
-         (all-memos (gethash who *memos*))
-         (matching-memos (find-matching-memos who destination all-memos))
-         (memo (first matching-memos)))
-    (when memo
-      (setf (gethash who *memos*) (remove-memo memo all-memos))
-      (say destination (memo-to-string memo) :to for-who)
-      (if (> (length matching-memos) 1)
-          (say destination :more-memos :to for-who)))))
+  "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her.
+Also check for private memos (sent by query), and if any found, send it to him/her in private."
+  (let ((who (identify-person-canonical-name for-who)))
+    (labels ((dispatch-memo (to-where to-who memo more?)
+               (say to-where (memo-to-string memo) :to to-who)
+               (when more?
+                 (say to-where :more-memos :to to-who)))
+
+             (handle-memos (from-where to-where to-who)
+               "Find a first matching memo, dispatch it and remove from memo list."
+               (let* ((all-memos (gethash who *memos*))
+                      (matching-memos (find-matching-memos who from-where all-memos))
+                      (memo (first matching-memos)))
+                 (when memo
+                   (setf (gethash who *memos*) (remove-memo memo all-memos))
+                   (dispatch-memo to-where to-who memo (> (length matching-memos) 1))))))
+
+      (handle-memos destination destination for-who) ;public memos
+      (handle-memos nil for-who nil))))              ;private memos
 
 
 (defun notify-via-memo (channel who what from-who is-private)
