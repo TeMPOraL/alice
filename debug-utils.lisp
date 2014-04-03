@@ -1,11 +1,7 @@
 (defpackage #:alice-debug
   (:use #:cl #:alice)
   (:nicknames #:aldbg)
-  (:export #:dump-memos
-           #:read-back-memos
-           #:dump-hashtable
-           #:read-back-into-hashtable
-           #:get-background-handler-instance
+  (:export #:get-background-handler-instance
            #:attach-standard-output-to-slime
            #:detach-standard-output-from-slime))
 
@@ -29,31 +25,11 @@
         (fourth memo-data)
         (local-time:unix-to-timestamp (fifth memo-data))))
 
-(defun dump-memos (&key (source-table alice::*memos*) (destination-file "memos.se"))
-  (dump-hashtable source-table destination-file :value-deconstructor #'deconstruct-memo))
+;; (defun dump-memos (&key (source-table alice::*memos*) (destination-file "memos.se"))
+;;   (dump-hashtable source-table destination-file :value-deconstructor #'deconstruct-memo))
 
-(defun read-back-memos (&key (destination-table alice::*memos*) (source-file "memos.se"))
-  (read-back-into-hashtable destination-table source-file :value-constructor #'reconstruct-memo))
-
-(defun dump-hashtable (hashtable filename &key (value-deconstructor #'identity))
-  "Serializes all `HASHTABLE' data into a file `FILENAME'. Such file can be read back by `READ-BACK-INTO-HASHTABLE'."
-  (let ((entries '()))
-    (maphash (lambda (k v) (push (cons k (mapcar value-deconstructor v)) entries)) hashtable)
-    (with-open-file (out filename :if-exists :supersede :direction :output)
-      (with-standard-io-syntax
-        (print entries out)))
-    entries))
-
-
-(defun read-back-into-hashtable (hashtable filename &key (value-constructor #'identity))
-  "Reads into `HASHTABLE' data from `FILENAME' that was dumped by `DUMP-HASHTABLE' and returns it value."
-  (let ((data '()))
-    (with-open-file (in filename)
-      (with-standard-io-syntax
-        (setf data (read in))))
-    (mapc (lambda (entry) (setf (gethash (car entry) hashtable)
-                                (mapcar value-constructor (cdr entry))))
-          data)))
+;; (defun read-back-memos (&key (destination-table alice::*memos*) (source-file "memos.se"))
+;;   (read-back-into-hashtable destination-table source-file :value-constructor #'reconstruct-memo))
 
 (defun get-background-handler-instance ()
   "Get instance of the (CCL) process of the message loop."

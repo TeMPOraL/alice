@@ -166,9 +166,8 @@
                       "Może sam pokaż swoje najpierw."
                       "Troszkę przesadzasz."))
 
-    (:point-out-making-sense . ("!!! szybko !!!"
-                                "!! ↑↑"
-                                "↑↑↑↑"))
+    (:point-out-making-sense . ("Powiedziałabym coś, ale może to wyglądać nieco pasywno-agresywnie..."
+                                "khem..."))
     
 
     (:hello . ("czeeeeeeeeeść"

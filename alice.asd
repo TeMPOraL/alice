@@ -13,6 +13,7 @@
                #:cxml
                #:local-time)
   :components ((:file "package")
+               (:file "persistence-utils" :depends-on ("package"))
                (:file "globals" :depends-on ("package"))
                (:file "language" :depends-on ("globals"))
                (:file "world-model" :depends-on ("language"))
