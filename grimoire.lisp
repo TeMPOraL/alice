@@ -87,6 +87,10 @@
 (defun make-timestamp ()
   (local-time:format-timestring nil (local-time:now) :format +timestring-format+))
 
+(defun make-datestring (timestamp)
+  (let ((diff (local-time:timestamp-difference (local-time:now) timestamp))
+        (diff-from-today (local-time:timestamp-difference (local-time:today) timestamp)))
+    ))
 ;; MEMOS
 ;; FIXME move this somewhere?
 (defvar *memos* (make-hash-table :test 'equalp))
