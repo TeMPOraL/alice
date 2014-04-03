@@ -106,18 +106,28 @@
 
 (defun find-matching-memos (user destination memos)
   (remove-if-not (lambda (memo)
-                   (and (or (equalp destination (first memo))
-                            (null (first memo)))
+                   (and (equalp destination (first memo))
                         (equalp user (second memo))))
                  memos))
 
 (defun remove-memo (memo memos)
   (remove-if (lambda (m)
-               (and (or (equalp (first memo) (first m))
-                        (null (first m)))
+               (and (equalp (first memo) (first m))
                     (equalp (second memo) (second m))))
              memos
              :count 1))
+
+(defun check-for-private-memos (for-who)
+  "See if user `FROM-WHO' writing anywhere has any pending private memos and if so, grab the first one and write it to him/her in private."
+ (let* ((who (identify-person-canonical-name for-who))
+         (all-memos (gethash who *memos*))
+         (matching-memos (find-matching-memos who nil all-memos))
+         (memo (first matching-memos)))
+    (when memo
+      (setf (gethash who *memos*) (remove-memo memo all-memos))
+      (say for-who (memo-to-string memo) :to for-who)
+      (if (> (length matching-memos) 1)
+          (say for-who :more-memos :to for-who)))))
 
 (defun check-for-memos (destination for-who)
   "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her."
@@ -126,13 +136,10 @@
          (matching-memos (find-matching-memos who destination all-memos))
          (memo (first matching-memos)))
     (when memo
-      (let ((real-destination (if (first memo)
-                                  destination
-                                  for-who)))
-        (setf (gethash who *memos*) (remove-memo memo all-memos))
-        (say real-destination (memo-to-string memo) :to for-who)
-        (if (> (length matching-memos) 1)
-            (say real-destination :more-memos :to for-who))))))
+      (setf (gethash who *memos*) (remove-memo memo all-memos))
+      (say destination (memo-to-string memo) :to for-who)
+      (if (> (length matching-memos) 1)
+          (say destination :more-memos :to for-who)))))
 
 
 (defun notify-via-memo (channel who what from-who is-private)

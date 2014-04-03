@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.57. (I'm still pissed off at you guys, but at least I remember the dates memos are being left)")
+    (:version . "0.0.58. (Ta dalej wkurzona, ale która umie przesyłać prywatne mema.)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
