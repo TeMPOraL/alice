@@ -126,37 +126,40 @@
          (matching-memos (find-matching-memos who destination all-memos))
          (memo (first matching-memos)))
     (when memo
-      (progn (setf (gethash who *memos*) (remove-memo memo all-memos))
-             (say destination (memo-to-string memo) :to for-who)
-             (if (> (length matching-memos) 1)
-                 (say destination :more-memos :to for-who))))))
+      (let ((real-destination (if (first memo)
+                                  destination
+                                  for-who)))
+        (setf (gethash who *memos*) (remove-memo memo all-memos))
+        (say real-destination (memo-to-string memo) :to for-who)
+        (if (> (length matching-memos) 1)
+            (say real-destination :more-memos :to for-who))))))
 
 
-(defun notify-via-memo (channel who what from-who is-global)
-  (let ((memo (make-memo (and is-global channel)
-                               who what from-who)))
+(defun notify-via-memo (channel who what from-who is-private)
+  (let ((memo (make-memo (and (not is-private) channel)
+                         who what from-who)))
     (if memo
         (progn (save-memo memo)
                :memo-saved)
         :memo-failed)))
 
 (defun make-pushover-notifier (pushover-key)
-  (lambda (channel who what from-who is-global)
-    (declare (ignore channel who is-global))
+  (lambda (channel who what from-who is-private)
+    (declare (ignore channel who is-private))
     (send-notification what pushover-key from-who)))
 
 (defun make-email-notifier (email)
-  (lambda (channel who what from-who is-global)
-    (declare (ignore channel who from-who is-global))
+  (lambda (channel who what from-who is-private)
+    (declare (ignore channel who from-who is-private))
     (send-email email what)))
 
 ;; GENERAL NOTIFICATIONS
 
-(defun notify-person (channel target-user message-body from-who is-global)
+(defun notify-person (channel target-user message-body from-who is-private)
   "Notify a person using the most suitable medium available."
-  (funcall (pick-notifier channel target-user message-body from-who is-global)
-           channel target-user message-body from-who is-global))
+  (funcall (pick-notifier channel target-user message-body from-who is-private)
+           channel target-user message-body from-who is-private))
 
-(defun pick-notifier (channel target-user message-body from-who is-global)
+(defun pick-notifier (channel target-user message-body from-who is-private)
   "Select notification method for given user."
   (gethash (identify-person-canonical-name target-user) *user-notification-medium* #'notify-via-memo))
