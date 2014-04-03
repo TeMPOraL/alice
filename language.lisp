@@ -25,13 +25,16 @@
   (cl-ppcre:regex-replace-all +regexp-escape-special-characters-regexp-part+ text "\\\\\\1"))
 
 
-(defconstant +regexp-special-characters+ ".^$*+?()[{\|\\")
-(defconstant +regexp-escape-special-characters-regexp-part+ (concatenate 'string
-                                                                         "(["
-                                                                         (coerce (mapcan (lambda (x) (list #\\ x))
-                                                                                         (coerce +regexp-special-characters+ 'list))
-                                                                                 'string)
-                                                                         "])"))
+(define-constant +regexp-special-characters+ ".^$*+?()[{\|\\" :test #'string=)
+(define-constant
+    +regexp-escape-special-characters-regexp-part+
+    (concatenate 'string
+                 "(["
+                 (coerce (mapcan (lambda (x) (list #\\ x))
+                                 (coerce +regexp-special-characters+ 'list))
+                         'string)
+                 "])")
+  :test #'string=)
 
 ;;; stems
 ;; wiktor owi
