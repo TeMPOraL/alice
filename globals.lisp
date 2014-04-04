@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.59. (Ta dalej wkurzona, ale która przesyła prywatne mema i nie bitchuje się o redefinicje stałych przy starcie.)")
+    (:version . "0.0.61. (Seven-Coloured Trust Line)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"

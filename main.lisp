@@ -76,6 +76,9 @@
           (message-body (second (irc:arguments message))))
 
       (check-for-memos destination from-who)
+
+      (handle-specials destination is-private is-public is-directed from-who message-body)
+
       (cond
         ((and is-directed
               (or (mentions "zawiadom" message-body)
