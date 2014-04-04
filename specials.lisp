@@ -15,7 +15,7 @@
 (defparameter *min-blueline-msgs-required* 3)
 
 (defun handle-specials (destination is-private is-public is-directed from-who message-body)
-  (handle-blueline destination is-private is-public is-directed from-who message-body)
+  ;; (handle-blueline destination is-private is-public is-directed from-who message-body)
   (handle-marchewa-presentation destination is-private is-public is-directed from-who message-body))
 
 
@@ -29,7 +29,7 @@
         (if (and (> *consecutive-blueline-msgs* *min-blueline-msgs-required*)
                  (= 0 (random 3)))
             (say destination (random-elt *blueline-answers*))))
-      (if (= 0 (random 3)) (setf *consecutive-blueline-msgs* 0))))
+      (if (= 0 (random 2)) (setf *consecutive-blueline-msgs* 0))))
 
 (defun handle-marchewa-presentation (destination is-private is-public is-directed from-who message-body)
 
