@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.56. (I'm still pissed off at you guys, but at least I can parse memos maybe probably correctly)")
+    (:version . "0.0.61. (Seven-Coloured Trust Line)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -166,11 +166,9 @@
                       "Może sam pokaż swoje najpierw."
                       "Troszkę przesadzasz."))
 
-    (:point-out-making-sense . ("!!! szybko !!!"
-                                "!! ↑↑"
-                                "↑↑↑↑"))
+    (:point-out-making-sense . ("Powiedziałabym coś, ale może to wyglądać nieco pasywno-agresywnie..."
+                                "khem..."))
     
-
     (:hello . ("czeeeeeeeeeść"
                "oh hai!"
                "hej"

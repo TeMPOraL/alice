@@ -24,8 +24,7 @@
       (keyword (say to-where (cdr (assoc what *answers*)) :to to))
 
       (list (say to-where
-                 (elt what
-                      (random (length what)))
+                 (random-elt what)
                  :to to))
 
       (string
@@ -53,13 +52,11 @@
 (defun public-message-p (message)
   (and
    (not (string-equal *nick* (first (irc:arguments message)))) ; search message
-   (not (equal 0
-               (search *nick* (second (irc:arguments message))))))) ; search message target
+   (not (starts-with-subseq *nick* (second (irc:arguments message)))))) ; search message target
        
 (defun private-message-p (message)
   (or (string-equal (first (irc:arguments message))
-                    *nick*)
-      (equal 0 (search *nick* (second (irc:arguments message))))))
+                    *nick*)))
 
 (defun directed-message-p (message)
   (or (string-equal (first (irc:arguments message))
@@ -79,6 +76,9 @@
           (message-body (second (irc:arguments message))))
 
       (check-for-memos destination from-who)
+
+      (handle-specials destination is-private is-public is-directed from-who message-body)
+
       (cond
         ((and is-directed
               (or (mentions "zawiadom" message-body)
@@ -228,12 +228,12 @@
 
         ((and (or is-public
                   is-directed)
-              (equalp destination "#hackerspace-krk")
+              (equalp destination "#hackerspace-krk") 
               (or (mentions "robi sens" message-body)
                   (mentions "robią sens" message-body)
                   (mentions "robić sens" message-body)))
-         (say destination :point-out-making-sense :to "Wiktor"))
-
+         (when (= 0 (random 3))
+           (say destination :point-out-making-sense)))
 
         ;; is this an accident?
         ((and (or is-public
@@ -248,7 +248,6 @@
                (mentions "jolo" message-body)))
          (if (= 0 (random 3))
              (say destination :yolo :to from-who)))
-             
 
         ;; temporary control for remembering names
         ((and is-private
