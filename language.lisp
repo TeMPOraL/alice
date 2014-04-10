@@ -86,12 +86,20 @@
 
 (defun days-diff (time-a time-b)
   "Compute the difference in calendar days between `TIME-A' and `TIME-B'."
-  (- (local-time:day-of (local-time:timestamp-minimize-part time-a :hour))
-     (local-time:day-of (local-time:timestamp-minimize-part time-b :hour))))
+  (- (local-time:day-of (local-time:timestamp-minimize-part time-b :hour))
+     (local-time:day-of (local-time:timestamp-minimize-part time-a :hour))))
 
-
-(defun date-difference (time-a time-b)
-  (declare (ignore time-a time-b))
+(defun date-difference-string (time-a time-b)
   "Compute natural-language date difference of days between timestamps `TIME-A' and `TIME-B'."
-  nil)
+  (let ((days-offset (days-diff time-a time-b)))
+    (case days-offset
+      (0 :today)
+
+      (-1 :yesterday)
+      (-2 :two-days-ago)
+      (-3 :three-days-ago)
+
+      (1 :tomorrow)
+      (2 :day-after-tomorrow)
+      (t nil))))                        ;TODO run day-of-the-week string
 
