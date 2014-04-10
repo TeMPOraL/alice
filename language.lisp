@@ -86,8 +86,8 @@
 
 (defun days-diff (time-a time-b)
   "Compute the difference in calendar days between `TIME-A' and `TIME-B'."
-  (- (local-time:day-of time-a)
-     (local-time:day-of time-b)))
+  (- (local-time:day-of (local-time:timestamp-minimize-part time-a :hour))
+     (local-time:day-of (local-time:timestamp-minimize-part time-b :hour))))
 
 
 (defun date-difference (time-a time-b)
