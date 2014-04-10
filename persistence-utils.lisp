@@ -15,7 +15,7 @@
   (let ((data '()))
     (with-open-file (in filename)
       (with-standard-io-syntax
-        (setf datpa (read in))))
+        (setf data (read in))))
     (mapc (lambda (entry) (setf (gethash (car entry) hashtable)
                                 (cdr entry)))
           data)))

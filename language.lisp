@@ -43,3 +43,55 @@
 ;; marchew e
 ;; marchew ę
 ;; dreadlish owi
+
+
+;; functions related to time formatting
+;; TODO if switching to feature/style, this looks like something to be factored out to it's own file!
+
+(defparameter *date-difference-strings*
+  '((:today . ("dzisiaj" "dziś"))
+    ;; 
+    (:yesterday . "wczoraj")
+    (:two-days-ago . ("przedwczoraj" "dwa dni temu"))
+    (:three-days-ago . "trzy dni temu")
+    ;; 
+    (:tomorrow . "jutro")
+    (:day-after-tomorrow . "pojutrze")
+    ;; 
+    (:monday . "w poniedziałek")
+    (:tuesday . "we wtorek")
+    (:wednesday . "w środę")
+    (:thursday . "w czwartek")
+    (:friday . "w piątek")
+    (:saturday . "w sobotę")
+    (:sunday . "w niedzielę")
+    ;; 
+    (:prev-monday . ("w zeszły poniedziałek"
+                     "w ostatni poniedziałek"))
+    (:prev-tuesday . ("w zeszły wtorek"
+                      "w ostatni wtorek"))
+    (:prev-wednesday . ("w zeszłą środę"
+                     "w ostatnią środę"))
+    (:prev-thursday . ("w zeszły czwartek"
+                      "w ostatni czwartek"))
+    (:prev-friday . ("w zeszły piątek"
+                     "w ostatni piątek"))
+    (:prev-saturday . ("w zeszłą sobotę"
+                      "w ostatnią sobotę"))
+    (:prev-sunday . ("w zeszłą niedzielę"
+                     "w ostatnią niedzielę"))))
+
+(defparameter *days-of-week* #(:sunday :monday :tuesday :wednesday :thursday :friday :saturday))
+(defparameter *days-of-previous-week* #(:prev-sunday :prev-monday :prev-tuesday :prev-wednesday :prev-thursday :prev-friday :prev-saturday))
+
+(defun days-diff (time-a time-b)
+  "Compute the difference in calendar days between `TIME-A' and `TIME-B'."
+  (- (local-time:day-of time-a)
+     (local-time:day-of time-b)))
+
+
+(defun date-difference (time-a time-b)
+  (declare (ignore time-a time-b))
+  "Compute natural-language date difference of days between timestamps `TIME-A' and `TIME-B'."
+  nil)
+
