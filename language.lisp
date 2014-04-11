@@ -91,6 +91,7 @@
 
 (defun date-difference-string (time-a time-b)
   "Compute natural-language date difference of days between timestamps `TIME-A' and `TIME-B'."
+  ;; TODO refactor that case down there to alist or sth.
   (let ((days-offset (days-diff time-a time-b)))
     (case days-offset
       (0 :today)
@@ -103,3 +104,6 @@
       (2 :day-after-tomorrow)
       (t nil))))                        ;TODO run day-of-the-week string
 
+
+(defun fix-day-of-week-offset (offset)
+  (mod (1- offset) 7))
