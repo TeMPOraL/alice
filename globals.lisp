@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.61. (Seven-Coloured Trust Line)")
+    (:version . "0.0.62.-feature/datestrings (Girl Aware Of Relative Times)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
