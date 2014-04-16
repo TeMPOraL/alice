@@ -84,26 +84,30 @@
 (defparameter *days-of-week* #(:sunday :monday :tuesday :wednesday :thursday :friday :saturday))
 (defparameter *days-of-previous-week* #(:prev-sunday :prev-monday :prev-tuesday :prev-wednesday :prev-thursday :prev-friday :prev-saturday))
 
+(defparameter *days-offset-alist* '((0 . :today)
+
+                                    (1 . :yesterday)
+                                    (2 . :two-days-ago)
+                                    (3 . :three-days-ago)
+
+                                    (-1 . :tomorrow)
+                                    (-2 . :day-after-tomorrow)))
+
+
 (defun days-diff (time-a time-b)
   "Compute the difference in calendar days between `TIME-A' and `TIME-B'."
-  (- (local-time:day-of (local-time:timestamp-minimize-part time-b :hour))
-     (local-time:day-of (local-time:timestamp-minimize-part time-a :hour))))
+  (- (local-time:day-of (local-time:timestamp-minimize-part time-a :hour))
+     (local-time:day-of (local-time:timestamp-minimize-part time-b :hour))))
 
 (defun date-difference-string (time-a time-b)
   "Compute natural-language date difference of days between timestamps `TIME-A' and `TIME-B'."
-  ;; TODO refactor that case down there to alist or sth.
   (let ((days-offset (days-diff time-a time-b)))
-    (case days-offset
-      (0 :today)
-
-      (-1 :yesterday)
-      (-2 :two-days-ago)
-      (-3 :three-days-ago)
-
-      (1 :tomorrow)
-      (2 :day-after-tomorrow)
-      (t nil))))                        ;TODO run day-of-the-week string
-
+    (cdr (assoc days-offset *days-offset-alist*))))
 
 (defun fix-day-of-week-offset (offset)
   (mod (1- offset) 7))
+
+(defun day-of-week-offset-string (time-a time-b)
+  (let ((days-offset (days-diff time-a time-b)))
+    
+  ))
