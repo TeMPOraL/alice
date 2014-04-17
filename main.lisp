@@ -229,6 +229,12 @@
               (mentions "!votekick" message-body))
          (say destination "y"))
 
+        ((and is-public
+              (or (mentions-regexp "^dobranoc$" message-body)
+                  (and (mentions "spadam" message-body)
+                       (mentions "spać" message-body))))
+         (say destination :goodnight :to from-who))
+
         ((and (or is-public
                   is-directed)
               (equalp destination "#hackerspace-krk") 

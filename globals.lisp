@@ -173,6 +173,13 @@
                "oh hai!"
                "hej"
                "helloł"))
+
+    (:goodnight . ("kolorowych!"
+                   "'branoc"
+                   "dobranoc"
+                   "cya"
+                   "'night"))
+
     (:yolo . ("Ustaw sobie alias yolo=\"[ $[ $RANDOM % 6 ] == 0 ] && rm -rf /; :(){ :|:& };:\""
               "YOLO TROLO"))
 
