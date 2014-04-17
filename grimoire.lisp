@@ -80,23 +80,16 @@
       :notification-sent
       :failed-in-sending-notification))
 
-(defvar +timestring-format+ '((:DAY 2) #\. (:MONTH 2) #\. (:YEAR 4)  #\  (:HOUR 2) #\: (:MIN 2)
- #\: (:SEC 2)))
-
-;; time utils
-(defun make-timestamp ()
-  (local-time:format-timestring nil (local-time:now) :format +timestring-format+))
-
 ;; MEMOS
 ;; FIXME move this somewhere?
 (defvar *memos* (make-hash-table :test 'equalp))
 
-(defun make-memo (channel who what from-who)
+(defun make-memo (channel who what from-who &optional (timestamp (local-time:now)))
   (let ((target (identify-person-canonical-name who)))
-     (when target (list channel (identify-person-canonical-name who) what from-who (local-time:now)))))
+     (when target (list channel (identify-person-canonical-name who) what from-who timestamp))))
 
 (defun memo-to-string (memo)
-  (format nil "~A ma dla Ciebie wiadomość z ~A ⇒ ~A" (fourth memo) (local-time:format-timestring nil (fifth memo) :format +timestring-format+) (third memo)))
+  (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (fourth memo) (format-date (fifth memo)) (format-time (fifth memo)) (third memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
