@@ -89,7 +89,7 @@
      (when target (list channel (identify-person-canonical-name who) what from-who timestamp))))
 
 (defun memo-to-string (memo)
-  (format nil "Wiadomość od ~A zapisana ~A o ~A ⇒ ~A" (fourth memo) (format-date (fifth memo)) (format-time (fifth memo)) (third memo)))
+  (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (fourth memo) (format-date (fifth memo)) (format-time (fifth memo)) (third memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
