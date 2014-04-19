@@ -226,6 +226,11 @@
          (say destination :notitsforyou :to from-who))
 
         ((and is-directed
+              (mentions-regexp "źródł(o|a)" message-body))
+         (say destination :repo-link :to from-who))
+
+
+        ((and is-directed
               (mentions-regexp "rzu(cisz|ć)" message-body)
               (or (mentions "K6" message-body)
                   (mentions-regexp "koś(ć|ci)" message-body)

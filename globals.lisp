@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.64. (Seven-Coloured Image Macro Youkai)")
+    (:version . "0.0.65. (Use The Source, Reimu)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -186,6 +186,8 @@
     (:marisa . ("Marisaaaa?!"
                 "Marisaaa! <3"
                 "*sob*"))
+
+    (:repo-link . "http://github.com/TeMPOraL/alice")
 
     (:dicethrow . ("⚀"
                    "⚁"
