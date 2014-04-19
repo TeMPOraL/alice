@@ -185,7 +185,14 @@
 
     (:marisa . ("Marisaaaa?!"
                 "Marisaaa! <3"
-                "*sob*"))))
+                "*sob*"))
+
+    (:dicethrow . ("⚀"
+                   "⚁"
+                   "⚂"
+                   "⚃"
+                   "⚄"
+                   "⚅"))))
 
 
 (defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")

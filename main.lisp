@@ -225,8 +225,15 @@
               (mentions "cycki" message-body))
          (say destination :notitsforyou :to from-who))
 
+        ((and is-directed
+              (mentions-regexp "rzu(cisz|ć)" message-body)
+              (or (mentions "K6" message-body)
+                  (mentions-regexp "koś(ć|ci)" message-body)
+                  (mentions-regexp "kostk(ą|ę|ami)" message-body)))
+         (say destination :dicethrow :to from-who))
+
         ((and is-public
-              (mentions "!votekick" message-body))
+              (mentions-regexp "^(!|kd)votekick" message-body))
          (say destination "y"))
 
         ((and is-public
