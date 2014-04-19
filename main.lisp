@@ -242,8 +242,8 @@
          (say destination "y"))
 
         ((and is-public
-              (or (mentions-regexp "^dobranoc$" message-body)
-                  (and (mentions "spadam" message-body)
+              (or (mentions-regexp "^(do)?branoc$" message-body)
+                  (and (mentions-regexp "(spadam|lece|lecę)" message-body)
                        (mentions "spać" message-body))))
          (say destination :goodnight :to from-who))
 
