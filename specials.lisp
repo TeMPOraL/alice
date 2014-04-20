@@ -26,7 +26,10 @@
     (:noidea . "https://dl.dropboxusercontent.com/u/216352/comment/noidea.jpg")
     (:suitability . "https://dl.dropboxusercontent.com/u/216352/comment/suitability.jpg")
     (:strong-upvote . "https://dl.dropboxusercontent.com/u/216352/comment/strong-upvote.gif")
-    (:fuck-science . "https://dl.dropboxusercontent.com/u/216352/comment/fuck_science.jpg")))
+    (:fuck-science . "https://dl.dropboxusercontent.com/u/216352/comment/fuck_science.jpg")
+    (:congratulations-song . "https://www.youtube.com/watch?v=AteCdXvZOZc") ; well, it's not an image macro, but stil....
+))
+
 
 (defun handle-specials (destination is-private is-public is-directed from-who message-body)
   ;; (handle-blueline destination is-private is-public is-directed from-who message-body)
@@ -91,6 +94,9 @@
 
           ((mentions "fuck science" message-body)
            (say-image-macro destination :fuck-science))
+
+          ((mentions "congratulations!!" message-body)
+           (say-image-macro destination :congratulations-song))
 
           ((mentions-regexp "^cool\\." message-body)
            (say-image-macro destination :cool))))))
