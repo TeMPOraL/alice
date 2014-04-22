@@ -30,10 +30,31 @@
     (:congratulations-song . "https://www.youtube.com/watch?v=AteCdXvZOZc") ; well, it's not an image macro, but stil....
 ))
 
+(defparameter *standard-answers*
+  '(("SOA#1" . "SOA#1: U mnie działa." )
+    ("SOA#2" . "SOA#2: U mnie też nie działa.")
+    ("SOA#4" . ("SOA#4: Się naprawi."
+                "SOA#4: Working on it..."))
+    ("SOA#8" . "SOA#8: RTFM!")
+    ("SOA#16" . ("SOA#16: Google Is Your Friend!"
+                 "SOA#16: UTFG!"))
+    ("SOA#32" . "SOA#32: Masz niekompatybilną podkładkę pod mysz.")
+    ("SOA#512" . "SOA#512: Dziwne... u mnie niedawno działało.")
+    ("SOA#1024" . "SOA#1024: U mnie ZAWSZE wszystko działa.")
+    ("SOA#2048" . "Dzięki za info.")
+    ("SOA#4096" . ("It's not a bug, it's a feature!"
+                   "It's not a bug. It's a feature!"))
+    ("SOA#R" . ("Próbowałeś zrestartować komputer?"
+                "Have you tried to turn it off and on again?"))
+    ("SOA#Z" . ("Zrobione."
+                "Done."))
+    ("SOD#1" . "Zrób sobie sam.")))
+
 
 (defun handle-specials (destination is-private is-public is-directed from-who message-body)
   ;; (handle-blueline destination is-private is-public is-directed from-who message-body)
   (handle-comments destination is-private is-public is-directed from-who message-body)
+  (handle-standard-answers destination is-private is-public is-directed from-who message-body)
   (handle-marchewa-presentation destination is-private is-public is-directed from-who message-body))
 
 
@@ -49,10 +70,17 @@
             (say destination (random-elt *blueline-answers*))))
       (if (= 0 (random 2)) (setf *consecutive-blueline-msgs* 0))))
 
+(defun handle-standard-answers (destination is-private is-public is-directed from-who message-body)
+  (declare (ignore from-who is-directed is-private))
+
+  (if is-public
+      (let ((match (cl-ppcre:scan-to-strings "^(SO(A|D)#[0-9A-Z]+)" message-body)))
+        (if match
+            (say destination (cdr (assoc match *standard-answers* :test #'string=)))))))
+
 (defun handle-marchewa-presentation (destination is-private is-public is-directed from-who message-body)
 
   )
-
 
 (defun handle-comments (destination is-private is-public is-directed from-who message-body)
   (declare (ignore from-who is-directed is-private))
