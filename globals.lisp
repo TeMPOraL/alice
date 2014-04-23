@@ -152,7 +152,8 @@
 
     (:nothing-computed . ("Nic się nie policzyło :(."
                           "Brak wyniku; spytaj o coś innego."
-                          "Nope, nic nie ma."))
+                          "Nope, nic nie ma."
+                          "Nie pykło."))
 
     (:throttled-message . ("... jest tego więcej, wyświetlić?"
                            "... wyświetlać dalej?"))

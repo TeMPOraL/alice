@@ -51,10 +51,11 @@
     ("SOD#1" . "Zrób sobie sam.")))
 
 
-(defun handle-specials (destination is-private is-public is-directed from-who message-body)
+(defun handle-specials (destination is-private is-public is-directed from-who message-body) 
   ;; (handle-blueline destination is-private is-public is-directed from-who message-body)
   (handle-comments destination is-private is-public is-directed from-who message-body)
   (handle-standard-answers destination is-private is-public is-directed from-who message-body)
+  (handle-general-terms destination is-private is-public is-directed from-who message-body)
   (handle-marchewa-presentation destination is-private is-public is-directed from-who message-body))
 
 
@@ -71,12 +72,23 @@
       (if (= 0 (random 2)) (setf *consecutive-blueline-msgs* 0))))
 
 (defun handle-standard-answers (destination is-private is-public is-directed from-who message-body)
-  (declare (ignore from-who is-directed is-private))
+  (declare (ignore from-who is-private))
 
-  (if is-public
-      (let ((match (cl-ppcre:scan-to-strings "^(SO(A|D)#[0-9A-Z]+)" message-body)))
+  (if (or is-public
+          is-directed)
+      (let ((match (cl-ppcre:scan-to-strings "(SO(A|D)#[0-9A-Z]+)" message-body)))
         (if match
             (say destination (cdr (assoc match *standard-answers* :test #'string=)))))))
+
+(defun handle-general-terms (destination is-private is-public is-directed from-who message-body)
+  (declare (ignore from-who is-private))
+  (if (or is-public
+          is-directed)
+      (cond
+        ((or (mentions "poes law" message-body)
+            (mentions "poe's law" message-body))
+         (say destination #("Poe's Law: Without a winking smiley or other blatant display of humor, it is utterly impossible to parody anything in such a way that someone won't mistake for the genuine article."
+                            "See: http://en.wikipedia.org/wiki/Poe's_law for more information."))))))
 
 (defun handle-marchewa-presentation (destination is-private is-public is-directed from-who message-body)
 
