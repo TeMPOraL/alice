@@ -76,9 +76,9 @@
 
   (if (or is-public
           is-directed)
-      (let ((match (cl-ppcre:scan-to-strings "(SO(A|D)#[0-9A-Z]+)" message-body)))
+      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D)#[0-9A-Z]+)" message-body)))
         (if match
-            (say destination (cdr (assoc match *standard-answers* :test #'string=)))))))
+            (say destination (cdr (assoc match *standard-answers* :test #'equalp)))))))
 
 (defun handle-general-terms (destination is-private is-public is-directed from-who message-body)
   (declare (ignore from-who is-private))

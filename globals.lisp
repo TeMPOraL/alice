@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.666. (Bastard Operator From Japan)")
+    (:version . "0.0.666i. (Bastard Operator From Japan (case-insensitive))")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
