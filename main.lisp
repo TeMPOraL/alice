@@ -85,12 +85,13 @@
       (cond
         ((and is-directed
               (or (mentions "zawiadom" message-body)
-                       (mentions "powiadom" message-body)
-                       (mentions "przeka" message-body)
-                       (mentions "pingnij" message-body)
-                       (mentions "zapyta" message-body)
-                       (mentions "spyta" message-body)
-                       (mentions "memo" message-body)))
+                  (mentions "powiadom" message-body)
+                  (mentions "przeka" message-body)
+                  (mentions "pingnij" message-body)
+                  (mentions "podrzuć" message-body)
+                  (mentions "zapyta" message-body)
+                  (mentions "spyta" message-body)
+                  (mentions "memo" message-body)))
          (progn (say destination (notify-person destination
                                                 (identify-person-mentioned message-body)
                                                 message-body
