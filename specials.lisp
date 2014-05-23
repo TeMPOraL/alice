@@ -48,7 +48,8 @@
                 "Have you tried to turn it off and on again?"))
     ("SOA#Z" . ("Zrobione."
                 "Done."))
-    ("SOD#1" . "Zrób sobie sam.")))
+    ("SOD#1" . "Zrób sobie sam.")
+    ("SOM#1" . "Dajcie wy mi święty spokój.")))
 
 
 (defun handle-specials (destination is-private is-public is-directed from-who message-body) 
@@ -76,7 +77,7 @@
 
   (if (or is-public
           is-directed)
-      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D)#[0-9A-Z]+)" message-body)))
+      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D|M)#[0-9A-Z]+)" message-body)))
         (if match
             (say destination (cdr (assoc match *standard-answers* :test #'equalp)))))))
 
