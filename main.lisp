@@ -270,6 +270,15 @@
                (mentions "jolo" message-body)))
          (if (= 0 (random 3))
              (say destination :yolo :to from-who)))
+             
+        ((and is-directed
+              (or (mentions "kto to" message-body)
+                  (mentions "kim jest" message-body)))
+          (if (mentions "kim jestem" message-body)
+              (say destination (identify-person-canonical-name from-who) :to from-who)
+              (if (identify-person-mentioned message-body)
+                  (say destination (identify-person-canonical-name (identify-person-mentioned message-body)) :to from-who)
+                  (say destination "chyba nie wiem, o kogo Ci chodzi..." :to from-who))))
 
         ;; temporary control for remembering names
         ((and is-private
