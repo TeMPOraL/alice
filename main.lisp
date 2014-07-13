@@ -91,6 +91,7 @@
                   (mentions "podrzuć" message-body)
                   (mentions "zapyta" message-body)
                   (mentions "spyta" message-body)
+                  (mentions "powiedz" message-body)
                   (mentions "memo" message-body)))
          (progn (say destination (notify-person destination
                                                 (identify-person-mentioned message-body)
