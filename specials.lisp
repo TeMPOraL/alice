@@ -51,7 +51,8 @@
     ("SOD#1" . "Zrób sobie sam.")
     ("SOM#1" . "Dajcie wy mi święty spokój.")
     ("SOM#2" . ("Please, keep me out of this."
-		"Proszę, dyskutujcie o tym beze mnie."))))
+		"Proszę, dyskutujcie o tym beze mnie."))
+    ("SOM#3" . "Ale ja nic nie wiem!")))
 
 
 (defun handle-specials (destination is-private is-public is-directed from-who message-body) 

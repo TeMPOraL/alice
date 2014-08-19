@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.669. (Ta, która zna nowe SOMy.)")
+    (:version . "0.0.67. (Ta, która zna nowe SOMy.)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
