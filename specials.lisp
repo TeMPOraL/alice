@@ -41,19 +41,21 @@
     ("SOA#32" . "SOA#32: Masz niekompatybilną podkładkę pod mysz.")
     ("SOA#512" . "SOA#512: Dziwne... u mnie niedawno działało.")
     ("SOA#1024" . "SOA#1024: U mnie ZAWSZE wszystko działa.")
-    ("SOA#2048" . "Dzięki za info.")
-    ("SOA#4096" . ("It's not a bug, it's a feature!"
-                   "It's not a bug. It's a feature!"))
-    ("SOA#R" . ("Próbowałeś zrestartować komputer?"
-                "Have you tried to turn it off and on again?"))
-    ("SOA#Z" . ("Zrobione."
-                "Done."))
-    ("SOD#1" . "Zrób sobie sam.")
-    ("SOM#1" . "Dajcie wy mi święty spokój.")
-    ("SOM#2" . ("Please, keep me out of this."
-		"Proszę, dyskutujcie o tym beze mnie."))
-    ("SOM#3" . "Ale ja nic nie wiem!")
-    ("SOM#4" . "Cooo? I tak Cię nie słyszę.")))
+    ("SOA#2048" . "SOA#2048: Dzięki za info.")
+    ("SOA#4096" . ("SOA#4096: It's not a bug, it's a feature!"
+                   "SOA#4096: It's not a bug. It's a feature!"))
+    ("SOA#R" . ("SOA#R: Próbowałeś zrestartować komputer?"
+                "SOA#R: Have you tried to turn it off and on again?"))
+    ("SOA#Z" . ("SOA#Z: Zrobione."
+                "SOA#Z: Done."))
+    ("SOD#1" . "SOD#1: Zrób sobie sam.")
+    ("SOM#1" . "SOM#1: Dajcie wy mi święty spokój.")
+    ("SOM#2" . ("SOM#2: Please, keep me out of this."
+		"SOM#2: Proszę, dyskutujcie o tym beze mnie."))
+    ("SOM#3" . "SOM#3: Ale ja nic nie wiem!")
+    ("SOM#4" . "SOM#4: Cooo? I tak Cię nie słyszę.")
+
+    ("SOW#1" . "SOW#1: Fuck off.")))
 
 
 (defun handle-specials (destination is-private is-public is-directed from-who message-body) 
@@ -81,7 +83,7 @@
 
   (if (or is-public
           is-directed)
-      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D|M)#[0-9A-Z]+)" message-body)))
+      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D|M|W)#[0-9A-Z]+)" message-body)))
         (if match
             (say destination (cdr (assoc match *standard-answers* :test #'equalp)))))))
 
