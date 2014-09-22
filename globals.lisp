@@ -170,7 +170,8 @@
     (:point-out-making-sense . ("Powiedziałabym coś, ale może to wyglądać nieco pasywno-agresywnie..."
                                 "khem..."))
     
-    (:hello . ("czeeeeeeeeeść"
+    (:hello . ("Pokój i dobro."
+               "czeeeeeeeeeść"
                "oh hai!"
                "hej"
                "helloł"))
