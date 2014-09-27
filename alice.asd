@@ -11,6 +11,7 @@
                #:cl-unicode
                #:cl-ppcre
                #:cxml
+               #:cl-json
                #:local-time)
   :components ((:file "package")
                (:file "persistence-utils" :depends-on ("package"))

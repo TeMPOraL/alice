@@ -199,7 +199,7 @@
                 "*sob*"))
 
     (:repo-link . "http://github.com/TeMPOraL/alice")
-    (:issues-link . "http://github.com/TeMPOraL/alice/issues")
+    (:issues-link . "http://github.com/TeMPOraL/alice/issues; issues możesz też zgłaszać ładnie mnie prosząc.")
 
     (:dicethrow . ("⚀"
                    "⚁"
