@@ -200,12 +200,6 @@
               (not (null *throttled-output*)))
          (say destination *throttled-output*))
 
-        ;; save
-        ((and is-directed
-              (or (mentions "pisz" message-body)
-                  (mentions "notuj" message-body)))
-         (say destination :save))
-
         ;; say hi!
         ((and is-directed
               (or (mentions "czesc" message-body)
@@ -230,6 +224,15 @@
         ((and is-directed
               (mentions-regexp "źródł(o|a)" message-body))
          (say destination :repo-link :to from-who))
+
+        ((and is-directed
+              (mentions-regexp "issues" message-body))
+         (say destination :issues-link :to from-who))
+
+        ((and is-directed
+              (mentions-regexp "(dodaj|pisz)" message-body)
+              (mentions-regexp "issue" message-body))
+         (say destination (open-github-issue from-who (extract-issue-description message-body)) :to from-who))
 
 
         ((and is-directed
@@ -271,7 +274,14 @@
                (mentions "jolo" message-body)))
          (if (= 0 (random 3))
              (say destination :yolo :to from-who)))
-             
+
+        ;; save
+        ((and is-directed
+              (or (mentions "pisz" message-body)
+                  (mentions "notuj" message-body)))
+         (say destination :save))
+
+
         ((and is-directed
               (or (mentions "kto to" message-body)
                   (mentions "kim jest" message-body)))

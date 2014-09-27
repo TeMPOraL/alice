@@ -9,6 +9,8 @@
       *mailgun-domain* "insert mailgun domain"
       *mailgun-key* "insert mailgun key"
 
+      *github-token* "insert github token here"
+
       *server* "irc.freenode.net"
       *nick* "Alice_M"
       *password* "insert password"

@@ -53,6 +53,24 @@
 (defun parse-message-for-wolfram-computation (text)
   (cl-ppcre:scan-to-strings *wolfram-query-regexp* text))
 
+;;; github
+(defun extract-issue-description (text)
+  (cl-ppcre:scan-to-strings *issue-description-regexp* text))
+
+(defun open-github-issue (who what)
+  "Open an issue on request by `WHO' with description `WHAT'."
+  (if what (if (ignore-errors (drakma:http-request "https://api.github.com/repos/TeMPOraL/alice/issues"
+                                           :method :post
+                                           :external-format-out :UTF-8
+                                           :content (json:encode-json-to-string `((:title . ,(concatenate 'string who " → " what))))
+                                           :content-type "application/json"
+                                           :additional-headers `(("Authorization" . ,(format nil "token ~A" *github-token*)))))
+               :issue-added
+               :failed-to-add-issue)
+      :no-issue-to-add))
+
+;;; notifications
+
 (defun send-notification (what to-token from)
   (if (ignore-errors (drakma:http-request "https://api.pushover.net/1/messages.json"
                                           :method :post

@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.672. (Consistent in SO*s...)")
+    (:version . "0.0.68. (ta z problemami)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -158,6 +158,15 @@
     (:throttled-message . ("... jest tego więcej, wyświetlić?"
                            "... wyświetlać dalej?"))
 
+    (:issue-added . ("Zapisane."
+                     "Dodane."
+                     "Zanotowane."))
+
+    (:failed-to-add-issue . "Chyba nie umiem w Githuba...")
+
+    (:no-issue-to-add . ("Ale co mam dodać? Umieść opis w cudzysłowiach."
+                         "Opis w cudzysłowiach proszę."))
+
     (:kdbot . ("kdbot? jest moją ulubioną lalką."
                "kdbot to bardzo umiejęŧna lalka."
                "kdbot to świetna lalka"))
@@ -190,6 +199,7 @@
                 "*sob*"))
 
     (:repo-link . "http://github.com/TeMPOraL/alice")
+    (:issues-link . "http://github.com/TeMPOraL/alice/issues")
 
     (:dicethrow . ("⚀"
                    "⚁"
@@ -204,6 +214,8 @@
 (defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
 (defparameter *url-shortening-regexp* "(http.*)")
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
+
+(defparameter *issue-description-regexp* "\"(.*)\"" "A regexp to extract issue description.")
 
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 
