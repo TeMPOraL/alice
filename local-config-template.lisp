@@ -11,6 +11,8 @@
 
       *github-token* "insert github token here"
 
+      *gdziepaczka-token* "insert gdziepaczka.pl token here"
+
       *server* "irc.freenode.net"
       *nick* "Alice_M"
       *password* "insert password"

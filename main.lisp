@@ -190,6 +190,13 @@
          ;; (say destination :wolfram-turned-off))
          (say destination (do-wolfram-computation (parse-message-for-wolfram-computation message-body))))
 
+        ;; package tracker
+        ((and is-directed
+              (or (mentions "gdzie jest" message-body)
+                  (mentions "śledź" message-body)
+                  (mentions "track" message-body)))
+         (say destination (track-package (parse-message-for-package-tracking-number message-body))))
+
 
         ;; continue throttled output
         ((and is-directed

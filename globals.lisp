@@ -47,7 +47,7 @@
                             "Takiego wała."
                             "http://wolframalpha.com, samemu sobie policz."))
 
-    (:version . "0.0.68. (ta z problemami)")
+    (:version . "0.0.7. (ta co wie gdzie są (niektóre) paczki)")
 
     (:smiles . (":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                 ";)" ";)" ";)"";)" ";)" ";)"
@@ -155,6 +155,12 @@
                           "Nope, nic nie ma."
                           "Nie pykło."))
 
+    (:failed-to-track-package . ("Nie pykło :(."
+                                 "Nie udało mi sie sprawdzić :(."
+                                 "Coś nie działa."))
+
+    (:no-package-to-track . ("Podaj poprawny numer trackingowy paczki. Póki co, umiem śledzić tylko te w bazie Poczty Polskiej."))
+
     (:throttled-message . ("... jest tego więcej, wyświetlić?"
                            "... wyświetlać dalej?"))
 
@@ -216,6 +222,8 @@
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
 
 (defparameter *issue-description-regexp* "\"(.*)\"" "A regexp to extract issue description.")
+
+(defparameter *tracking-number-regexp* "([A-Z]{2}[0-9]+[A-Z]{2})")
 
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 
