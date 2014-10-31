@@ -9,11 +9,12 @@
               (lowcase-target (string-downcase target))
               (len (length lowcase-target))
               (suffixless-target (subseq lowcase-target 0 (- len 1))))
-         (or (equalp lowcase-word-checked lowcase-target)
-             (equalp lowcase-word-checked suffixless-target)
-             (matches-regexp-p (make-stem-regexp lowcase-target) lowcase-word-checked)
-             (matches-regexp-p (make-stem-regexp suffixless-target) lowcase-word-checked)))))
-
+         (if (< len *min-nick-length-for-stem-match*)
+             (equalp lowcase-word-checked lowcase-target)
+             (or (equalp lowcase-word-checked lowcase-target)
+                 (equalp lowcase-word-checked suffixless-target)
+                 (matches-regexp-p (make-stem-regexp lowcase-target) lowcase-word-checked)
+                 (matches-regexp-p (make-stem-regexp suffixless-target) lowcase-word-checked))))))
 
 (defun make-stem-regexp (base-word)
   (concatenate 'string "^" (escape-for-regexp base-word) "(y|i|a|ie|owi|e|ę|iowi|ce)$"))

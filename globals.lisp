@@ -228,5 +228,6 @@
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 
 (defparameter *max-output-sequence-length* 4)
+(defparameter *min-nick-length-for-stem-match* 4)
 
 (defparameter *user-notification-medium* (make-hash-table :test 'equalp))
