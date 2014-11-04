@@ -215,7 +215,7 @@
                    "⚅"))))
 
 
-(defparameter *excluded-from-replying-to* '("kdbot") "List of users that the bot won't reply to for unrecognized queries.")
+(defparameter *excluded-from-replying-to* '("kdbot" "Repoto|hskrk") "List of users that the bot won't reply to for unrecognized queries.")
 
 (defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
 (defparameter *url-shortening-regexp* "(http.*)")
