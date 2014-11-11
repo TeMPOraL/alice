@@ -207,6 +207,8 @@
     (:repo-link . "http://github.com/TeMPOraL/alice")
     (:issues-link . "http://github.com/TeMPOraL/alice/issues; issues możesz też zgłaszać ładnie mnie prosząc.")
 
+    (:kdbot-down . "kdbotowi się zmarło, powiadomiłam KD.")
+
     (:dicethrow . ("⚀"
                    "⚁"
                    "⚂"

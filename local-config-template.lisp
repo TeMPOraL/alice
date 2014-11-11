@@ -13,6 +13,8 @@
 
       *gdziepaczka-token* "insert gdziepaczka.pl token here"
 
+      *kdbot-notification-email* "insert notification e-mail here"
+
       *server* "irc.freenode.net"
       *nick* "Alice_M"
       *password* "insert password"

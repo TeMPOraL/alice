@@ -325,6 +325,9 @@
 (defun part-hook (message)
   (let ((who (irc:source message))
         (where (first (irc:arguments message))))
+    (when (string= who "kdbot")
+      (say where :kdbot-down)
+      (notify-kdbot-down))
     (store-parting-name where who)))
 
 (defun names-hook (message)

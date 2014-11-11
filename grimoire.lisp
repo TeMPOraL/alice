@@ -108,6 +108,9 @@
             :failed-to-add-issue))
       :no-issue-to-add))
 
+(defun notify-kdbot-down ()
+  (send-email *kdbot-notification-email* "Hej, kdbot padł :(. Pozdrawiam!"))
+
 ;;; notifications
 
 (defun send-notification (what to-token from)
