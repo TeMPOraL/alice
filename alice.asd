@@ -14,13 +14,26 @@
                #:cl-json
                #:local-time)
   :components ((:file "package")
-               (:file "persistence-utils" :depends-on ("package"))
+
+               (:module "utils"
+                        :components ((:file "debug")
+                                     (:file "persistence")
+                                     (:file "string")))
+               
                (:file "globals" :depends-on ("package"))
                (:file "language" :depends-on ("globals"))
                (:file "world-model" :depends-on ("language"))
-               (:file "grimoire" :depends-on ("world-model"))
+
+               (:module "grimoire"
+                        :components ((:file "github")
+                                     (:file "google")
+                                     (:file "notifications")
+                                     (:file "package-tracking")
+                                     (:file "tinyurl")
+                                     (:file "wolfram-alpha")))
+               
                (:file "sentence-features" :depends-on ("world-model"))
                (:file "local-config" :depends-on ("grimoire"))
                (:file "main" :depends-on ("grimoire"))
                (:file "specials" :depends-on ("grimoire"))
-               (:file "debug-utils" :depends-on ("main"))))
+               ))
