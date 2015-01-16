@@ -1,0 +1,3 @@
+[submodule "docker/quicksbcl"]
+	path = docker/quicksbcl
+	url = https://github.com/TeMPOraL/docker-quicksbcl

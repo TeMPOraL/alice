@@ -1,5 +1,6 @@
 *.fasl
 local-config.lisp
+__notepad.lisp
 *.xml
 *.ufasl
 *.*~

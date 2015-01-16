@@ -1,0 +1,12 @@
+#!/bin/bash
+
+APP=$(docker run --name="alice" -v `pwd`/:/var/src -p 8886:4005 -ti -d alice/alice)
+APP_IP=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" alice)
+echo app: $APP
+
+echo
+echo
+
+echo Container spun up.
+echo IP Address:
+echo app:      $APP_IP

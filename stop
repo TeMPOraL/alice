@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Stopping container"
+docker stop alice
+
+echo "Removing container"
+#docker rm api-db
+docker rm alice

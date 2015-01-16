@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build -t temporal/quicksbcl docker/quicksbcl/
+docker build -t alice/alice docker/alice/
