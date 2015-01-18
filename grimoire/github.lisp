@@ -1,5 +1,11 @@
 (in-package #:alice)
 
+;; (define-input-match :github-open-issue ((matches "(dodaj|pisz)" (raw-text *sentence*))
+;;                                         (matches "issue" (raw-text *sentence*)))
+;;   (output :github-issue (open-github-issue (from-who *sentence*)
+;;                                            (extract-issue-description (raw-text *sentence*)))) ;how to handle errors?
+;;   )
+
 (defun extract-issue-description (text)
   (cl-ppcre:scan-to-strings *issue-description-regexp* text))
 

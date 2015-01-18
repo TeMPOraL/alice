@@ -1,6 +1,8 @@
 (in-package #:alice)
 ;;; "alice" goes here. Hacks and glory await! ;-)
 
+(defparameter *debug-last-message* nil)
+
 ;; functions
 ;; tools
 (defun throttle (messages)
@@ -81,6 +83,8 @@
       (check-for-memos destination from-who)
 
       (handle-specials destination is-private is-public is-directed from-who message-body)
+
+      (setf *debug-last-message* (extract-message-features message))
 
       (cond
         ((and is-directed

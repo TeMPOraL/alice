@@ -23,7 +23,10 @@
                
                (:file "globals" :depends-on ("package"))
                (:file "language" :depends-on ("globals"))
-               (:file "world-model" :depends-on ("language"))
+               
+               (:module "world"
+                        :components ((:file "message")
+                                     (:file "world-model")))
 
                (:module "grimoire"
                         :components ((:file "github")
@@ -32,8 +35,9 @@
                                      (:file "package-tracking")
                                      (:file "tinyurl")
                                      (:file "wolfram-alpha")))
+
+
                
-               (:file "sentence-features" :depends-on ("world-model"))
                (:file "local-config" :depends-on ("grimoire"))
                (:file "main" :depends-on ("grimoire"))
 

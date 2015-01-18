@@ -219,6 +219,7 @@
 
 (defparameter *excluded-from-replying-to* '("kdbot" "Repoto|hskrk") "List of users that the bot won't reply to for unrecognized queries.")
 
+(defparameter *general-url-regexp* "((https?\\://\\S*)|(www\\.\\S*))")
 (defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
 (defparameter *url-shortening-regexp* "(http.*)")
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
