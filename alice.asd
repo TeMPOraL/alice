@@ -25,8 +25,11 @@
                (:file "language" :depends-on ("globals"))
                
                (:module "world"
-                        :components ((:file "message")
-                                     (:file "world-model")))
+                        :components ((:file "channel")
+                                     (:file "message")
+                                     (:file "person")
+                                     (:file "world-model")
+                                     (:file "input-matcher")))
 
                (:module "grimoire"
                         :components ((:file "github")
