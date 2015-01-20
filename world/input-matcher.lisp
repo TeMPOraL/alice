@@ -40,7 +40,9 @@
 
 (defun best-matchers (input)
   "Return the list of matchers matching `INPUT' the best. List can have more than one element."
-  (sort (score-matchers input) (lambda (x y) (< (cdr x) (cdr y)))))
+  (sort (remove-if (lambda (match)
+                     (= 0 (cdr match)))
+                   (score-matchers input)) (lambda (x y) (> (cdr x) (cdr y)))))
 
 (defun register-matcher (name tests match-result)
   "Register a set of `TESTS' under `NAME'. `TESTS' should be a list of functions that returns a number, which will be used to score the best match.
@@ -53,3 +55,11 @@
     (if (funcall function input)
         score
         fail-score)))
+
+(defun execute-match (irc-message)
+  (let* ((input (extract-message-features irc-message))
+         (matches (best-matchers input)))
+    (when (not (emptyp matches))
+      (let ((match-name (car (first-elt (best-matchers input)))))
+        (funcall (matcher-result (find-if (lambda (m) (eql (matcher-name m) match-name)) *input-matchers*))
+                 input)))))

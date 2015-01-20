@@ -2,49 +2,63 @@
 
 (defclass message ()
   ((raw-text :initarg :raw-text
+             :initform ""
              :type string
              :accessor raw-text)
 
    ;; sentence-understanding-related
-   (words :accessor words
+   (words :initform '()
+          :accessor words
           :documentation "Sentence split to particular words.")
 
-   (nicks-present :accessor nicks-present
+   (nicks-present :initform '()
+                  :accessor nicks-present
                   :documentation "All the nicknames identified in the sentence that are present on channel.")
 
-   (nicks-known :accessor nicks-known
+   (nicks-known :initform '()
+                :accessor nicks-known
                 :documentation "All the nicknames identified in the sentence that the bot ever heard, even if not present on particular channel.")
 
-   (tone :accessor tone
+   (tone :initform nil
+         :accessor tone
          :documentation "Tone of the sentence; i.e. whether it is recognized as nice, angry, etc.")
 
-   (urls :accessor urls
+   (urls :initform '()
+         :accessor urls
          :documentation "List of URLs mentioned.")
 
    ;; IRC-related
    (channel :initarg :channel
+            :initform ""
             :accessor channel
             :documentation "Name of channel on which this sentence was spoken.")
 
    (author :initarg :author
+           :initform ""
            :accessor author
            :documentation "Source person (nickname) who spoke the message.")
 
    (reply-to :initarg :reply-to
+             :initform ""
              :accessor reply-to
              :documentation "Either name (private mesage) or channel that can be used as a reply destination.")
 
    (publicp :initarg :publicp
+            :initform nil
             :accessor publicp
             :documentation "Was this message public (i.e. not directed, said on channel)?")
 
-   (directedp :accessor directedp
+   (directedp :initarg :directedp
+              :initform nil
+              :accessor directedp
               :documentation "Was this message directed at the bot? (in a form of 'Bot: ...' message)?")
 
-   (mentionsp :accessor mentionsp
+   (mentionsp :initform nil
+              :accessor mentionsp
               :documentation "Does this sentence mentions bot by nickname?")
 
    (privatep :initarg :privatep
+             :initform nil
              :accessor directp
              :documentation "Is this message sent directly to the bot (as opposed to publicly on the channel)?")
    ))
@@ -74,16 +88,21 @@
 
 (defun extract-message-features (irc-message)
   (flet ((public-message-p (message)
-             (and
-              (not (string-equal *nick* (first (irc:arguments message)))) ; search message
-              (not (starts-with-subseq *nick* (second (irc:arguments message))))))
+           (and
+            (not (string-equal *nick* (first (irc:arguments message)))) ; search message
+            (not (starts-with-subseq *nick* (second (irc:arguments message))))))
          (private-message-p (message)
            (string-equal (first (irc:arguments message))
-                         *nick*)))
+                         *nick*))
+         (directed-message-p (message)
+           (or (string-equal (first (irc:arguments message))
+                             *nick*)
+               (mentions-name *nick* (second (irc:arguments message))))))
     (make-instance 'message
                    :raw-text (second (irc:arguments irc-message))
                    :publicp (public-message-p irc-message)
                    :privatep (private-message-p irc-message)
+                   :directedp (directed-message-p irc-message)
                    :channel (first (irc:arguments irc-message))
                    :author (irc:source irc-message)
                    :reply-to (if (string-equal (first (irc:arguments irc-message)) *nick*)

@@ -64,8 +64,8 @@
 (register-matcher :sing
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "spiew" (raw-text message))
-                                                (mentions "śpiew" (raw-text message)))))))
+                                            (or (mentions "spiew" (raw-text input))
+                                                (mentions "śpiew" (raw-text input)))))))
                   (lambda (input)
                     (say (reply-to input) :songs)))
 
