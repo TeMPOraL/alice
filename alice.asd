@@ -35,12 +35,12 @@
                         :components ((:file "github")
                                      (:file "google")
                                      (:file "notifications")
+                                     (:file "people")
                                      (:file "package-tracking")
                                      (:file "tinyurl")
+                                     (:file "varia")
                                      (:file "wolfram-alpha")))
 
-
-               
                (:file "local-config" :depends-on ("grimoire"))
                (:file "main" :depends-on ("grimoire"))
 
