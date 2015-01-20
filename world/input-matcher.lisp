@@ -41,7 +41,7 @@
 (defun best-matchers (input)
   "Return the list of matchers matching `INPUT' the best. List can have more than one element."
   (sort (remove-if (lambda (match)
-                     (= 0 (cdr match)))
+                     (>= 0 (cdr match)))
                    (score-matchers input)) (lambda (x y) (> (cdr x) (cdr y)))))
 
 (defun register-matcher (name tests match-result)
