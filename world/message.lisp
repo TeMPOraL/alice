@@ -63,6 +63,12 @@
              :documentation "Is this message sent directly to the bot (as opposed to publicly on the channel)?")
    ))
 
+;; (defmethod print-object ((message message) stream)
+;;   (print-unreadable-object (message stream :type t :identity t)
+;;     (with-slots (channel raw-text author reply-to publicp directedp mentionsp privatep)
+;;         message
+;;       (format stream "TODO" ))))
+
 (defmethod initialize-instance :after ((message message) &key)
   (setf (words message) (extract-words (raw-text message)))
   (setf (mentionsp message) (mentions-name *nick* (raw-text message)))
