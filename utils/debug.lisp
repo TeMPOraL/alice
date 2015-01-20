@@ -3,7 +3,8 @@
   (:nicknames #:aldbg)
   (:export #:get-background-handler-instance
            #:attach-standard-output-to-slime
-           #:detach-standard-output-from-slime))
+           #:detach-standard-output-from-slime
+           #:restart-IRC-thread))
 
 (in-package #:alice-debug)
 
@@ -49,3 +50,7 @@
   #-openmcl (error "This function works only in Clozure CL (which I happen to use on my VPS)")
   #+openmcl (ccl:process-interrupt handler-process (lambda ()
                                                      (setf *standard-output* *backup-so*))))
+
+(defun restart-IRC-thread ()
+  "Restart IRC connection after crash."
+  (irc:start-background-message-handler alice::*connection*))
