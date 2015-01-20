@@ -188,4 +188,4 @@
                   (lambda (input)
                     (if (and (/= 0 (random 5))
                              (not (position (author input) *excluded-from-replying-to* :test #'equal)))
-                        (say (reply-to input) :smiles :to (author input))))))))
+                        (say (reply-to input) :smiles :to (author input)))))
