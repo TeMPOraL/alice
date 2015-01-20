@@ -1,10 +1,18 @@
 (in-package #:alice)
 
-;; (define-input-match :github-open-issue ((matches "(dodaj|pisz)" (raw-text *sentence*))
-;;                                         (matches "issue" (raw-text *sentence*)))
-;;   (output :github-issue (open-github-issue (from-who *sentence*)
-;;                                            (extract-issue-description (raw-text *sentence*)))) ;how to handle errors?
-;;   )
+(register-matcher :github-issues-link
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                            (mentions-regexp "issues" (raw-text input))))))
+                  (lambda (input) (say (reply-to input) :issues-link :to (author input))))
+
+(register-matcher :add-github-issue
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                            (mentions-regexp "(dodaj|pisz)" (raw-text input))
+                                            (mentions-regexp "issue" (raw-text input)))))) ;NOTE this will conflict with notifications unless matches/scores are tweaked. try, e.g., looking for nicknames and reducing score if one is found. also, word "issue" close by is a strong indicator, and so is text in quotes (lack of it is a minus-alot indicator).
+                  (lambda (input)
+                    (say (reply-to input) (open-github-issue (author input) (extract-issue-description (raw-text input))) :to (author input))))
 
 (defun extract-issue-description (text)
   (cl-ppcre:scan-to-strings *issue-description-regexp* text))

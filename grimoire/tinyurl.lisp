@@ -1,5 +1,13 @@
 (in-package #:alice)
 
+(register-matcher :shorten-url
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                            (or (mentions "skró" (raw-text input))
+                                                (mentions "skracaj" (raw-text input)))))))
+                  (lambda (input)
+                    (say (reply-to input) (shorten-url (parse-message-for-url-shortening (raw-text input))))))
+
 (defun shorten-url (url)
   (if url
       (or (ignore-errors (drakma::http-request "http://tinyurl.com/api-create.php"

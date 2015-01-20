@@ -6,9 +6,8 @@
 (defparameter *input-matchers* '() "An alist of pairs (name . (tests . result))")
 
 (defmacro define-input-match (name matchspec &body body)
-  ;; one day
+  ;; TODO one day
   )
-
 
 ;;; matchspec
 ;;; - set of matching rules with optional score that defaults to 1

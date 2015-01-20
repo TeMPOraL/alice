@@ -1,5 +1,24 @@
 (in-package #:alice)
 
+(register-matcher :notify-user
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                            (or (mentions "zawiadom" (raw-text input))
+                                                (mentions "powiadom" (raw-text input))
+                                                (mentions "przeka" (raw-text input))
+                                                (mentions "pingnij" (raw-text input))
+                                                (mentions "podrzuć" (raw-text input))
+                                                (mentions "zapyta" (raw-text input))
+                                                (mentions "spyta" (raw-text input))
+                                                (mentions "powiedz" (raw-text input))
+                                                (mentions "memo" (raw-text input))))))) ;NOTE, this will conflict with gihtub; try e.g. looking for nicknames and adding additional score if one found
+                  (lambda (input)
+                    (say (reply-to input) (notify-person (reply-to input)
+                                                         (identify-person-mentioned (raw-text input))
+                                                         (raw-text input)
+                                                         (author input)
+                                                         (not (publicp input))))))
+
 ;;; notifications
 
 (defun send-notification (what to-token from)
