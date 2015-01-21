@@ -1,5 +1,9 @@
 (in-package #:alice)
 
+(defparameter *github-token* "")
+
+(defparameter *issue-description-regexp* "\"(.*)\"" "A regexp to extract issue description.")
+
 (register-matcher :github-issues-link
                   (list (match-score (lambda (input)
                                        (and (directedp input)

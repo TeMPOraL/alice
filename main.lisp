@@ -1,7 +1,34 @@
 (in-package #:alice)
 ;;; "alice" goes here. Hacks and glory await! ;-)
 
+(defparameter *full-name* "Alice Margatroid")  ;FIXME not exactly sure where it belongs...
+
+(defvar *connection*)
+
+;; configurables
+(defparameter *server* "")
+(defvar *nick* "")
+(defparameter *password* "")
+
+
+(defparameter *autojoin-channels* '())
+
+(defparameter *muted* nil)
+
+(defparameter +nickserv+ "NickServ")
+(defparameter +nickserv-identify-msg-template+ "IDENTIFY ~a")
+
+
 (defparameter *debug-last-message* nil)
+
+(defparameter *excluded-from-replying-to* '("kdbot" "Repoto|hskrk") "List of users that the bot won't reply to for unrecognized queries.")
+
+(defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
+
+(defparameter *max-output-sequence-length* 4)
+
+(defparameter *default-phrase* "Nie wiem co powiedzieć...")
+
 
 ;; functions
 ;; tools

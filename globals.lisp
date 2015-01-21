@@ -1,30 +1,5 @@
 (in-package #:alice)
 
-(defvar *connection*)
-
-;; configurables
-(defparameter *server* "")
-(defvar *nick* "")
-(defparameter *password* "")
-
-(defparameter *pushover-token* "")
-(defparameter *pushover-admin-user* "")
-
-(defparameter *wolfram-app-id* "")
-
-(defparameter *mailgun-domain* "")
-(defparameter *mailgun-key* "")
-
-(defparameter *autojoin-channels* '())
-
-(defparameter *muted* nil)
-
-(defparameter +nickserv+ "NickServ")
-(defparameter +nickserv-identify-msg-template+ "IDENTIFY ~a")
-
-(defparameter *full-name* "Alice Margatroid")
-
-(defparameter *default-phrase* "Nie wiem co powiedzieć...")
 
 ;;; phrases
 ;; phrases are defined as an alist of label and possible phrases to speak
@@ -217,20 +192,4 @@
                    "⚅"))))
 
 
-(defparameter *excluded-from-replying-to* '("kdbot" "Repoto|hskrk") "List of users that the bot won't reply to for unrecognized queries.")
 
-(defparameter *general-url-regexp* "((https?\\://\\S*)|(www\\.\\S*))")
-(defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
-(defparameter *url-shortening-regexp* "(http.*)")
-(defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
-
-(defparameter *issue-description-regexp* "\"(.*)\"" "A regexp to extract issue description.")
-
-(defparameter *tracking-number-regexp* "([A-Z]{2}[0-9]+[A-Z]{2})")
-
-(defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
-
-(defparameter *max-output-sequence-length* 4)
-(defparameter *min-nick-length-for-stem-match* 4)
-
-(defparameter *user-notification-medium* (make-hash-table :test 'equalp))

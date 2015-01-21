@@ -2,6 +2,8 @@
 
 ;; functions related to language processing
 
+(defparameter *min-nick-length-for-stem-match* 4)
+
 (defun stem-matches-p (word-checked target)
   (and (stringp word-checked)
        (stringp target)

@@ -1,5 +1,7 @@
 (in-package #:alice)
 
+(defparameter *tracking-number-regexp* "([A-Z]{2}[0-9]+[A-Z]{2})")
+
 (register-matcher :track-package
                   (list (match-score (lambda (input)
                                        (and (directedp input)

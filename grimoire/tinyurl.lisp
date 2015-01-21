@@ -1,5 +1,8 @@
 (in-package #:alice)
 
+(defparameter *url-regexp* "((^https?\\:.*)|(www\\..*))")
+(defparameter *url-shortening-regexp* "(http.*)")
+
 (register-matcher :shorten-url
                   (list (match-score (lambda (input)
                                        (and (directedp input)

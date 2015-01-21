@@ -1,5 +1,9 @@
 (in-package #:alice)
 
+(defparameter *wolfram-app-id* "")
+
+(defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
+
 (defun do-wolfram-computation (query)
   (flet ((xml-response-to-speechstrings (xml)
            (coerce (alexandria:flatten (map 'list

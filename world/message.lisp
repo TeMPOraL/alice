@@ -1,5 +1,7 @@
 (in-package #:alice)
 
+(defparameter *general-url-regexp* "((https?\\://\\S*)|(www\\.\\S*))")
+
 (defclass message ()
   ((raw-text :initarg :raw-text
              :initform ""

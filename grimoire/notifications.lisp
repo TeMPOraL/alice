@@ -1,5 +1,13 @@
 (in-package #:alice)
 
+(defparameter *pushover-token* "")
+(defparameter *pushover-admin-user* "")
+
+(defparameter *mailgun-domain* "")
+(defparameter *mailgun-key* "")
+
+(defparameter *user-notification-medium* (make-hash-table :test 'equalp))
+
 (register-matcher :notify-user
                   (list (match-score (lambda (input)
                                        (and (directedp input)
