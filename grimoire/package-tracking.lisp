@@ -1,5 +1,6 @@
 (in-package #:alice)
 
+(defparameter *gdziepaczka-token* "")
 (defparameter *tracking-number-regexp* "([A-Z]{2}[0-9]+[A-Z]{2})")
 
 (register-matcher :track-package
@@ -11,11 +12,11 @@
                   (lambda (input)
                     (say (reply-to input) (track-package (parse-message-for-package-tracking-number (raw-text input))))))
 
-(register-output :failed-to-track-package '("Nie pykło :(."
+(provide-output :failed-to-track-package '("Nie pykło :(."
                                             "Nie udało mi sie sprawdzić :(."
                                             "Coś nie działa."))
 
-(register-output :no-package-to-track '("Podaj poprawny numer trackingowy paczki. Póki co, umiem śledzić tylko te w bazie Poczty Polskiej."))
+(provide-output :no-package-to-track '("Podaj poprawny numer trackingowy paczki. Póki co, umiem śledzić tylko te w bazie Poczty Polskiej."))
 
 (defun parse-message-for-package-tracking-number (text)
   (cl-ppcre:scan-to-strings *tracking-number-regexp* text))

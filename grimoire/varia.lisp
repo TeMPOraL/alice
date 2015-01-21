@@ -230,13 +230,13 @@
                                      "tak?"
                                      "co ja?"))
 
-(provide-output (:thanks-reply  ("you're welcome"
+(provide-output :thanks-reply  '("you're welcome"
                                  "nie ma za co"
                                  "sure, np."
                                  "np."
                                  "no problem"
                                  ":)"
-                                 "spoko :)")))
+                                 "spoko :)"))
 
 (provide-output :blush  '("aww :)"
                           "*blush*"
@@ -244,7 +244,7 @@
 
 (provide-output :tcp "SYN-ACK")
 
-(provide-output :temperature #("pozwól, że spytam kdbot" "!temp")))
+(provide-output :temperature #("pozwól, że spytam kdbot" "!temp"))
 
 (provide-output :save '(#("mhm" "!save")
                         #("jasne :)" "!save")

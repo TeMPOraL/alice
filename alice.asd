@@ -1,7 +1,7 @@
 ;;;; alice.asd
 
 (asdf:defsystem #:alice
-  :serial tppp
+  :serial t
   :description "Alice Margatroid, the Doll Maker of Bucuresti. An IRC-bot that pretends to be human."
   :author "Jacek Złydach"
   :license "Teaware - do whatever you want with it, but I wouldn't mind getting invited for a cup of tea ;)."
@@ -21,8 +21,7 @@
                                      (:file "persistence")
                                      (:file "string")))
                
-               (:file "globals" :depends-on ("package"))
-               (:file "language" :depends-on ("globals"))
+               (:file "language")
                
                (:module "world"
                         :components ((:file "channel")
