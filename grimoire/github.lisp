@@ -18,6 +18,8 @@
                   (lambda (input)
                     (say (reply-to input) (open-github-issue (author input) (extract-issue-description (raw-text input))) :to (author input))))
 
+(provide-output :issues-link "http://github.com/TeMPOraL/alice/issues; issues możesz też zgłaszać ładnie mnie prosząc.")
+
 (defun extract-issue-description (text)
   (cl-ppcre:scan-to-strings *issue-description-regexp* text))
 

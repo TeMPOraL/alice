@@ -27,6 +27,31 @@
                                                          (author input)
                                                          (not (publicp input))))))
 
+(provide-output :more-memos '("Są też kolejne powiadomienia."
+                              "Są kolejne mema! :)"
+                              "Mam Ci coś więcej do przekazania."
+                              "Shanghai mówi, że jest do Ciebie więcej powiadomień."
+                              "Shanghai przyniosła więcej powiadomień."))
+
+(provide-output :memo-saved ("zapisałam jako memo"
+                             "memo zapisane"
+                             "zapisane; przekażę jak zobaczę"
+                             "jasne, przekażę jak zobaczę"))
+(provide-output :memo-failed  ("Nie umiem wysłać tego memo. Chyba nie wiem o kogo Ci chodzi."
+                               "Nie wiem komu co mamy wysłać."
+                               "Shanghai wróciła i mówi, że nie wie komu przekazać..."))
+
+(provide-output :notification-sent ("ok, przekazałam"
+                                    "jasne, przekazane"
+                                    "sure, już przekazuję"
+                                    "Shanghai posłana z wiadomością"
+                                    "przekazane"))
+
+(provide-output :failed-in-sending-notification ("Coś się spsuło :(."
+                                                 "Coś nie działa. *sigh*"
+                                                 "Nie umiem w notyfikacje. *sob*"))
+
+
 ;;; notifications
 
 (defun send-notification (what to-token from)

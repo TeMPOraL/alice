@@ -76,31 +76,8 @@
               #("jasne :)" "!save")
               "!save"))
 
-    (:notification-sent . ("ok, przekazałam"
-                           "jasne, przekazane"
-                           "sure, już przekazuję"
-                           "Shanghai posłana z wiadomością"
-                           "przekazane"))
 
-    (:memo-saved . ("zapisałam jako memo"
-                    "memo zapisane"
-                    "zapisane; przekażę jak zobaczę"
-                    "jasne, przekażę jak zobaczę"))
 
-    (:memo-failed . ("Nie umiem wysłać tego memo. Chyba nie wiem o kogo Ci chodzi."
-                     "Nie wiem komu co mamy wysłać."
-                     "Shanghai wróciła i mówi, że nie wie komu przekazać..."))
-
-    
-    (:failed-in-sending-notification . ("Coś się spsuło :(."
-                                        "Coś nie działa. *sigh*"
-                                        "Nie umiem w notyfikacje. *sob*"))
-
-    (:more-memos . ("Są też kolejne powiadomienia."
-                    "Są kolejne mema! :)"
-                    "Mam Ci coś więcej do przekazania."
-                    "Shanghai mówi, że jest do Ciebie więcej powiadomień."
-                    "Shanghai przyniosła więcej powiadomień."))
 
     (:not-yet-implemented . ("Not in my Grimoire yet."
                              "Jeszcze nie. Sprawdź pojutrze."
@@ -180,7 +157,7 @@
                 "*sob*"))
 
     (:repo-link . "http://github.com/TeMPOraL/alice")
-    (:issues-link . "http://github.com/TeMPOraL/alice/issues; issues możesz też zgłaszać ładnie mnie prosząc.")
+    
 
     (:kdbot-down . "kdbotowi się zmarło, powiadomiłam KD.")
 
