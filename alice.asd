@@ -28,7 +28,8 @@
                                      (:file "message")
                                      (:file "person")
                                      (:file "world-model")
-                                     (:file "input-matcher")))
+                                     (:file "input-matcher")
+                                     (:file "output-builder")))
 
                (:module "grimoire"
                         :components ((:file "github")
@@ -40,7 +41,6 @@
                                      (:file "varia")
                                      (:file "wolfram-alpha")))
 
-               (:file "local-config" :depends-on ("grimoire"))
                (:file "main" :depends-on ("grimoire"))
 
                (:module "specials"
@@ -48,5 +48,7 @@
                                      (:file "comments")
                                      (:file "general-terms")
                                      (:file "standard-answers")
-                                     (:file "specials")))))
+                                     (:file "specials")))
+
+               (:file "local-config" :depends-on ("grimoire"))))
 
