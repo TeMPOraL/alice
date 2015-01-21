@@ -4,7 +4,9 @@
   (:export #:get-background-handler-instance
            #:attach-standard-output-to-slime
            #:detach-standard-output-from-slime
-           #:restart-IRC-thread))
+           #:restart-IRC-thread
+           #:start-swank
+           #:stop-swank))
 
 (in-package #:alice-debug)
 
@@ -54,3 +56,12 @@
 (defun restart-IRC-thread ()
   "Restart IRC connection after crash."
   (irc:start-background-message-handler alice::*connection*))
+
+(defun start-swank (&optional (port 4005))
+  "Start SWANK listening on a provided `PORT'."
+  (unless swank::*servers*              ;FIXME a bit hackish.
+    (swank:create-server :port port :dont-close t)))
+
+(defun stop-swank (&optional (port 4005))
+  "Stop SWANK listening on a provided `PORT'."
+  (swank:stop-server port))
