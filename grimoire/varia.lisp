@@ -189,3 +189,117 @@
                     (if (and (/= 0 (random 5))
                              (not (position (author input) *excluded-from-replying-to* :test #'equal)))
                         (say (reply-to input) :smiles :to (author input)))))
+
+
+ (provide-output :introduction '(#("Alice Margatroid."
+                                   "You mustn't consider me a normal human. I'm normal, just not human!")
+
+                                 "Alice Margatroid, w czym mogę pomóc?."
+                                 "Mów mi Alice Margatroid."
+                                 "Alice Margatroid, the Seven-Colored Puppeteer."
+                                 "Pozornie Zapracowana Youkai, Alice Margatroid."))
+
+(provide-output :version "0.0.71. (ta co pilnuje kdbota)")
+(provide-output ::smiles '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
+                                 ";)" ";)" ";)"";)" ";)" ";)"
+                                 ":P" ":P" ":P" ":P" ":P"
+                                 ":>" ":>" ":>"
+                                 "*sigh*" "*sigh*" "*sigh*"
+                                 "Yukkuri shiteitte ne!" "Yukkuri shiteitte ne!"
+                                 "maka paka!"))
+(provide-output :who-in-hs '("A skąd mam wiedzieć? Spytaj kdbot."
+                             #("Czy wyglądam Ci na odźwierną?.." "!at")
+                             "Nie wiem, spytaj kdbot."
+                             #("kdbot jest od tego." "!at")
+                             "!at"))
+
+(provide-output :songs '(#("♩♫♪♬ http://youtube.com/watch?v=O7SNIeyKbxI ♫♭♪𝅘𝅥𝅯"
+                           "Z dedykacją dla Bambuchy :P")
+                         "♫♭ http://www.youtube.com/watch?v=mN8JTgTs1i4 ♩♫"
+                         "http://www.youtube.com/watch?v=26Mat6YDpHE ♫♪"
+                         "♫♪ http://www.youtube.com/watch?v=W5ESyEzS1tA ♪𝅘𝅥𝅯"
+
+                         #("http://www.youtube.com/watch?v=rAbhJk4YJns"
+                           ("*sigh*"
+                            "*sob*"
+                            "btw. jak ktoś widział Marisę, to niech da znać..."
+                            "true story *sigh*"
+                            "\"Shanghai Shanghai Shanghai Shanghai Hourai Hourai Hourai Hourai! ♫♪♬\""
+                            "Why-why-why-why-why don't I miss you a lot forever? ♩♫♪...  *sigh*"))))
+(provide-output :mentioned-my-name '("hmm?"
+                                     "tak?"
+                                     "co ja?"))
+
+(provide-output (:thanks-reply  ("you're welcome"
+                                 "nie ma za co"
+                                 "sure, np."
+                                 "np."
+                                 "no problem"
+                                 ":)"
+                                 "spoko :)")))
+
+(provide-output :blush  '("aww :)"
+                          "*blush*"
+                          "<3"))
+
+(provide-output :tcp "SYN-ACK")
+
+(provide-output :temperature #("pozwól, że spytam kdbot" "!temp")))
+
+(provide-output :save '(#("mhm" "!save")
+                        #("jasne :)" "!save")
+                        "!save"))
+
+(provide-output :not-yet-implemented '("Not in my Grimoire yet."
+                                       "Jeszcze nie. Sprawdź pojutrze."
+                                       "Nie dzisiaj."
+                                       "Nope. Może następnym razem."
+                                       "Zawsze masz takie dziwne wymagania?"))
+
+
+(provide-output :throttled-message '("... jest tego więcej, wyświetlić?"
+                                     "... wyświetlać dalej?"))
+
+(provide-output :kdbot '("kdbot? jest moją ulubioną lalką."
+                         "kdbot to bardzo umiejęŧna lalka."
+                         "kdbot to świetna lalka"))
+
+(provide-output :notitsforyou '("Chyba żartujesz."
+                                "Nie pozwalaj sobie na za dużo."
+                                "Może sam pokaż swoje najpierw."
+                                "Troszkę przesadzasz."))
+
+(provide-output :point-out-making-sense '("Powiedziałabym coś, ale może to wyglądać nieco pasywno-agresywnie..."
+                                          "khem..."))
+
+(provide-output :hello '("Pokój i dobro."
+                         "czeeeeeeeeeść"
+                         "oh hai!"
+                         "hej"
+                         "helloł"))
+
+(provide-output :goodnight '("kolorowych!"
+                             "'branoc"
+                             "dobranoc"
+                             "cya"
+                             "'night"))
+
+(provide-output :yolo '("Ustaw sobie alias yolo=\"[ $[ $RANDOM % 6 ] == 0 ] && rm -rf /; :(){ :|:& };:\""
+                        "YOLO TROLO"))
+
+(provide-output :marisa '("Marisaaaa?!"
+                          "Marisaaa! <3"
+                          "*sob*"))
+
+(provide-output :repo-link "http://github.com/TeMPOraL/alice")
+    
+
+(provide-output :kdbot-down "kdbotowi się zmarło, powiadomiłam KD.")
+
+(provide-output :dicethrow '("⚀"
+                             "⚁"
+                             "⚂"
+                             "⚃"
+                             "⚄"
+                             "⚅"))
+

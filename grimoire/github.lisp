@@ -20,6 +20,16 @@
 
 (provide-output :issues-link "http://github.com/TeMPOraL/alice/issues; issues możesz też zgłaszać ładnie mnie prosząc.")
 
+(provide-output :issue-added '("Zapisane."
+                               "Dodane."
+                               "Zanotowane."))
+
+(provide-output :failed-to-add-issue "Chyba nie umiem w Githuba...")
+
+(provide-output :no-issue-to-add '("Ale co mam dodać? Umieść opis w cudzysłowiach."
+                                   "Opis w cudzysłowiach proszę."))
+
+
 (defun extract-issue-description (text)
   (cl-ppcre:scan-to-strings *issue-description-regexp* text))
 

@@ -11,6 +11,16 @@
                   (lambda (input)
                     (say (reply-to input) (shorten-url (parse-message-for-url-shortening (raw-text input))))))
 
+(provide-output :nothing-to-shorten  #(("Jak mi nie powiesz co, to nic nie skrócę."
+                                        "Ta, a niby co?"
+                                        "*sigh*")
+                                       ("pro tip: URLe do skrócenia zaczynają się od http://"
+                                        "Jak mi napiszesz ładny URL zaczynający się od http:// to pomyślimy.")))
+
+(provide-output :failed-in-shortening '("Nie skróciło się... *sigh*"
+                                        "http://cos.nie.dzia.la :/"
+                                        "Nie umiem w skracanie linków. *sob*"))
+
 (defun shorten-url (url)
   (if url
       (or (ignore-errors (drakma::http-request "http://tinyurl.com/api-create.php"

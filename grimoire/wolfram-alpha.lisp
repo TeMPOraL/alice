@@ -4,6 +4,32 @@
 
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
 
+(register-matcher :wolfram-alpha-query
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                              (or (mentions "licz" (raw-text input))
+                                                  (mentions "compute" (raw-text input)))))))
+                  (lambda (input)
+                    (say (reply-to input) (do-wolfram-computation (parse-message-for-wolfram-computation (raw-text input))))))
+
+(provide-output :wolfram-turned-off '("Skoro nie chcecie, żebym cokolwiek liczyła to o to nie proście."
+                                      "Takiego wała."
+                                      "http://wolframalpha.com, samemu sobie policz."))
+
+(provide-output :nothing-to-compute '("Ale co mam obliczyć? Umieść to w cudzysłowiach."
+                                      "Co mam przeliczyć? Umieść to w cudzysłowiach."))
+
+(provide-output :failed-in-computing '("Nie umiem w Wolframa *sob*"
+                                       "Musisz zawsze pytać o takie dziwne rzeczy? *sigh*"
+                                       "Sorry, nie wyszło. *sigh*"))
+
+(provide-output :nothing-computed '("Nic się nie policzyło :(."
+                                    "Brak wyniku; spytaj o coś innego."
+                                    "Nope, nic nie ma."
+                                    "Nie pykło."))
+
+
+
 (defun do-wolfram-computation (query)
   (flet ((xml-response-to-speechstrings (xml)
            (coerce (alexandria:flatten (map 'list
