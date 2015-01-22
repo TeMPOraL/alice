@@ -4,6 +4,20 @@
 
 (defparameter *wolfram-query-regexp* "\"(.*)\"" "A regexp to extract question part when performing Wolfram|Alpha search.")
 
+(register-matcher :wolfram-alpha-query-full
+                  (list (match-score  (lambda (input)
+                                        (and (directedp input)
+                                             (or (mentions "licz" (raw-text input))
+                                                 (mentions "compute" (raw-text input)))
+                                             (or (mentions "pełen" (raw-text input))
+                                                 (mentions "pełny" (raw-text input))
+                                                 (mentions "cały" (raw-text input))
+                                                 (mentions "wszystko" (raw-text input))
+                                                 (mentions "full result" (raw-text input))
+                                                 (mentions "show all" (raw-text input)))))))
+                  (lambda (input)
+                    (say (reply-to input) (do-wolfram-computation (parse-message-for-wolfram-computation (raw-text input)) nil))))
+
 (register-matcher :wolfram-alpha-query
                   (list (match-score (lambda (input)
                                        (and (directedp input)
@@ -28,9 +42,19 @@
                                     "Nope, nic nie ma."
                                     "Nie pykło."))
 
+(defun reformat-wolfram-output (output limit-output)
+  (if (and limit-output
+           (> (length output) 1))
+      (limit-string-length (cl-ppcre:regex-replace-all "\\|"
+                                                       (reduce (lambda (strA strB)
+                                                                 (concatenate 'string strA "; " strB))
+                                                               output)
+                                                       "⏎")
+                           +maximum-line-length+
+                           "[...]")
+      output))
 
-
-(defun do-wolfram-computation (query)
+(defun do-wolfram-computation (query &optional (limit-output t))
   (flet ((xml-response-to-speechstrings (xml)
            (coerce (alexandria:flatten (map 'list
                                             (lambda (el)
@@ -45,14 +69,15 @@
                                                 :external-format-out :UTF-8
                                                 :parameters `(("appid" . ,*wolfram-app-id*)
                                                               ("input" . ,query)
-                                                              ("format" . "plaintext")))))
+                                                              ("format" . "plaintext")
+                                                              ,(when limit-output '("podindex" . "1,2,3"))))))
              (cxml:parse-rod response
                              (cxml-dom:make-dom-builder))))
          (clean-up (response)
            (let ((cleaned-up (remove nil response)))
              (if (= (length cleaned-up) 0)
                  :nothing-computed
-                 cleaned-up))))
+                 (reformat-wolfram-output cleaned-up limit-output)))))
 
     ;; code
     (if query

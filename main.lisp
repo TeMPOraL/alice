@@ -26,6 +26,7 @@
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 
 (defparameter *max-output-sequence-length* 4)
+(define-constant +maximum-line-length+ 400)
 
 (defparameter *default-phrase* "Nie wiem co powiedzieć...")
 
