@@ -1,12 +1,23 @@
 (in-package #:alice)
 
 (defparameter *general-url-regexp* "((https?\\://\\S*)|(www\\.\\S*))")
+(define-constant +quoted-text-extraction-regexp+ "(\\\".*?\\\")" :test #'string=)
 
 (defclass message ()
   ((raw-text :initarg :raw-text
              :initform ""
              :type string
              :accessor raw-text)
+
+   (quoted-parts :initform '()
+                :type list
+                :accessor quoted-parts
+                :documentation "Parts of message that is in double quotes.")
+
+   (unquoted-part :initform ""
+                  :type string
+                  :accessor unquoted-part
+                  :documentation "Message without quoted parts.")
 
    ;; sentence-understanding-related
    (words :initform '()
@@ -77,6 +88,9 @@
 
   (setf (urls message) (extract-urls (raw-text message)))
   ;; tone TODO
+
+  (setf (quoted-parts message) (cl-ppcre:all-matches-as-strings +quoted-text-extraction-regexp+ (raw-text message)))
+  (setf (unquoted-part message) (cl-ppcre:regex-replace-all +quoted-text-extraction-regexp+ (raw-text message) ""))
 
   ;; nicks known
   ;; nicks present

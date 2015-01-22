@@ -7,14 +7,14 @@
 (register-matcher :github-issues-link
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (mentions-regexp "issues" (raw-text input))))))
+                                            (mentions-regexp "issues" (unquoted-part input))))))
                   (lambda (input) (say (reply-to input) :issues-link :to (author input))))
 
 (register-matcher :add-github-issue
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (mentions-regexp "(dodaj|pisz)" (raw-text input))
-                                            (mentions-regexp "issue" (raw-text input)))))) ;NOTE this will conflict with notifications unless matches/scores are tweaked. try, e.g., looking for nicknames and reducing score if one is found. also, word "issue" close by is a strong indicator, and so is text in quotes (lack of it is a minus-alot indicator).
+                                            (mentions-regexp "(dodaj|pisz)" (unquoted-part input))
+                                            (mentions-regexp "issue" (unquoted-part input)))))) ;NOTE this will conflict with notifications unless matches/scores are tweaked. try, e.g., looking for nicknames and reducing score if one is found. also, word "issue" close by is a strong indicator, and so is text in quotes (lack of it is a minus-alot indicator).
                   (lambda (input)
                     (say (reply-to input) (open-github-issue (author input) (extract-issue-description (raw-text input))) :to (author input))))
 

@@ -4,7 +4,7 @@
                         ("145.650" . "Pokój i dobro, wita przemiennik na Koskowej Górze.")
                         ("145.550" . "Krakowska wywoławcza.")))
 
-(define-constant +freq-extraction-regexp+ "(\\d{3}\\.\\d{3})")
+(define-constant +freq-extraction-regexp+ "(\\d{3}\\.\\d{3})" :test #'string=)
 
 (register-matcher :random-frequency
                   (list (match-score (lambda (input)
