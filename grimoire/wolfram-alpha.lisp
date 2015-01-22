@@ -14,7 +14,8 @@
                                                  (mentions "cały" (raw-text input))
                                                  (mentions "wszystko" (raw-text input))
                                                  (mentions "full result" (raw-text input))
-                                                 (mentions "show all" (raw-text input)))))))
+                                                 (mentions "show all" (raw-text input)))))
+                                      2 -1))
                   (lambda (input)
                     (say (reply-to input) (do-wolfram-computation (parse-message-for-wolfram-computation (raw-text input)) nil))))
 
