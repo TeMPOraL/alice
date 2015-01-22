@@ -173,6 +173,17 @@
                     (if (= 0 (random 3))
                         (say (reply-to input) :yolo :to (author input)))))
 
+(register-matcher :throttle-continue
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                            (or (mentions "tak" (raw-text input))
+                                                (mentions "yes" (raw-text input))
+                                                (mentions "dawaj" (raw-text input))
+                                                (mentions "pros" (raw-text input)))
+                                            (not (null *throttled-output*))))))
+                  (lambda (input)
+                    (say (reply-to input) *throttled-output*)))
+
 ;; save
 ;; ((and (directedp input)
 ;;       (or (mentions "pisz" (raw-text input))
