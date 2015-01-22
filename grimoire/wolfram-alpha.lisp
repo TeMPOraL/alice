@@ -52,7 +52,7 @@
                                                                output)
                                                        "⏎")
                            +maximum-line-length+
-                           "[...]")
+                           "[…]")
       output))
 
 (defun do-wolfram-computation (query &optional (limit-output t))
