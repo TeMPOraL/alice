@@ -4,7 +4,8 @@
 (register-matcher :marisa
                   (list (match-score (lambda (input)
                                        (or (mentions "kirisame" (raw-text input))
-                                           (mentions "marisa" (raw-text input))))))
+                                           (mentions "marisa" (raw-text input))))
+                                     999))
                   (lambda (input) (say (reply-to input) :marisa)))
 
 ;;; Introductions.

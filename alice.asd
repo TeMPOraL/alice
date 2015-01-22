@@ -35,6 +35,7 @@
                (:module "grimoire"
                         :components ((:file "github")
                                      (:file "google")
+                                     (:file "frequencies")
                                      (:file "notifications")
                                      (:file "people")
                                      (:file "package-tracking")
