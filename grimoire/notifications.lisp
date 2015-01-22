@@ -25,7 +25,7 @@
                                                          (identify-person-mentioned (raw-text input))
                                                          (raw-text input)
                                                          (author input)
-                                                         (not (publicp input))))))
+                                                         (privatep input)))))
 
 (provide-output :more-memos '("Są też kolejne powiadomienia."
                               "Są kolejne mema! :)"

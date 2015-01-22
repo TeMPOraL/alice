@@ -12,7 +12,8 @@
                #:cl-ppcre
                #:cxml
                #:cl-json
-               #:local-time)
+               #:local-time
+               #:swank)
   
   :components ((:file "package")
 

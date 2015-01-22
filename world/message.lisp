@@ -61,7 +61,7 @@
 
    (privatep :initarg :privatep
              :initform nil
-             :accessor directp
+             :accessor privatep
              :documentation "Is this message sent directly to the bot (as opposed to publicly on the channel)?")
    ))
 
