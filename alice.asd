@@ -13,6 +13,7 @@
                #:cxml
                #:cl-json
                #:local-time
+               #:trivial-timers
                #:swank)
   
   :components ((:file "package")
@@ -25,7 +26,8 @@
                (:file "language")
                
                (:module "core"
-                        :components ((:file "channel")
+                        :components ((:file "trivial-event-loop.lisp")
+                                     (:file "channel")
                                      (:file "message")
                                      (:file "person")
                                      (:file "world-model")
