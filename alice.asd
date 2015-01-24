@@ -24,7 +24,7 @@
                
                (:file "language")
                
-               (:module "world"
+               (:module "core"
                         :components ((:file "channel")
                                      (:file "message")
                                      (:file "person")
