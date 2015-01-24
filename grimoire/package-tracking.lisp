@@ -6,9 +6,9 @@
 (register-matcher :track-package
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "gdzie jest" (raw-text input))
-                                                (mentions "śledź" (raw-text input))
-                                                (mentions "track" (raw-text input)))))))
+                                            (or (mentions "gdzie jest" (unquoted-part input))
+                                                (mentions "śledź" (unquoted-part input))
+                                                (mentions "track" (unquoted-part input)))))))
                   (lambda (input)
                     (say (reply-to input) (track-package (parse-message-for-package-tracking-number (raw-text input))))))
 

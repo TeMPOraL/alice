@@ -6,10 +6,10 @@
 (register-matcher :shorten-url
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "skró" (raw-text input))
-                                                (mentions "skracaj" (raw-text input)))))))
+                                            (or (mentions "skró" (unquoted-part input))
+                                                (mentions "skracaj" (unquoted-part input)))))))
                   (lambda (input)
-                    (say (reply-to input) (shorten-url (parse-message-for-url-shortening (raw-text input))))))
+                    (say (reply-to input) (shorten-url (parse-message-for-url-shortening (unquoted-part input))))))
 
 (provide-output :nothing-to-shorten  #(("Jak mi nie powiesz co, to nic nie skrócę."
                                         "Ta, a niby co?"

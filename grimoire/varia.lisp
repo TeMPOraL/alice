@@ -12,39 +12,39 @@
 (register-matcher :introductions
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "poznaj" (raw-text input))
-                                                (mentions "przedstaw się" (raw-text input))
-                                                (mentions "przedstaw sie" (raw-text input))
-                                                (mentions "przedstawisz"  (raw-text input)))))))
+                                            (or (mentions "poznaj" (unquoted-part input))
+                                                (mentions "przedstaw się" (unquoted-part input))
+                                                (mentions "przedstaw sie" (unquoted-part input))
+                                                (mentions "przedstawisz"  (unquoted-part input)))))))
                   (lambda (input) (say (reply-to input) :introduction)))
 
 ;;; Version number.
 (register-matcher :version
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "numer wersji" (raw-text input))
-                                                (mentions "wersje" (raw-text input)) ;FIXME how about regexp?
-                                                (mentions "wersja" (raw-text input))
-                                                (mentions "wersją" (raw-text input))
-                                                (mentions "wersję" (raw-text input)))))))
+                                            (or (mentions "numer wersji" (unquoted-part input))
+                                                (mentions "wersje" (unquoted-part input)) ;FIXME how about regexp?
+                                                (mentions "wersja" (unquoted-part input))
+                                                (mentions "wersją" (unquoted-part input))
+                                                (mentions "wersję" (unquoted-part input)))))))
                   (lambda (input) (say (reply-to input) :version)))
 
 ;;; Be nice to thanks.
 (register-matcher :thanks-reply
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "thx" (raw-text input))
-                                                (mentions "thanks" (raw-text input))
-                                                (mentions "thank you" (raw-text input))
-                                                (mentions "dzieki" (raw-text input))
-                                                (mentions "dzięki" (raw-text input))
-                                                (mentions "dziekuje" (raw-text input))
-                                                (mentions "dziękuje" (raw-text input))
-                                                (mentions "dziękuję" (raw-text input)))))))
+                                            (or (mentions "thx" (unquoted-part input))
+                                                (mentions "thanks" (unquoted-part input))
+                                                (mentions "thank you" (unquoted-part input))
+                                                (mentions "dzieki" (unquoted-part input))
+                                                (mentions "dzięki" (unquoted-part input))
+                                                (mentions "dziekuje" (unquoted-part input))
+                                                (mentions "dziękuje" (unquoted-part input))
+                                                (mentions "dziękuję" (unquoted-part input)))))))
                   (lambda (input)
                     (say (reply-to input) :thanks-reply)
-                    (when (or (mentions ":*" (raw-text input))
-                              (mentions "sło" (raw-text input)))
+                    (when (or (mentions ":*" (unquoted-part input))
+                              (mentions "sło" (unquoted-part input)))
                       (say (reply-to input) :blush))))
 
 ;;; Those are not needed now anyway.
@@ -65,8 +65,9 @@
 (register-matcher :sing
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "spiew" (raw-text input))
-                                                (mentions "śpiew" (raw-text input)))))))
+                                            (or (mentions "spiew" (unquoted-part input))
+                                                (mentions "śpiew" (unquoted-part input)))))
+                                     0.75))
                   (lambda (input)
                     (say (reply-to input) :songs)))
 
@@ -83,21 +84,22 @@
 ;; Tcp handshake for Bambucha
 (register-matcher :tcp-handshake (list (match-score (lambda (input)
                                                       (and (directedp input)
-                                                           (mentions "SYN" (raw-text input))))))
+                                                           (mentions "SYN" (unquoted-part input))))))
                   (lambda (input)
                     (say (reply-to input) :tcp :to (author input))))
 
 ;; say hi!
 (register-matcher :hello (list (match-score (lambda (input)
                                               (and (directedp input)
-                                                     (or (mentions "czesc" (raw-text input))
-                                                         (mentions "cześć" (raw-text input))
-                                                         (mentions "hi" (raw-text input))
-                                                         (mentions "hej" (raw-text input))
-                                                         (mentions "hey" (raw-text input))
-                                                         (mentions "yo" (raw-text input))
-                                                         (mentions "joł" (raw-text input))
-                                                         (mentions "hello" (raw-text input)))))))
+                                                     (or (mentions "czesc" (unquoted-part input))
+                                                         (mentions "cześć" (unquoted-part input))
+                                                         (mentions "hi" (unquoted-part input))
+                                                         (mentions "hej" (unquoted-part input))
+                                                         (mentions "hey" (unquoted-part input))
+                                                         (mentions "yo" (unquoted-part input))
+                                                         (mentions "joł" (unquoted-part input))
+                                                         (mentions "hello" (unquoted-part input)))))
+                                            0.75))
                   (lambda (input)
                     (say (reply-to input) :hello :to (author input))))
 
@@ -114,7 +116,8 @@
 (register-matcher :repo-link
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (mentions-regexp "źródł(o|a)" (raw-text input))))))
+                                            (mentions-regexp "źródł(o|a)" (unquoted-part input))))
+                                     0.9))
                   (lambda (input)
                     (say (reply-to input) :repo-link :to (author input))))
 
@@ -123,10 +126,10 @@
 (register-matcher :dice-throw
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (mentions-regexp "rzu(cisz|ć)" (raw-text input))
-                                            (or (mentions "K6" (raw-text input))
-                                                (mentions-regexp "koś(ć|ci)" (raw-text input))
-                                                (mentions-regexp "kostk(ą|ę|ami)" (raw-text input)))))))
+                                            (mentions-regexp "rzu(cisz|ć)" (unquoted-part input))
+                                            (or (mentions "K6" (unquoted-part input))
+                                                (mentions-regexp "koś(ć|ci)" (unquoted-part input))
+                                                (mentions-regexp "kostk(ą|ę|ami)" (unquoted-part input)))))))
                   (lambda (input)
                     (say (reply-to input) :dicethrow :to (author input))))
 
@@ -137,9 +140,9 @@
 (register-matcher :goodnight
                   (list (match-score (lambda (input)
                                        (and (publicp input)
-                                            (or (mentions-regexp "^(do)?branoc$" (raw-text input))
-                                                (and (mentions-regexp "(spadam|lece|lecę)" (raw-text input))
-                                                     (mentions "spać" (raw-text input))))))))
+                                            (or (mentions-regexp "^(do)?branoc$" (unquoted-part input))
+                                                (and (mentions-regexp "(spadam|lece|lecę)" (unquoted-part input))
+                                                     (mentions "spać" (unquoted-part input))))))))
                   (lambda (input)
                     (say (reply-to input) :goodnight :to (author input))))
 
@@ -177,11 +180,12 @@
 (register-matcher :throttle-continue
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "tak" (raw-text input))
-                                                (mentions "yes" (raw-text input))
-                                                (mentions "dawaj" (raw-text input))
-                                                (mentions "pros" (raw-text input)))
-                                            (not (null *throttled-output*))))))
+                                            (or (mentions "tak" (unquoted-part input))
+                                                (mentions "yes" (unquoted-part input))
+                                                (mentions "dawaj" (unquoted-part input))
+                                                (mentions "pros" (unquoted-part input)))
+                                            (not (null *throttled-output*))))
+                                     0.75))
                   (lambda (input)
                     (say (reply-to input) *throttled-output*)))
 
@@ -203,13 +207,13 @@
                         (say (reply-to input) :smiles :to (author input)))))
 
 
- (provide-output :introduction '(#("Alice Margatroid."
-                                   "You mustn't consider me a normal human. I'm normal, just not human!")
+(provide-output :introduction '(#("Alice Margatroid."
+                                  "You mustn't consider me a normal human. I'm normal, just not human!")
 
-                                 "Alice Margatroid, w czym mogę pomóc?."
-                                 "Mów mi Alice Margatroid."
-                                 "Alice Margatroid, the Seven-Colored Puppeteer."
-                                 "Pozornie Zapracowana Youkai, Alice Margatroid."))
+                                "Alice Margatroid, w czym mogę pomóc?."
+                                "Mów mi Alice Margatroid."
+                                "Alice Margatroid, the Seven-Colored Puppeteer."
+                                "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
 (provide-output :version "0.1.0. (ta urodzinowa)")
 (provide-output ::smiles '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
