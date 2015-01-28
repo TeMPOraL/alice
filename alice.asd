@@ -38,6 +38,7 @@
                         :components ((:file "github")
                                      (:file "google")
                                      (:file "frequencies")
+                                     (:file "meetups")
                                      (:file "notifications")
                                      (:file "people")
                                      (:file "package-tracking")
