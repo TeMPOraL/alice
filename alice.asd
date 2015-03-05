@@ -26,7 +26,7 @@
                (:file "language")
                
                (:module "core"
-                        :components ((:file "trivial-event-loop.lisp")
+                        :components ((:file "trivial-event-loop")
                                      (:file "channel")
                                      (:file "message")
                                      (:file "person")
