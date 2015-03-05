@@ -85,7 +85,8 @@
 ;; Tcp handshake for Bambucha
 (register-matcher :tcp-handshake (list (match-score (lambda (input)
                                                       (and (directedp input)
-                                                           (mentions "SYN" (unquoted-part input))))))
+                                                           (< (length (words input)) 3)
+                                                           (find "SYN" (words input) :test #'equalp)))))
                   (lambda (input)
                     (say (reply-to input) :tcp :to (author input))))
 
