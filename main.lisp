@@ -71,31 +71,6 @@
 
       (t (irc:privmsg *connection* to-where *default-phrase*)))))
 
-;;; utils
-(defun mentions (what string)
-  (search (string-downcase what) (string-downcase string)))
-
-(defun mentions-regexp (regexp string)
- (not (null (cl-ppcre:scan regexp string))))
-
-(defun mentions-name (name string)
-  (mentions name string))
-
-;; types of message
-(defun public-message-p (message)
-  (and
-   (not (string-equal *nick* (first (irc:arguments message)))) ; search message
-   (not (starts-with-subseq *nick* (second (irc:arguments message)))))) ; search message target
-       
-(defun private-message-p (message)
-  (or (string-equal (first (irc:arguments message))
-                    *nick*)))
-
-(defun directed-message-p (message)
-  (or (string-equal (first (irc:arguments message))
-                    *nick*)
-      (mentions-name *nick* (second (irc:arguments message)))))
-
 ;;; handling
 
 (defun msg-hook (message)
