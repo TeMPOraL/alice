@@ -36,7 +36,6 @@
 ;;; also, consider moving timer for delayed actions into a separate
 ;;; unit with separate thread, that feeds events back to the primary event loop.
 
-
 ;;; utility event condition functions
 
 (defun milisec->nanosec (value)
