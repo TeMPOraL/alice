@@ -119,3 +119,31 @@
 ;; TIME
 (defun format-time (timestamp)
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
+
+
+;;; time from natural language
+(defun compute-time-offset-from-string (offset-string &optional (reference-time (local-time:now)))
+  (flet ((offset-for-direct-time-offset ()
+           :DIRECT-TIME-OFFSET          ;TODO
+           )
+         (offset-for-exact-hour ()
+           :EXACT-HOUR                  ;TODO
+           )
+         (offset-for-day-time ()
+           :DAY-TIME                    ;TODO
+           )
+         (offset-for-indirect-day ()
+           :INDIRECT-DAY                ;TODO
+           )
+         (offset-for-later ()
+           :FOR-LATER                   ;TODO
+           )
+         (offset-for-somewhen ()
+           :SOMEWHEN                    ;TODO
+           ))
+      (cond ((mentions-regexp "za (\\d+|[a-zA-Z]+) (sekund|minut|godzin)" offset-string) (offset-for-direct-time-offset))
+            ((mentions-regexp "o \\d{2}:\\d{2}" offset-string) (offset-for-exact-hour))
+            ((mentions-regexp "(rano|po południu|wieczorem)" offset-string) (offset-for-day-time))
+            ((mentions-regexp "(dziś|dzisiaj|jutro|pojutrze)" offset-string) (offset-for-indirect-day))
+            ((mentions-regexp "później" offset-string) (offset-for-later))
+            ((mentions-regexp "kiedyś" offset-string) (offset-for-somewhen)))))
