@@ -10,9 +10,10 @@
   (let ((to-execute '()))
     (bordeaux-threads:with-lock-held (*event-queue-lock*)
       (setf *event-queue* (remove-if #'null (mapcar (lambda (event)
-                                                      (when (funcall (car event))
-                                                        (push (cdr event) to-execute)
-                                                        event))
+                                                      (if (funcall (car event))
+                                                          (progn (push (cdr event) to-execute)
+                                                                 nil)
+                                                          event))
                                                     *event-queue*))))
     (mapc #'funcall to-execute)))
 
@@ -20,7 +21,6 @@
   "Register an event made out of `CONDITION' and `ACTION' for single execution."
   (bordeaux-threads:with-lock-held (*event-queue-lock*)
     (push (cons condition action)  *event-queue*)))
-
 
 (defun run-event-loop ()
   (unless (trivial-timers:timer-scheduled-p *event-loop-timer*)
@@ -39,15 +39,16 @@
 
 ;;; utility event condition functions
 
+(defun milisec->nanosec (value)
+  (* value 1000000))
+
 (defun run-asap ()
   (lambda () t))
 
 (defun run-after-delay-msec (delay)
-  (lambda () nil
-     ;; TODO
-     ))
+  (run-after-time (local-time:adjust-timestamp (local-time:now)
+                    (:offset :nsec (milisec->nanosec delay)))))
 
 (defun run-after-time (time)
-  (lambda () nil
-     ;; TODO
-     ))
+  (lambda ()
+    (local-time:timestamp>= (local-time:now) time)))
