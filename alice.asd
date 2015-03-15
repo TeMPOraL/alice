@@ -13,6 +13,7 @@
                #:cxml
                #:cl-json
                #:local-time
+               #:chronicity
                #:trivial-timers
                #:swank)
   
