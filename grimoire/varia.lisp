@@ -174,8 +174,8 @@
                   (list (match-score (lambda (input)
                                        (and (or (publicp input)
                                                 (directedp input))
-                                            (or (mentions "yolo" (raw-text input))
-                                                (mentions "jolo" (raw-text input)))))))
+                                            (or (mentions-word "yolo" input)
+                                                (mentions-word "jolo" input))))))
                   (lambda (input)
                     (if (= 0 (random 3))
                         (say (reply-to input) :yolo :to (author input)))))
@@ -183,9 +183,9 @@
 (register-matcher :throttle-continue
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "tak" (unquoted-part input))
-                                                (mentions "yes" (unquoted-part input))
-                                                (mentions "dawaj" (unquoted-part input))
+                                            (or (mentions-word "tak" input)
+                                                (mentions-word "yes" input)
+                                                (mentions-word "dawaj" input)
                                                 (mentions "pros" (unquoted-part input)))
                                             (not (null *throttled-output*))))
                                      0.75))
@@ -218,7 +218,7 @@
                                 "Alice Margatroid, the Seven-Colored Puppeteer."
                                 "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-(provide-output :version "0.1.3. (ta co się lepiej wita)")
+(provide-output :version "0.1.4. (ta co żyje tylko raz)")
 (provide-output :smiles '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                  ";)" ";)" ";)"";)" ";)" ";)"
                                  ":P" ":P" ":P" ":P" ":P"
