@@ -120,12 +120,33 @@
 (defun format-time (timestamp)
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
+(defparameter *timestring-preprocessing-mappings*
+  `(("jutro" . "tomorrow")
+    ("pojutrze" . "day after tomorrow")
+    ("rano" . "06:00")
+    ("po południu" . "14:00")
+    ("wieczorem" . "17:00")
+    ("później" . ,(lambda (time)
+                     (declare (ignore time))
+                     "next year"))))
 
 ;;; time from natural language
 (defun compute-time-offset-from-string (offset-string &optional (reference-time (local-time:now)))
-  (flet ((preprocess-datetime-string (str)
-           ;; TODO loop over mapping and replace strings
-           ;; TODO we want mapping for DRY reasons, to (maybe) re-use it in matcher.
-           str))
+  (labels ((resolve-replacement (replacement)
+             (typecase replacement
+               (null "")
+               (string replacement)
+               (function (funcall replacement reference-time))
+               (list (resolve-replacement (random-elt replacement)))
+               (t "")))
+           (preprocess-datetime-string (str)
+             (dolist (rule *timestring-preprocessing-mappings*)
+               (let ((pattern (car rule))
+                     (replacement (resolve-replacement (cdr rule))))
+                 (setf str (cl-ppcre:regex-replace pattern offset-string replacement))))
+             ;; TODO loop over mapping and replace strings
+             ;; TODO we want mapping for DRY reasons, to (maybe) re-use it in matcher.
+             str))
     ;; NOTE ignore-errors, because in rare cases, chronicity:parse can raise a condition.
-   (ignore-errors (chronicity:parse (preprocess-datetime-string offset-string) :now reference-time))))
+    (ignore-errors (chronicity:parse (preprocess-datetime-string offset-string) :now reference-time))))
+
