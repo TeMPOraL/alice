@@ -121,14 +121,28 @@
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
 (defparameter *timestring-preprocessing-mappings*
-  `(("jutro" . "tomorrow")
-    ("pojutrze" . "day after tomorrow")
-    ("rano" . "06:00")
-    ("po południu" . "14:00")
-    ("wieczorem" . "17:00")
-    ("później" . ,(lambda (time)
+  `(("\\bjutro\\b" . "tomorrow")
+    ("\\bpojutrze\\b" . "day after tomorrow")
+    ("\\brano\\b" . "06:00")
+    ("\\bpo po(ł|l)udniu\\b" . "14:00")
+    ("\\bwieczorem\\b" . "17:00")
+
+    ("\\bnast(ę|e)pny\\b" . "next")
+    ("\\bprzysz(ł|l)y\\b" . "next")
+
+    ("\\bponiedzia(ł|l)ek\\b" . "monday")
+    ("\\bwtorek\\b" . "tuesday")
+    ("\\b(ś|s)rod(a|ę|e)\\b" . "wednesday")
+    ("\\bczwartek\\b" . "thursday")
+    ("\\bpi(ą|a)tek\\b" . "friday")
+    ("\\bsobot(a|ę|e)\\b" . "saturday")
+    ("\\niedziel(a|ę|e)\\b" . "sunday")
+
+    ("\\bp(ó|o)(ź|z)niej\\b" . ,(lambda (time)
                      (declare (ignore time))
-                     "next year"))))
+                     "next year"))
+    ("\\bwe?\\b" . "on")
+    ("\\bo\\b" . "at")))
 
 ;;; time from natural language
 (defun compute-time-offset-from-string (offset-string &optional (reference-time (local-time:now)))
@@ -143,9 +157,7 @@
              (dolist (rule *timestring-preprocessing-mappings*)
                (let ((pattern (car rule))
                      (replacement (resolve-replacement (cdr rule))))
-                 (setf str (cl-ppcre:regex-replace pattern offset-string replacement))))
-             ;; TODO loop over mapping and replace strings
-             ;; TODO we want mapping for DRY reasons, to (maybe) re-use it in matcher.
+                 (setf str (cl-ppcre:regex-replace pattern str replacement))))
              str))
     ;; NOTE ignore-errors, because in rare cases, chronicity:parse can raise a condition.
     (ignore-errors (chronicity:parse (preprocess-datetime-string offset-string) :now reference-time))))
