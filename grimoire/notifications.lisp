@@ -27,6 +27,16 @@
                                                          (author input)
                                                          (privatep input)))))
 
+(register-matcher :delayed-notify-user
+                  (list (match-score (lambda (input)
+                                       (and (directedp input)
+                                            (or (mentions "przypomnij")
+                                                (mentions "remind")
+                                                ;; TODO add conditions based on timestrings
+                                                )))))
+                  (lambda (input)
+                    ...))
+
 (provide-output :more-memos '("Są też kolejne powiadomienia."
                               "Są kolejne mema! :)"
                               "Mam Ci coś więcej do przekazania."
