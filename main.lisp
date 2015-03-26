@@ -21,7 +21,7 @@
 
 (defparameter *debug-last-message* nil)
 
-(defparameter *excluded-from-replying-to* '("kdbot" "Repoto|hskrk") "List of users that the bot won't reply to for unrecognized queries.")
+(defparameter *excluded-from-replying-to* '("kdbot" "Repoto|hskrk" "ood" "Magda_M" "repost") "List of users that the bot won't reply to for unrecognized queries.")
 
 (defparameter *throttled-output* nil "A buffer for throttling the output to avoid flooding the channel.")
 

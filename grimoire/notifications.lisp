@@ -35,7 +35,9 @@
                                                 ;; TODO add conditions based on timestrings
                                                 )))))
                   (lambda (input)
-                    ...))
+                    ;; TODO isolate and parse timestring and set up a delayed memo
+                    ))
+;;; TODO some remote memo management solutions
 
 (provide-output :more-memos '("Są też kolejne powiadomienia."
                               "Są kolejne mema! :)"
