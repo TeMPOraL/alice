@@ -3,7 +3,8 @@
 (defpackage #:alice
   (:use #:cl
         #:alexandria)
-  (:export #:start-alice
+  (:export #:*version*
+           #:start-alice
            #:stop-alice
            #:impersonate-say
            #:impersonate-join

@@ -33,7 +33,7 @@
                                      0.5)
                         (match-score (lambda (input)
                                        (and (directedp input)
-                                            (mentions "częstotliwość" (unquoted-part input))))
+                                            (mentions "częstotliwoś" (unquoted-part input))))
                                      0.7)
                         (match-score (lambda (input)
                                        (and (directedp input)

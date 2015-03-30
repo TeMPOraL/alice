@@ -2,9 +2,21 @@
 
 (asdf:defsystem #:alice
   :serial t
-  :description "Alice Margatroid, the Doll Maker of Bucuresti. An IRC-bot that pretends to be human."
+
+  :long-name "Alice Margatroid"
   :author "Jacek Złydach"
+  :version (:read-file-form "version.lisp" :at (1 2 2))
+  :description "IRC bot responding to queries based on natural language.."
+  :long-description "Alice Margatroid, the Doll Maker of Bucuresti. An IRC-bot that pretends to be human."
+
   :license "Teaware - do whatever you want with it, but I wouldn't mind getting invited for a cup of tea ;)."
+  :homepage "https://github.com/TeMPOraL/alice"
+  :bug-tracker "https://github.com/TeMPOraL/alice/issues"
+  :source-control (:git "https://github.com/TeMPOraL/alice.git")
+  :mailto "temporal.pl+alice@gmail.com"
+
+  :encoding :utf-8
+  
   :depends-on (#:cl-irc
                #:alexandria
                #:drakma
@@ -18,6 +30,7 @@
                #:swank)
   
   :components ((:file "package")
+               (:file "version")
 
                (:module "utils"
                         :components ((:file "debug")
