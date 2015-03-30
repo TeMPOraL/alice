@@ -35,6 +35,7 @@
                                                 ;; TODO add conditions based on timestrings
                                                 )))))
                   (lambda (input)
+                    (declare (ignore input))
                     ;; TODO isolate and parse timestring and set up a delayed memo
                     ))
 ;;; TODO some remote memo management solutions
