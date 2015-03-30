@@ -218,7 +218,7 @@
                                 "Alice Margatroid, the Seven-Colored Puppeteer."
                                 "Pozornie Zapracowana Youkai, Alice Margatroid."))
 
-(provide-output :version "0.1.4. (ta co żyje tylko raz)")
+(provide-output :version *version*)
 (provide-output :smiles '(":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ":)" ; yeah, a cheap trick to fake probability distribution
                                  ";)" ";)" ";)"";)" ";)" ";)"
                                  ":P" ":P" ":P" ":P" ":P"
