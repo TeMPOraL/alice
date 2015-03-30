@@ -30,8 +30,8 @@
 (register-matcher :delayed-notify-user
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "przypomnij")
-                                                (mentions "remind")
+                                            (or (mentions "przypomnij" (unquoted-part input))
+                                                (mentions "remind" (unquoted-part input))
                                                 ;; TODO add conditions based on timestrings
                                                 )))))
                   (lambda (input)
