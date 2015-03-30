@@ -131,6 +131,9 @@
     ("\\bnast(ę|e)pny\\b" . "next")
     ("\\bprzysz(ł|l)y\\b" . "next")
 
+    ("\\bpoprzedni\\b" . "last")
+    ("\\bzesz(l|ł)y\\b" . "last")
+
     ("\\bponiedzia(ł|l)ek\\b" . "monday")
     ("\\bwtorek\\b" . "tuesday")
     ("\\b(ś|s)rod(a|ę|e)\\b" . "wednesday")
