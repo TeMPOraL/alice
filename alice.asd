@@ -17,7 +17,8 @@
 
   :encoding :utf-8
   
-  :depends-on (#:cl-irc
+  :depends-on (#:closer-mop
+               #:cl-irc
                #:alexandria
                #:drakma
                #:cl-unicode
@@ -27,7 +28,8 @@
                #:local-time
                #:chronicity
                #:trivial-timers
-               #:swank)
+               #:swank
+               #:marshal)
   
   :components ((:file "package")
                (:file "version")

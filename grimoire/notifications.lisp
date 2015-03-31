@@ -27,9 +27,11 @@
    (recipient :initarg :recipient
               :initform nil
               :accessor recipient)
+   
    (author :initarg :author
            :initform nil
            :accessor author)
+   
    (text :initarg :text
          :initform nil
          :accessor text)
@@ -44,11 +46,15 @@
                        :type local-time:timestamp
                        :accessor deliver-after-time)))
 
-;; ◷
 (defmethod print-object ((memo memo) stream)
   (print-unreadable-object (memo stream :type t :identity t)
     (with-slots (channel recipient author send-time deliver-after-time) memo
-      (format stream "~A@~A ◷~A → ~A" author channel (or deliver-after-time "IMMEDIATE") recipient ))))
+      (format stream "~A@~A ◷~A → ~A" author channel (or deliver-after-time "IMMEDIATE") recipient))))
+
+(defmethod marshal:class-persistant-slots ((memo memo))
+  (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (find-class 'alice::memo))))
+
+;;; TODO create serialization for local-time:timestsamp (preferably in another file, for "patching up other people's code" (e.g. serialize.lisp)
 
 (register-matcher :notify-user
                   (list (match-score (lambda (input)
