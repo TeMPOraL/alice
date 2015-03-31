@@ -8,6 +8,48 @@
 
 (defparameter *user-notification-medium* (make-hash-table :test 'equalp))
 
+;;;
+;;; (channel who what from-who &optional (timestamp (local-time:now)))
+
+(defclass memo ()
+  ((server :initarg :server
+           :initform nil
+           :type string
+           :accessor server
+           :documentation "Server for which this memo is relevant. Currently unused.")
+   
+   (channel :initarg :channel
+            :initform nil
+            :type string
+            :accessor channel
+            :documentation "Channel where this memo originated from.")
+   
+   (recipient :initarg :recipient
+              :initform nil
+              :accessor recipient)
+   (author :initarg :author
+           :initform nil
+           :accessor author)
+   (text :initarg :text
+         :initform nil
+         :accessor text)
+   
+   (send-time :initarg :send-time
+              :initform :nil
+              :type local-time:timestamp
+              :accessor send-time)
+   
+   (deliver-after-time :initarg :deliver-after-time
+                       :initform nil
+                       :type local-time:timestamp
+                       :accessor deliver-after-time)))
+
+;; ◷
+(defmethod print-object ((memo memo) stream)
+  (print-unreadable-object (memo stream :type t :identity t)
+    (with-slots (channel recipient author send-time deliver-after-time) memo
+      (format stream "~A@~A ◷~A → ~A" author channel (or deliver-after-time "IMMEDIATE") recipient ))))
+
 (register-matcher :notify-user
                   (list (match-score (lambda (input)
                                        (and (directedp input)
@@ -31,9 +73,14 @@
                   (list (match-score (lambda (input)
                                        (and (directedp input)
                                             (or (mentions "przypomnij" (unquoted-part input))
-                                                (mentions "remind" (unquoted-part input))
-                                                ;; TODO add conditions based on timestrings
-                                                )))))
+                                                (mentions "remind" (unquoted-part input)))))
+                                     1.5
+                                     -0.5)
+                        (match-score (lambda (input)
+                                       (and (directedp input)
+                                            ;; TODO add conditions based on timestrings
+                                            ))
+                                     0.5))
                   (lambda (input)
                     (declare (ignore input))
                     ;; TODO isolate and parse timestring and set up a delayed memo
@@ -41,6 +88,8 @@
 ;;; TODO some remote memo management solutions
 
 (provide-output :more-memos '("Są też kolejne powiadomienia."
+                              "Mam dla Ciebie więcej wiadomości!"
+                              "Ale to nie wszystko!"
                               "Są kolejne mema! :)"
                               "Mam Ci coś więcej do przekazania."
                               "Shanghai mówi, że jest do Ciebie więcej powiadomień."
@@ -53,18 +102,24 @@
 
 (provide-output :memo-failed  '("Nie umiem wysłać tego memo. Chyba nie wiem o kogo Ci chodzi."
                                 "Nie wiem komu co mamy wysłać."
+                                "Adresat nieznany. *sigh*"
                                 "Shanghai wróciła i mówi, że nie wie komu przekazać..."))
 
 (provide-output :notification-sent '("ok, przekazałam"
                                      "jasne, przekazane"
                                      "sure, już przekazuję"
                                      "Shanghai posłana z wiadomością"
-                                     "przekazane"))
+                                     "przekazane!"))
 
 (provide-output :failed-in-sending-notification '("Coś się spsuło :(."
                                                   "Coś nie działa. *sigh*"
                                                   "Nie umiem w notyfikacje. *sob*"))
 
+
+;;; delayed notification
+(defun extract-target-timestamp-from-input (input)
+  (let ((time-str ""))
+   (ignore-errors (compute-time-offset-from-string time-str))))
 
 ;;; notifications
 
