@@ -130,9 +130,12 @@
 
     ("\\bnast(ę|e)pny\\b" . "next")
     ("\\bprzysz(ł|l)y\\b" . "next")
+    ("\\bza\\b" . "next")
 
     ("\\bpoprzedni\\b" . "last")
     ("\\bzesz(l|ł)y\\b" . "last")
+
+    ("\\btydzie(n|ń)\\b" . "week")
 
     ("\\bponiedzia(ł|l)ek\\b" . "monday")
     ("\\bwtorek\\b" . "tuesday")
