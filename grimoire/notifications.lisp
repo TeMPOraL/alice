@@ -37,7 +37,7 @@
          :accessor text)
    
    (send-time :initarg :send-time
-              :initform :nil
+              :initform nil
               :type local-time:timestamp
               :accessor send-time)
    
@@ -52,7 +52,7 @@
       (format stream "~A@~A ◷~A → ~A" author channel (or deliver-after-time "IMMEDIATE") recipient))))
 
 (defmethod marshal:class-persistant-slots ((memo memo))
-  (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (find-class 'alice::memo))))
+  (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (class-of memo))))
 
 ;;; TODO create serialization for local-time:timestsamp (preferably in another file, for "patching up other people's code" (e.g. serialize.lisp)
 
