@@ -46,6 +46,12 @@
                        :type local-time:timestamp
                        :accessor deliver-after-time)))
 
+(defgeneric immediatep (memo)
+  (:documentation "Test if memo is for immediate delivery."))
+
+(defmethod immediatep ((memo memo))
+  (null (deliver-after-time memo)))
+
 (defmethod print-object ((memo memo) stream)
   (print-unreadable-object (memo stream :type t :identity t)
     (with-slots (channel recipient author send-time deliver-after-time) memo
@@ -187,22 +193,24 @@
     (setf (gethash (recipient memo) *memos*)
           (append memos (list memo)))))
 
-(defun make-memo-matcher (user destination)
+(defun make-memo-matcher (user destination current-time)
   (lambda (memo)
     (and (equalp destination (channel memo))
-         (equalp user (recipient memo)))))
+         (equalp user (recipient memo))
+         (or (immediatep memo)
+             (local-time:timestamp>= current-time (deliver-after-time memo))))))
 
-(defun find-matching-memos (user destination memos)
-  (remove-if-not (make-memo-matcher user destination)
+(defun find-matching-memos (user destination memos current-time)
+  (remove-if-not (make-memo-matcher user destination current-time)
                  memos))
 
-(defun remove-memo (memo memos)
-  (remove-if (make-memo-matcher (recipient memo) (channel memo))
+(defun remove-memo (memo memos current-time)
+  (remove-if (make-memo-matcher (recipient memo) (channel memo) current-time)
              memos
              :count 1))
 
-(defun check-for-memos (destination for-who)
-  "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos and if so, grab the first one and write it to him/her.
+(defun check-for-memos (destination for-who &optional (current-time (local-time:now)))
+  "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos (`IMMEDIATEP' or overdue wrt. to `CURRENT-TIME') and if so, grab the first one and write it to him/her.
 Also check for private memos (sent by query), and if any found, send it to him/her in private."
   (let ((who (identify-person-canonical-name for-who)))
     (labels ((dispatch-memo (to-where to-who memo more?)
@@ -213,10 +221,10 @@ Also check for private memos (sent by query), and if any found, send it to him/h
              (handle-memos (from-where to-where to-who)
                "Find a first matching memo, dispatch it and remove from memo list."
                (let* ((all-memos (gethash who *memos*))
-                      (matching-memos (find-matching-memos who from-where all-memos))
+                      (matching-memos (find-matching-memos who from-where all-memos current-time)) ;TODO clean that up; it's a mess of arguments.
                       (memo (first matching-memos)))
                  (when memo
-                   (setf (gethash who *memos*) (remove-memo memo all-memos))
+                   (setf (gethash who *memos*) (remove-memo memo all-memos current-time))
                    (dispatch-memo to-where to-who memo (> (length matching-memos) 1))))))
 
       (handle-memos destination destination for-who) ;public memos
