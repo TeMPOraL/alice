@@ -22,7 +22,7 @@
             :initform nil
             :type string
             :accessor channel
-            :documentation "Channel where this memo originated from.")
+            :documentation "Channel this memo originated from (or `NIL' if it was a private message (i.e. query).")
    
    (recipient :initarg :recipient
               :initform nil
@@ -37,7 +37,7 @@
          :accessor text)
    
    (send-time :initarg :send-time
-              :initform nil
+              :initform (local-time:now)
               :type local-time:timestamp
               :accessor send-time)
    
@@ -49,7 +49,15 @@
 (defmethod print-object ((memo memo) stream)
   (print-unreadable-object (memo stream :type t :identity t)
     (with-slots (channel recipient author send-time deliver-after-time) memo
-      (format stream "~A@~A ◷~A → ~A" author channel (or deliver-after-time "IMMEDIATE") recipient))))
+      (format stream
+              "~A@~A ◷~A ✉~A → ~A"
+              author
+              channel
+              (local-time:format-rfc1123-timestring nil send-time)
+              (if deliver-after-time
+                  (local-time:format-rfc1123-timestring nil deliver-after-time)
+                  "IMMEDIATE")
+              recipient))))
 
 (defmethod marshal:class-persistant-slots ((memo memo))
   (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (class-of memo))))
@@ -162,28 +170,34 @@
 
 (defun make-memo (channel who what from-who &optional (timestamp (local-time:now)))
   (let ((target (identify-person-canonical-name who)))
-     (when target (list channel (identify-person-canonical-name who) what from-who timestamp))))
+    (when target
+      (make-instance 'memo
+                     :channel channel
+                     :author from-who
+                     :recipient target
+                     :text what
+                     :send-time timestamp))))
 
 (defun memo-to-string (memo)
-  (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (fourth memo) (format-date (fifth memo)) (format-time (fifth memo)) (third memo)))
+  (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (author memo) (format-date (send-time memo)) (format-time (send-time memo)) (text memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
-  (let ((memos (gethash (second memo) *memos*)))
-    (setf (gethash (second memo) *memos*)
+  (let ((memos (gethash (recipient memo) *memos*)))
+    (setf (gethash (recipient memo) *memos*)
           (append memos (list memo)))))
 
 (defun make-memo-matcher (user destination)
   (lambda (memo)
-    (and (equalp destination (first memo))
-         (equalp user (second memo)))))
+    (and (equalp destination (channel memo))
+         (equalp user (recipient memo)))))
 
 (defun find-matching-memos (user destination memos)
   (remove-if-not (make-memo-matcher user destination)
                  memos))
 
 (defun remove-memo (memo memos)
-  (remove-if (make-memo-matcher (second memo) (first memo))
+  (remove-if (make-memo-matcher (recipient memo) (channel memo))
              memos
              :count 1))
 
