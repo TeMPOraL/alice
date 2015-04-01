@@ -1,15 +1,6 @@
 (in-package #:alice)
 
-(defparameter *pushover-token* "")
-(defparameter *pushover-admin-user* "")
-
-(defparameter *mailgun-domain* "")
-(defparameter *mailgun-key* "")
-
 (defparameter *user-notification-medium* (make-hash-table :test 'equalp))
-
-;;;
-;;; (channel who what from-who &optional (timestamp (local-time:now)))
 
 (defclass memo ()
   ((server :initarg :server
@@ -141,35 +132,6 @@
   (let ((time-str ""))
    (ignore-errors (compute-time-offset-from-string time-str))))
 
-;;; notifications
-
-(defun send-notification (what to-token from)
-  (if (ignore-errors (drakma:http-request "https://api.pushover.net/1/messages.json"
-                                          :method :post
-                                          :external-format-out :UTF-8
-                                          :parameters `(("token" . ,*pushover-token*)
-                                                        ("user" . ,to-token)
-                                                        ("title" . ,*full-name*)
-                                                        ("message" . ,(concatenate 'string "<" from "> " what)))
-                                          :content "hack"
-                                          :content-length 4))
-      :notification-sent
-      :failed-in-sending-notification))
-
-
-(defun send-email (where-to text)
-  (if (ignore-errors (drakma:http-request (concatenate 'string "https://api.mailgun.net/v2/" *mailgun-domain* "/messages")
-                                          :method :post
-                                          :basic-authorization `("api" ,*mailgun-key*)
-                                          :parameters `(("from" . ,(concatenate 'string "Alice Margatroid <alice.margatroid@" *mailgun-domain* ">"))
-                                                        ("to" . ,where-to)
-                                                        ("subject" . "Alice Margatroid here; got a notification for you.")
-                                                        ("text" . ,text))
-                                          :external-format-out :UTF-8))
-      ;; 
-      :notification-sent
-      :failed-in-sending-notification))
-
 ;; MEMOS
 ;; FIXME move this somewhere?
 (defvar *memos* (make-hash-table :test 'equalp))
@@ -238,16 +200,6 @@ Also check for private memos (sent by query), and if any found, send it to him/h
         (progn (save-memo memo)
                :memo-saved)
         :memo-failed)))
-
-(defun make-pushover-notifier (pushover-key)
-  (lambda (channel who what from-who is-private)
-    (declare (ignore channel who is-private))
-    (send-notification what pushover-key from-who)))
-
-(defun make-email-notifier (email)
-  (lambda (channel who what from-who is-private)
-    (declare (ignore channel who from-who is-private))
-    (send-email email what)))
 
 ;; GENERAL NOTIFICATIONS
 

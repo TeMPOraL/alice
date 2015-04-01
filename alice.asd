@@ -51,13 +51,15 @@
                                      (:file "output-builder")))
 
                (:module "grimoire"
-                        :components ((:file "github")
+                        :components ((:file "email")
+                                     (:file "github")
                                      (:file "google")
                                      (:file "frequencies")
                                      (:file "meetups")
                                      (:file "notifications")
                                      (:file "people")
                                      (:file "package-tracking")
+                                     (:file "pushover")
                                      (:file "tinyurl")
                                      (:file "varia")
                                      (:file "wolfram-alpha")))
