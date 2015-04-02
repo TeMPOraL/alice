@@ -126,16 +126,37 @@
     ("\\bpojutrze\\b" . "day after tomorrow")
     ("\\brano\\b" . "06:00")
     ("\\bpo po(ł|l)udniu\\b" . "14:00")
-    ("\\bwieczorem\\b" . "17:00")
+    ("\\bwiecz(o|ó)r(em)?\\b" . "17:00")
+
+    ("\\bp(o|ó)(l|ł) godziny\\b" . "30 minutes")
+    ("\\bp(o|ó)(l|ł) minuty\\b" . "30 seconds")
+    ("\\bp(o|ó)(l|ł) dnia\\b" . "6 hours")
+    ("\\bp(o|ó)(l|ł) miesi(a|ą)ca\\b" . "15 days")
+    ("\\bp(o|ó)(l|ł) roku\\b" . "6 months")
+
+    ("\\bkwadrans\\b" . "15 minutes")
+    ("\\bkwarta(l|ł)\\b" . "3 months")
+
+    ("\\bza\\sminut(e|ę)\\b" . "in 1 minute")
+    ("\\bminut(e|ę)?\\b" . "minutes")
+    ("\\bgodzin(e|ę)\\b" . "1 hour")
+    ("\\bgodzin\\b" . "hours")
+
+    ("\\bdni\\b" . "days")
+    ("\\btygodnie\\b" . "weeks")
+    ("\\bmiesi(a|ą)c\\b" . "1 month")
+    ("\\bmiesi(a|ą|ę)c(e|y)\\b" . "months")
+    ("\\brok\\b" . "year")
+    ("\\blat(a)?\\b" . "years")
 
     ("\\bnast(ę|e)pny\\b" . "next")
     ("\\bprzysz(ł|l)y\\b" . "next")
-    ("\\bza\\b" . "next")
 
     ("\\bpoprzedni\\b" . "last")
     ("\\bzesz(l|ł)y\\b" . "last")
 
-    ("\\btydzie(n|ń)\\b" . "week")
+    ("\\bza\\stydzie(n|ń)\\b" . "next week")
+    ("\\bza\\b" . "in")
 
     ("\\bponiedzia(ł|l)ek\\b" . "monday")
     ("\\bwtorek\\b" . "tuesday")
@@ -147,7 +168,7 @@
 
     ("\\bp(ó|o)(ź|z)niej\\b" . ,(lambda (time)
                      (declare (ignore time))
-                     "next year"))
+                     "in 2 hours"))      ;TODO adjust timestamp, reformat.
     ("\\bwe?\\b" . "on")
     ("\\bo\\b" . "at")))
 
@@ -167,5 +188,5 @@
                  (setf str (cl-ppcre:regex-replace pattern str replacement))))
              str))
     ;; NOTE ignore-errors, because in rare cases, chronicity:parse can raise a condition.
-    (ignore-errors (chronicity:parse (preprocess-datetime-string offset-string) :now reference-time))))
+    (ignore-errors (chronicity:parse (preprocess-datetime-string (string-downcase offset-string)) :now reference-time))))
 
