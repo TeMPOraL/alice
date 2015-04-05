@@ -137,23 +137,30 @@
     ("\\bkwadrans\\b" . "15 minutes")
     ("\\bkwarta(l|ł)\\b" . "3 months")
 
+    ("\\bsekund(y)?\\b" . "seconds")
+
+    ("\\bza\\ssekund(e|ę)\\b" . "in 1 second")
     ("\\bza\\sminut(e|ę)\\b" . "in 1 minute")
     ("\\bminut(e|ę)?\\b" . "minutes")
     ("\\bgodzin(e|ę)\\b" . "1 hour")
     ("\\bgodzin\\b" . "hours")
 
+    ("\\bza\\srok\\b" . "next year")
+
     ("\\bdni\\b" . "days")
+    ("\\btygodniu\\b" . "week")
     ("\\btygodnie\\b" . "weeks")
     ("\\bmiesi(a|ą)c\\b" . "1 month")
+    ("\\bmiesi(a|ą)cu\\b" . "month")
     ("\\bmiesi(a|ą|ę)c(e|y)\\b" . "months")
-    ("\\brok\\b" . "year")
+    ("\\brok(u)?\\b" . "year")
     ("\\blat(a)?\\b" . "years")
 
-    ("\\bnast(ę|e)pny\\b" . "next")
-    ("\\bprzysz(ł|l)y\\b" . "next")
+    ("\\bnast(ę|e)pny(m)?\\b" . "next")
+    ("\\bprzysz(ł|l)y(m)?\\b" . "next")
 
-    ("\\bpoprzedni\\b" . "last")
-    ("\\bzesz(l|ł)y\\b" . "last")
+    ("\\bpoprzedni(m)?\\b" . "last")
+    ("\\bzesz(l|ł)y(m)?\\b" . "last")
 
     ("\\bza\\stydzie(n|ń)\\b" . "next week")
     ("\\bza\\b" . "in")

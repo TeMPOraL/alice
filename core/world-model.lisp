@@ -5,7 +5,7 @@
 
 (defvar *connected-channels* '() "Channels the bot is currently at.")
 
-(define-constant +self-reference-regexp+ "(?i)(\\bja\\b|\\bmi\\b|\\bmnie\\b|\\bme\\b)" :test 'string=)
+(define-constant +self-reference-regexp+ "(?i)(\\bja\\b|\\bmi\\b|\\bme\\b)" :test 'string=)
 
 (defun clear-nonpersistent-worldstate ()
   "Cleans up the world state when (re)connecting the bot."

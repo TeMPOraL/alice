@@ -114,14 +114,14 @@
                                      -0.5)
                         (match-score (lambda (input)
                                        (and (directedp input)
-                                            ;; TODO add conditions based on timestrings
+                                            nil;; TODO add conditions based on timestrings
                                             ))
                                      0.5))
                   (lambda (input)
                     (let ((delivery-time (extract-target-timestamp-from-input input)))
                       (if delivery-time
                           (say (reply-to input) (notify-person-delayed (reply-to input)
-                                                                       (identify-person-mentioned (unquoted-part input))
+                                                                       (identify-person-mentioned (unquoted-part input) (author input))
                                                                        (raw-text input)
                                                                        (author input)
                                                                        (privatep input)
@@ -159,12 +159,38 @@
                                                   "Coś nie działa. *sigh*"
                                                   "Nie umiem w notyfikacje. *sob*"))
 
+(provide-output :failed-to-extract-timestring '("Nie bardzo umiem powiedzieć kiedy..."
+                                                "Napisz mi precyzyjniej, kiedy."
+                                                "Jeszcze raz - kiedy?"))
+
+(provide-output :delayed-memo-saved '("Ok."))
+
+(provide-output :delayed-memo-failed '("Nope."))
+
 
 ;;; delayed notification
 (defun extract-timestring (input)
   "Narrow down `INPUT' to the best timestring."
-  
-  )
+  (labels ((remove-superfluous-punctuation (string)
+             (cl-ppcre:regex-replace-all "[\\.\\,\\:\\-\\?]\\s" string " "))
+           (first-timestring-subsequence (tokens &optional accumulated)
+             "Recursive helper function that return the first continous sequence of `TOKENS' that are recognized as timestring words."
+             (cond ((emptyp tokens)
+                    accumulated)
+
+                   ((and (not (emptyp accumulated))
+                         (null (chronicity:token-tags (car tokens))))
+                    accumulated)
+                   
+                   ((not (null (chronicity:token-tags (car tokens))))
+                    (first-timestring-subsequence (cdr tokens) (cons (car tokens) accumulated)))
+
+                   (t
+                    (first-timestring-subsequence (cdr tokens) accumulated)))))
+   (multiple-value-bind (result first-try) (compute-time-offset-from-string (remove-superfluous-punctuation (unquoted-part input)))
+     (if result
+         (remove-superfluous-punctuation (unquoted-part input)) ; on the off-chance we're parsing *just* the timestring we need
+         (implode (reverse (mapcar #'chronicity:token-word (first-timestring-subsequence first-try))))))))
 
 (defun extract-target-timestamp-from-input (input)
   "Generate a proper `LOCAL-TIME:TIMESTAMP' object from `INPUT'."
@@ -244,8 +270,8 @@ Also check for private memos (sent by query), and if any found, send it to him/h
 
 ;;; DELAYED NOTIFICATIONS
 (defun save-delayed-memo (memo delivery-time)
-  (setf (deliver-after-time memo) delivery-time)
-  (push memo *delayed-notifications*))
+  (setf (deliver-after-time memo) delivery-time
+        *delayed-notifications* (append *delayed-notifications* (list memo))))
 
 (defun check-for-delayed-notifications ()
   "To be called by a timer."

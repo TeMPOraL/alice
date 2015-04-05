@@ -17,3 +17,12 @@
                          ending)
             string)
         "")))
+
+(defun implode (list &optional (delimiter #\Space))
+  "Concatenates `LIST' into a single string, with elements separated by `DELIMITER', which can be basically anything."
+  (format nil
+          (concatenate 'string
+                       "~{~A~^"
+                       (format nil "~A" delimiter)
+                       "~}")
+          list))
