@@ -2,6 +2,8 @@
 
 (defparameter *user-notification-medium* (make-hash-table :test 'equalp))
 
+(defvar *memos* (make-hash-table :test 'equalp))
+
 (defclass memo ()
   ((server :initarg :server
            :initform nil
@@ -58,8 +60,6 @@
 
 (defmethod marshal:class-persistant-slots ((memo memo))
   (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (class-of memo))))
-
-;;; TODO create serialization for local-time:timestsamp (preferably in another file, for "patching up other people's code" (e.g. serialize.lisp)
 
 (register-matcher :notify-user
                   (list (match-score (lambda (input)
@@ -132,10 +132,6 @@
   (let ((time-str ""))
    (ignore-errors (compute-time-offset-from-string time-str))))
 
-;; MEMOS
-;; FIXME move this somewhere?
-(defvar *memos* (make-hash-table :test 'equalp))
-
 (defun make-memo (channel who what from-who &optional (timestamp (local-time:now)))
   (let ((target (identify-person-canonical-name who)))
     (when target
@@ -205,9 +201,10 @@ Also check for private memos (sent by query), and if any found, send it to him/h
 
 (defun notify-person (channel target-user message-body from-who is-private)
   "Notify a person using the most suitable medium available."
-  (funcall (pick-notifier channel target-user message-body from-who is-private)
+  (funcall (pick-notifier target-user)
            channel target-user message-body from-who is-private))
 
-(defun pick-notifier (channel target-user message-body from-who is-private)
+(defun pick-notifier (target-user)
   "Select notification method for given user."
-  (gethash (identify-person-canonical-name target-user) *user-notification-medium* #'notify-via-memo))
+  (gethash (identify-person-canonical-name target-user) *user-notification-medium* 'notify-via-memo))
+
