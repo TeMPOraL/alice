@@ -20,6 +20,5 @@
 
 ;;; notifications plug-in
 (defun make-email-notifier (email)
-  (lambda (channel who what from-who is-private)
-    (declare (ignore channel who from-who is-private))
-    (send-email email what)))
+  (lambda (memo)
+    (send-email email (text memo))))

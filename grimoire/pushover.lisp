@@ -20,6 +20,5 @@
 
 ;;; notifications plug-in
 (defun make-pushover-notifier (pushover-key)
-  (lambda (channel who what from-who is-private)
-    (declare (ignore channel who is-private))
-    (send-notification what pushover-key from-who)))
+  (lambda (memo)
+    (send-pushover (text memo) pushover-key (author memo))))

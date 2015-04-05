@@ -2,7 +2,8 @@
 
 (defparameter *user-notification-medium* (make-hash-table :test 'equalp))
 
-(defvar *memos* (make-hash-table :test 'equalp))
+(defvar *memos* (make-hash-table :test 'equalp) "List of memos, i.e. notifications to be delivered on IRC.")
+(defvar *delayed-notifications* '() "List for delayed notifications, to be checked every now and then.")
 
 (defclass memo ()
   ((server :initarg :server
@@ -19,7 +20,7 @@
    
    (recipient :initarg :recipient
               :initform nil
-              :accessor recipient)
+              :accessor recipient)      ;NOTE in the future, this will be some sort of weak reference to an user object.
    
    (author :initarg :author
            :initform nil
@@ -42,8 +43,31 @@
 (defgeneric immediatep (memo)
   (:documentation "Test if memo is for immediate delivery."))
 
+(defgeneric overduep (memo &optional current-time)
+  (:documentation "Test if memo should be delivred now (it's past delivery time)."))
+
+(defgeneric deliver (memo)
+  (:documentation "Deliver the memo."))
+
+(defgeneric to-spoken-string (what)
+  (:documentation "Converts object into spoken representation."))
+
+(defmethod privatep ((memo memo))
+  (null (channel memo)))
+
 (defmethod immediatep ((memo memo))
   (null (deliver-after-time memo)))
+
+(defmethod overduep ((memo memo) &optional (current-time (local-time:now)))
+  (and (not (immediatep memo))
+       (local-time:timestamp>= current-time (deliver-after-time memo))))
+
+(defmethod deliver ((memo memo))
+  (funcall (pick-notifier (recipient memo) 'dispatch-memo-to-IRC)
+           memo))
+
+(defmethod to-spoken-string ((memo memo))
+  (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (author memo) (format-date (send-time memo)) (format-time (send-time memo)) (text memo)))
 
 (defmethod print-object ((memo memo) stream)
   (print-unreadable-object (memo stream :type t :identity t)
@@ -61,6 +85,7 @@
 (defmethod marshal:class-persistant-slots ((memo memo))
   (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (class-of memo))))
 
+;;; INPUT MATCHERS
 (register-matcher :notify-user
                   (list (match-score (lambda (input)
                                        (and (directedp input)
@@ -93,9 +118,16 @@
                                             ))
                                      0.5))
                   (lambda (input)
-                    (declare (ignore input))
-                    ;; TODO isolate and parse timestring and set up a delayed memo
-                    ))
+                    (let ((delivery-time (extract-target-timestamp-from-input input)))
+                      (if delivery-time
+                          (say (reply-to input) (notify-person-delayed (reply-to input)
+                                                                       (identify-person-mentioned (unquoted-part input))
+                                                                       (raw-text input)
+                                                                       (author input)
+                                                                       (privatep input)
+                                                                       delivery-time))
+                          (say (reply-to input) :failed-to-extract-timestring)))))
+
 ;;; TODO some remote memo management solutions
 
 (provide-output :more-memos '("Są też kolejne powiadomienia."
@@ -109,6 +141,7 @@
 (provide-output :memo-saved '("zapisałam jako memo"
                               "memo zapisane"
                               "zapisane; przekażę jak zobaczę"
+                              "przekażę jak się odezwie"
                               "jasne, przekażę jak zobaczę"))
 
 (provide-output :memo-failed  '("Nie umiem wysłać tego memo. Chyba nie wiem o kogo Ci chodzi."
@@ -129,10 +162,12 @@
 
 ;;; delayed notification
 (defun extract-target-timestamp-from-input (input)
+  (declare (ignore input))              ;TODO
   (let ((time-str ""))
    (ignore-errors (compute-time-offset-from-string time-str))))
 
 (defun make-memo (channel who what from-who &optional (timestamp (local-time:now)))
+  "Create a memo object out of passed params."
   (let ((target (identify-person-canonical-name who)))
     (when target
       (make-instance 'memo
@@ -141,9 +176,6 @@
                      :recipient target
                      :text what
                      :send-time timestamp))))
-
-(defun memo-to-string (memo)
-  (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (author memo) (format-date (send-time memo)) (format-time (send-time memo)) (text memo)))
 
 (defun save-memo (memo)
   "Save a memo for user."
@@ -162,49 +194,82 @@
   (remove-if-not (make-memo-matcher user destination current-time)
                  memos))
 
-(defun remove-memo (memo memos current-time)
+(defun remove-memo (memo memos current-time) ;FIXME this should probably remove object by identity.
   (remove-if (make-memo-matcher (recipient memo) (channel memo) current-time)
              memos
              :count 1))
+
+(defun dispatch-memo-to-IRC (memo &optional current-target morep)
+  "Output `MEMO' directly to IRC - either to channel or in query. Optionally, set target user nickname to `CURRENT-TARGET', because the nickname might have changed since registering of memo."
+  (declare (ignore morep))
+  (let ((target (or current-target
+                    (recipient memo))))
+    (say (if (privatep memo)
+             (recipient memo)
+             (channel memo))
+         (to-spoken-string memo)
+         :to target)))
+
 
 (defun check-for-memos (destination for-who &optional (current-time (local-time:now)))
   "See if user `FROM-WHO' writing at `DESTINATION' has any pending memos (`IMMEDIATEP' or overdue wrt. to `CURRENT-TIME') and if so, grab the first one and write it to him/her.
 Also check for private memos (sent by query), and if any found, send it to him/her in private."
   (let ((who (identify-person-canonical-name for-who)))
-    (labels ((dispatch-memo (to-where to-who memo more?)
-               (say to-where (memo-to-string memo) :to to-who)
-               (when more?
-                 (say to-where :more-memos :to to-who)))
-
-             (handle-memos (from-where to-where to-who)
+    (labels ((handle-memos (from-where to-who)
                "Find a first matching memo, dispatch it and remove from memo list."
                (let* ((all-memos (gethash who *memos*))
                       (matching-memos (find-matching-memos who from-where all-memos current-time)) ;TODO clean that up; it's a mess of arguments.
-                      (memo (first matching-memos)))
-                 (when memo
-                   (setf (gethash who *memos*) (remove-memo memo all-memos current-time))
-                   (dispatch-memo to-where to-who memo (> (length matching-memos) 1))))))
+                      )
+                 (mapc (lambda (memo)
+                         (setf (gethash who *memos*) (remove-memo memo all-memos current-time))
+                         (dispatch-memo-to-IRC memo to-who (> (length matching-memos) 1)))
+                       matching-memos))))
 
-      (handle-memos destination destination for-who) ;public memos
-      (handle-memos nil for-who nil))))              ;private memos
+      (handle-memos destination for-who) ;public memos
+      (handle-memos nil nil))))              ;private memos
 
 
-(defun notify-via-memo (channel who what from-who is-private)
-  (let ((memo (make-memo (and (not is-private) channel)
-                         who what from-who)))
-    (if memo
-        (progn (save-memo memo)
-               :memo-saved)
-        :memo-failed)))
+(defun notify-via-IRC-memo (memo)
+  "Stores `MEMO' on the list of memos to deliver via IRC."
+  (if memo
+      (progn (save-memo memo)
+             :memo-saved)
+      :memo-failed))
+
+;;; DELAYED NOTIFICATIONS
+(defun save-delayed-memo (memo delivery-time)
+  (setf (deliver-after-time memo) delivery-time)
+  (push memo *delayed-notifications*))
+
+(defun check-for-delayed-notifications ()
+  "To be called by a timer."
+  (setf *delayed-notifications* (mapcan (lambda (notification)
+                                          (if (overduep notification)
+                                              (progn (deliver notification)
+                                                     nil)
+                                              (list notification)))
+                                        *delayed-notifications*)))
+
 
 ;; GENERAL NOTIFICATIONS
 
 (defun notify-person (channel target-user message-body from-who is-private)
   "Notify a person using the most suitable medium available."
-  (funcall (pick-notifier target-user)
-           channel target-user message-body from-who is-private))
+  (let ((memo (make-memo (and (not is-private) channel)
+                         target-user message-body from-who)))
+    (funcall (pick-notifier target-user)
+             memo)))
 
-(defun pick-notifier (target-user)
+(defun notify-person-delayed (channel target-user message-body from-who is-private delivery-time)
+  "Notify via a delyed memo. Memo is stored to be delivered at `DELIVERY-TIME'. The actual mechanism of delivery will be determined at that time."
+  (let ((memo (make-memo (and (not is-private) channel)
+                         target-user message-body from-who)))
+    (if memo
+        (progn (save-delayed-memo memo delivery-time)
+               :delayed-memo-saved)
+        :delayed-memo-failed)))
+
+(defun pick-notifier (target-user &optional (default-method 'notify-via-IRC-memo))
   "Select notification method for given user."
-  (gethash (identify-person-canonical-name target-user) *user-notification-medium* 'notify-via-memo))
+  (gethash (identify-person-canonical-name target-user) *user-notification-medium* default-method))
 
