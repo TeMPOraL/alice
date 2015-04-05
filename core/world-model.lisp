@@ -5,6 +5,8 @@
 
 (defvar *connected-channels* '() "Channels the bot is currently at.")
 
+(define-constant +self-reference-regexp+ "(?i)(\\bja\\b|\\bmi\\b|\\bmnie\\b|\\bme\\b)" :test 'string=)
+
 (defun clear-nonpersistent-worldstate ()
   "Cleans up the world state when (re)connecting the bot."
   (setf *connected-channels* '()))
@@ -89,9 +91,12 @@ Creates the object if not found."
 
 ;; resolving people from free-form text
 ;; TODO replace current code with proper references to sentece-features when the latter are done.
-(defun identify-person-mentioned (message-body)
-  "Take `MESSAGE-BODY', return canonical name of a first recognized person inside the message."
-  (let ((words (extract-words message-body)))
+(defun identify-person-mentioned (message-body &optional (nick-for-self-reference))
+  "Take `MESSAGE-BODY', return canonical name of a first recognized person inside the message.
+If `NICK-FOR-SELF-REFERENCE' is specified, it is substituted for words like 'me', 'ja', etc."
+  (let ((words (extract-words (if nick-for-self-reference
+                                  (cl-ppcre:regex-replace-all +self-reference-regexp+ message-body nick-for-self-reference)
+                                  message-body))))
     (find-if (lambda (word)
                (and (not (equalp word *nick*))
                     (not (null (identify-person-canonical-name word)))))

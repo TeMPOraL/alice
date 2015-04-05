@@ -100,7 +100,7 @@
                                                 (mentions "memo" (unquoted-part input))))))) ;NOTE, this will conflict with gihtub; try e.g. looking for nicknames and adding additional score if one found
                   (lambda (input)
                     (say (reply-to input) (notify-person (reply-to input)
-                                                         (identify-person-mentioned (unquoted-part input))
+                                                         (identify-person-mentioned (unquoted-part input) (author input))
                                                          (raw-text input)
                                                          (author input)
                                                          (privatep input)))))
@@ -161,10 +161,15 @@
 
 
 ;;; delayed notification
+(defun extract-timestring (input)
+  "Narrow down `INPUT' to the best timestring."
+  
+  )
+
 (defun extract-target-timestamp-from-input (input)
-  (declare (ignore input))              ;TODO
-  (let ((time-str ""))
-   (ignore-errors (compute-time-offset-from-string time-str))))
+  "Generate a proper `LOCAL-TIME:TIMESTAMP' object from `INPUT'."
+  (let ((time-str (extract-timestring input)))
+    (ignore-errors (compute-time-offset-from-string time-str))))
 
 (defun make-memo (channel who what from-who &optional (timestamp (local-time:now)))
   "Create a memo object out of passed params."
