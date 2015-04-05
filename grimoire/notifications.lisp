@@ -221,9 +221,10 @@ Also check for private memos (sent by query), and if any found, send it to him/h
                       (matching-memos (find-matching-memos who from-where all-memos current-time)) ;TODO clean that up; it's a mess of arguments.
                       )
                  (mapc (lambda (memo)
-                         (setf (gethash who *memos*) (remove-memo memo all-memos current-time))
+                         (setf all-memos (remove-memo memo all-memos current-time))
                          (dispatch-memo-to-IRC memo to-who (> (length matching-memos) 1)))
-                       matching-memos))))
+                       matching-memos)
+                 (setf (gethash who *memos*) all-memos))))
 
       (handle-memos destination for-who) ;public memos
       (handle-memos nil nil))))              ;private memos
