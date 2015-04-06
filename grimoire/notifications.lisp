@@ -5,6 +5,8 @@
 (defvar *memos* (make-hash-table :test 'equalp) "List of memos, i.e. notifications to be delivered on IRC.")
 (defvar *delayed-notifications* '() "List for delayed notifications, to be checked every now and then.")
 
+(defvar *delayed-notifications-timer* (trivial-timers:make-timer (lambda () (funcall 'alice::check-for-delayed-notifications))))
+
 (defclass memo ()
   ((server :initarg :server
            :initform nil
@@ -305,3 +307,10 @@ Also check for private memos (sent by query), and if any found, send it to him/h
   "Select notification method for given user."
   (gethash (identify-person-canonical-name target-user) *user-notification-medium* default-method))
 
+
+(defun start-delayed-notification-timer ()
+  (unless (trivial-timers:timer-scheduled-p *delayed-notifications-timer*)
+    (trivial-timers:schedule-timer *delayed-notifications-timer* 1 :repeat-interval 30)))
+(defun stop-delayed-notification-timer ()
+  (when (trivial-timers:timer-scheduled-p *delayed-notifications-timer*)
+    (trivial-timers:unschedule-timer *delayed-notifications-timer*)))
