@@ -141,7 +141,7 @@
 
     ("\\bza\\ssekund(e|ę)\\b" . "in 1 second")
     ("\\bza\\sminut(e|ę)\\b" . "in 1 minute")
-    ("\\bminut(e|ę)?\\b" . "minutes")
+    ("\\bminut(e|ę|y)?\\b" . "minutes")
     ("\\bgodzin(e|ę)\\b" . "1 hour")
     ("\\bgodzin\\b" . "hours")
 

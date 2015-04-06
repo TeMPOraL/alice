@@ -165,9 +165,11 @@
                                                 "Napisz mi precyzyjniej, kiedy."
                                                 "Jeszcze raz - kiedy?"))
 
-(provide-output :delayed-memo-saved '("Ok."))
+(provide-output :delayed-memo-saved '("Ok."
+                                      "Jasne, przekażę."
+                                      "Zapisane do przekazania."))
 
-(provide-output :delayed-memo-failed '("Nope."))
+(provide-output :delayed-memo-failed '(:memo-failed))
 
 
 ;;; delayed notification
