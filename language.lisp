@@ -121,7 +121,8 @@
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
 (defparameter *timestring-preprocessing-mappings*
-  `(("\\bdzi(ś|s|siaj)\\b" . "today")
+  `(("\\bteraz\\b" . "now")
+    ("\\bdzi(ś|s|siaj)\\b" . "today")
     ("\\bjutro\\b" . "tomorrow")
     ("\\bpojutrze\\b" . "day after tomorrow")
     ("\\brano\\b" . "06:00")

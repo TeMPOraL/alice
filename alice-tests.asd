@@ -27,5 +27,6 @@
                                      (:file "suites")
 
                                      (:module "test-suites"
-                                              :components ((:file "string-utils")))))))
+                                              :components ((:file "language")
+                                                           (:file "string-utils")))))))
 
