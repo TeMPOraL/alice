@@ -115,6 +115,10 @@
         (to (first (irc:arguments message))))
     (register-nick-change from to)))
 
+(defun invite-hook (message)
+  (let ((where (second (irc:arguments message))))
+    (join-channel where)))
+
 ;; entry point
 
 (defun start-alice (&key (server *server*) (nick *nick*) (password *password*) (channels *autojoin-channels*))
@@ -134,6 +138,7 @@
   (irc:add-hook *connection* 'irc:irc-part-message 'part-hook)
   (irc:add-hook *connection* 'irc:irc-rpl_namreply-message 'names-hook)
   (irc:add-hook *connection* 'irc:irc-nick-message 'nick-hook)
+  (irc:add-hook *connection* 'irc:irc-invite-message 'invite-hook)
 
   #+(or sbcl
         openmcl)
