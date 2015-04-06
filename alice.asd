@@ -6,7 +6,7 @@
   :long-name "Alice Margatroid"
   :author "Jacek Złydach"
   :version (:read-file-form "version.lisp" :at (1 2 2))
-  :description "IRC bot responding to queries based on natural language.."
+  :description "IRC bot responding to queries based on natural language."
   :long-description "Alice Margatroid, the Doll Maker of Bucuresti. An IRC-bot that pretends to be human."
 
   :license "Teaware - do whatever you want with it, but I wouldn't mind getting invited for a cup of tea ;)."
@@ -30,6 +30,8 @@
                #:trivial-timers
                #:swank
                #:marshal)
+
+  :in-order-to ((test-op (test-op :alice-tests)))
   
   :components ((:file "package")
                (:file "version")
