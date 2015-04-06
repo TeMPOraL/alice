@@ -137,7 +137,9 @@
 
   #+(or sbcl
         openmcl)
-  (irc:start-background-message-handler *connection*))
+  (irc:start-background-message-handler *connection*)
+
+  (start-delayed-notification-timer))
 
 (defun stop-alice (&optional (msg "Goodbye!"))
       (irc:quit *connection* msg))
