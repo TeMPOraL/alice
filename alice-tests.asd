@@ -28,5 +28,7 @@
 
                                      (:module "test-suites"
                                               :components ((:file "language")
-                                                           (:file "string-utils")))))))
+                                                           (:file "string-utils")
+
+                                                           (:file "input-matchers")))))))
 
