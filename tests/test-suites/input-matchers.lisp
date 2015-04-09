@@ -72,88 +72,101 @@
   ("Alice_M, version number please!"))
 
 (test-is-primary-match primary-match-wolfram-alpha-query-full :wolfram-alpha-query-full
-  ("Foo"))
+  ("Alice_M, oblicz proszę \"2+2\", pełny wynik")
+  ("Alice_M, policz proszę \"2+2\", pokaż wszystko"))
 
 (test-is-primary-match primary-match-wolfram-alpha-query :wolfram-alpha-query
-  ("Foo"))
+  ("Alice_M policz \"2+2\""))
 
 (test-is-primary-match primary-match-whois :whois
-  ("Foo"))
+  ;; pl_PL
+  ("Kim jestem, Alice_M?")
+  ("Alice_M, kim jest ShanghaiDoll?")
+  ("Alice_M, kto to jest HouraiDoll?"))
 
 (test-is-primary-match primary-match-assign-name-alias :assign-name-alias
-  ("Foo"))
+  ("Alice_M, zapamiętaj: hourai shanghai" :publicp nil))
 
 (test-is-primary-match primary-match-shorten-url :shorten-url
-  ("Foo"))
+  ("Skróć http://google.pl/")
+  ("Alice_M, skróć proszę http://google.com/"))
 
 (test-is-primary-match primary-match-notify-user :notify-user
-  ("Foo"))
+  ("Przekaż tacie test."))
 
 (test-is-primary-match primary-match-delayed-notify-user :delayed-notify-user
-  ("Foo"))
+  ("Przypomnij tacie pojutrze test."))
 
 (test-is-primary-match primary-match-track-package :track-package
-  ("Foo"))
+  ("Gdzie jest XXX?"))
 
 (test-is-primary-match primary-match-github-issues-link :github-issues-link
-  ("Foo"))
+  ("Pokaż issues."))
 
 (test-is-primary-match primary-match-add-github-issue :add-github-issue
-  ("Foo"))
+  ("Dodaj issue \"XXX\"."))
 
 (test-is-primary-match primary-match-random-frequency :random-frequency
-  ("Foo"))
+  ("Alice_M, częstotliwość na dziś to...?"))
 
 (test-is-primary-match primary-match-whats-the-frequency :whats-the-frequency
-  ("Foo"))
+  ("Alice_M, co jest na częstotliwości 123.456"))
 
 (test-is-primary-match primary-match-events-list :events-list
   ("Foo"))
 
 (test-is-primary-match primary-match-marisa :marisa
-  ("Foo"))
+  ("Marisa" :directedp nil)
+  ("Kirisame" :directedp nil))
 
 (test-is-primary-match primary-match-introductions :introductions
-  ("Foo"))
+  ("Alice_M, przedstaw się!"))
 
 (test-is-primary-match primary-match-thanks-reply :thanks-reply
-  ("Foo"))
+  ("Dzięki, Alice_M!")
+  ("thx, Alice_M!"))
 
 (test-is-primary-match primary-match-sing :sing
-  ("Foo"))
+  ("Alice_M, zaśpiewaj coś!"))
 
 (test-is-primary-match primary-match-talking-about-me :talking-about-me
-  ("Foo"))
+  ("Alice Margatroid" :directedp nil))
 
 (test-is-primary-match primary-match-tcp-handshake :tcp-handshake
-  ("Foo"))
+  ("Alice_M: SYN"))
 
 (test-is-primary-match primary-match-hello :hello
-  ("Foo"))
+  ("Alice_M: hej")
+  ("Alice_M: witaj")
+  ("witaj, Alice_M"))
 
 (test-is-primary-match primary-match-repo-link :repo-link
-  ("Foo"))
+  ("Alice_M, pokaż źródła")
+  ("źródła, Alice_M"))
 
 (test-is-primary-match primary-match-dice-throw :dice-throw
-  ("Foo"))
+  ("Alice_M, rzuć K6."))
 
 (test-is-primary-match primary-match-goodnight :goodnight
-  ("Foo"))
+  ("dobranoc" :directedp nil))
 
 (test-is-primary-match primary-match-makes-sense-troll :makes-sense-troll
-  ("Foo"))
+  ("robi sens") :directedp nil)
 
 (test-is-primary-match primary-match-coincidence? :coincidence?
-  ("Foo"))
+  ("przypadek?" :directedp nil)
+  ("pszypadeg?":directedp nil))
 
 (test-is-primary-match primary-match-yolo :yolo
-  ("Foo"))
+  ("YOLO") :directedp nil)
 
 (test-is-primary-match primary-match-throttle-continue :throttle-continue
-  ("Foo"))
+  ("Alice_M, tak.")
+  ("Alice_M, poproszę."))
 
 (test-is-primary-match primary-match-default-response :default-response
-  ("Foo"))
+  ("Foo")
+  ("Bar"))
 
 
 
