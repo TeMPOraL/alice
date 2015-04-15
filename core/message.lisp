@@ -142,8 +142,11 @@
 (defun mentions (what string)
   (search (string-downcase what) (string-downcase string)))
 
-(defun mentions-regexp (regexp string)
-  (not (null (cl-ppcre:scan regexp string))))
+(defun mentions-regexp (regexp string &key (case-insensitive-p t))
+  (let ((rx (if case-insensitive-p
+                (format nil "(?i)(?:~A)" regexp) ;FIXME this is a-hacky, a better way would be to create a proper cl-ppcre matcher with case-insensitive-mode set to t.
+                regexp)))
+   (not (null (cl-ppcre:scan rx string)))))
 
 (defun mentions-name (name string)
   (mentions name string))

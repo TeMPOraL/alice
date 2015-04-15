@@ -22,11 +22,8 @@
 (register-matcher :version
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (or (mentions "numer wersji" (unquoted-part input))
-                                                (mentions "wersje" (unquoted-part input)) ;FIXME how about regexp?
-                                                (mentions "wersja" (unquoted-part input))
-                                                (mentions "wersją" (unquoted-part input))
-                                                (mentions "wersję" (unquoted-part input)))))))
+                                            (or (mentions-regexp "\\bwersj(i|a|e|ą|ę)\\b" (unquoted-part input))
+                                                (mentions-regexp "\\bversion\\b" (unquoted-part input)))))))
                   (lambda (input) (say (reply-to input) :version)))
 
 ;;; Be nice to thanks.
@@ -166,7 +163,8 @@
                   (list (match-score (lambda (input)
                                        (and (or (publicp input)
                                                 (directedp input))
-                                            (mentions "przypadek?" (raw-text input))))))
+                                            (or (mentions "przypadek?" (raw-text input))
+                                                (mentions "pszypadeg?" (raw-text input)))))))
                   (lambda (input)
                     (say (reply-to input) "nie sądzę.")))
 
