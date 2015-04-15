@@ -50,6 +50,7 @@
           (eql match
                (car (first best-matches)))))))
 
+;;; TODO add bindings to pass to `DEF-FIXTURE' / `WITH-TEMPORARY-ENVIRONMENT'.
 (defmacro test-is-primary-match (name matchspec &body inputs)
   "Create test named `NAME' which ensures that each of `INPUTS' strings generates an distinct match to `MATCHSPEC'."
   `(test ,name
@@ -101,10 +102,21 @@
   ("Gdzie jest XXX?"))
 
 (test-is-primary-match primary-match-github-issues-link :github-issues-link
-  ("Pokaż issues."))
+  ;; pl_PL
+  ("Pokaż issues.")
+
+  ;; en_US
+  ("Show issues."))
 
 (test-is-primary-match primary-match-add-github-issue :add-github-issue
-  ("Dodaj issue \"XXX\"."))
+  ;; pl_PL
+  ("Dodaj issue \"XXX\".")
+  ("dodaj issue \"XXX\".")
+  ("nowy issue \"XXX\".")             ;uh oh, a case sensitivity bug lurking inside...
+
+  ;; en_US
+  ("add issue \"XXX\".")
+  ("new issue \"XXX\"."))
 
 (test-is-primary-match primary-match-random-frequency :random-frequency
   ("Alice_M, częstotliwość na dziś to...?"))
@@ -112,7 +124,7 @@
 (test-is-primary-match primary-match-whats-the-frequency :whats-the-frequency
   ("Alice_M, co jest na częstotliwości 123.456"))
 
-(test-is-primary-match primary-match-events-list :events-list
+(test-is-primary-match primary-match-events-list :events-list ;FIXME this is not active yet anyway
   ("Foo"))
 
 (test-is-primary-match primary-match-marisa :marisa
@@ -150,24 +162,25 @@
 (test-is-primary-match primary-match-goodnight :goodnight
   ("dobranoc" :directedp nil))
 
-(test-is-primary-match primary-match-makes-sense-troll :makes-sense-troll
-  ("robi sens") :directedp nil)
-
 (test-is-primary-match primary-match-coincidence? :coincidence?
   ("przypadek?" :directedp nil)
   ("pszypadeg?":directedp nil))
 
 (test-is-primary-match primary-match-yolo :yolo
-  ("YOLO") :directedp nil)
-
-(test-is-primary-match primary-match-throttle-continue :throttle-continue
-  ("Alice_M, tak.")
-  ("Alice_M, poproszę."))
+  ("YOLO" :directedp nil))
 
 (test-is-primary-match primary-match-default-response :default-response
   ("Foo")
   ("Bar"))
 
+;;; tests requiring special environment
+
+(test-is-primary-match primary-match-throttle-continue :throttle-continue ;FIXME, need to bind alice::*throttled-output* somehow.
+  ("Alice_M, tak.")
+  ("Alice_M, poproszę."))
+
+(test-is-primary-match primary-match-makes-sense-troll :makes-sense-troll ;FIXME need to bind message's reply-to to "#hackerspace-krk" as it's channel-specific
+  ("robi sens":directedp nil))
 
 
 (add-suite 'input-matchers)
