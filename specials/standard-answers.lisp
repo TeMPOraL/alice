@@ -25,13 +25,15 @@
     ("SOM#3" . "SOM#3: Ale ja nic nie wiem!")
     ("SOM#4" . "SOM#4: Cooo? I tak Cię nie słyszę.")
 
-    ("SOW#1" . "SOW#1: Fuck off.")))
+    ("SOW#1" . "SOW#1: Fuck off.")
+
+    ("SOT#1" . "SOT#1: Chill the fuck out.")))
 
 (defun handle-standard-answers (destination is-private is-public is-directed from-who message-body)
   (declare (ignore from-who is-private))
 
   (if (or is-public
           is-directed)
-      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D|M|W)#[0-9A-Z]+)" message-body)))
+      (let ((match (cl-ppcre:scan-to-strings "(?i)(SO(A|D|M|T|W)#[0-9A-Z]+)" message-body)))
         (if match
             (say destination (cdr (assoc match *standard-answers* :test #'equalp)))))))

@@ -12,6 +12,7 @@
     (:suitability . "https://dl.dropboxusercontent.com/u/216352/comment/suitability.jpg")
     (:strong-upvote . "https://dl.dropboxusercontent.com/u/216352/comment/strong-upvote.gif")
     (:fuck-science . "https://dl.dropboxusercontent.com/u/216352/comment/fuck_science.jpg")
+    (:trying-to-think . "http://weknowmemes.com/wp-content/uploads/2011/12/everyone-shut-the-fuck-up-im-trying-to-think.jpg")
     (:congratulations-song . "https://www.youtube.com/watch?v=AteCdXvZOZc") ; well, it's not an image macro, but stil....
 ))
 
@@ -48,6 +49,9 @@
           ((or (mentions-regexp "^strong upvote" message-body)
                (mentions-regexp "[^ \\+]\\+\\+\\+\\+$" message-body))
            (say-image-macro destination :strong-upvote))
+
+          ((mentions-regexp "^(?i)STFU.*think" message-body)
+           (say-image-macro destination :trying-to-think))
 
           ((or (mentions "i have no idea what i'm doing" message-body)
                (mentions "i have no idea what i am doing" message-body))
