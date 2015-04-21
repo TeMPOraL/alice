@@ -143,7 +143,7 @@
     ("\\bza\\sminut(e|ę)\\b" . "in 1 minute")
     ("\\bminut(e|ę|y)?\\b" . "minutes")
     ("\\bgodzin(e|ę)\\b" . "1 hour")
-    ("\\bgodzin(y)?\\b" . "hours")
+    ("\\bgodziny?\\b" . "hours")
 
     ("\\bza\\srok\\b" . "next year")
 
