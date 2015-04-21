@@ -173,6 +173,7 @@
     ("\\bsobot(a|ę|e)\\b" . "saturday")
     ("\\niedziel(a|ę|e)\\b" . "sunday")
 
+    ("\\bza\\schwilk?(e|ę)\\b" . "in 15 seconds")
     ("\\bp(ó|o)(ź|z)niej\\b" . ,(lambda (time)
                      (declare (ignore time))
                      "in 2 hours"))      ;TODO adjust timestamp, reformat.
