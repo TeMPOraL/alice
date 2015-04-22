@@ -121,7 +121,7 @@
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
 (defparameter *timestring-preprocessing-mappings*
-  `(("\\d,\\d" . ".")
+  `(;("\\d,\\d" . ".") ;; not yet
     ("\\bjed(e|(en|n[aą])\\b)" . "1")
     ("\\bp[oó][lł]tor(a|ej)\\b" . "1.5")
     ("\\bdw(a|ie\\b)" . "2")
