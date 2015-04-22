@@ -146,8 +146,10 @@
     ("\\bjutro\\b" . "tomorrow")
     ("\\bpojutrze\\b" . "day after tomorrow")
     ("\\brano\\b" . "06:00")
+    ("\\bw po[lł]udnie\\b" . "12:00)
     ("\\bpo po(ł|l)udniu\\b" . "14:00")
     ("\\bwiecz(o|ó)r(em)?\\b" . "17:00")
+    ("\\b(o|w) p[oó][lł]nocy?\\b" . "0:00")
 
     ("\\bp(o|ó)(l|ł) godziny\\b" . "30 minutes")
     ("\\bp(o|ó)(l|ł) minuty\\b" . "30 seconds")
