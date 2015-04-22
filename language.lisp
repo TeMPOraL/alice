@@ -172,7 +172,7 @@
     ("\\btygodniu\\b" . "week")
     ("\\btygodnie\\b" . "weeks")
     ("\\bmiesi(a|ą)c\\b" . "1 month")
-    ("\\bmiesi(a|ą)cu\\b" . "month")
+    ("\\bmiesi(a|ą)c[au]\\b" . "month")
     ("\\bmiesi(a|ą|ę)c(e|y)\\b" . "months")
     ("\\brok(u)?\\b" . "year")
     ("\\blat(a)?\\b" . "years")
