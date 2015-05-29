@@ -120,7 +120,7 @@
 (defun format-time (timestamp)
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
-(defparameter alice::*timestring-preprocessing-mappings*
+(defparameter *timestring-preprocessing-mappings*
   `(;("\\d,\\d" . ".") ;; not yet
     ("\\bjed(e|(en|n[aą])\\b)" . "1")
     ("\\bp[oó][lł]tor(a|ej)\\b" . "1.5")
