@@ -120,7 +120,7 @@
 (defun format-time (timestamp)
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
-(defparameter *timestring-preprocessing-mappings*
+(defparameter alice::*timestring-preprocessing-mappings*
   `(;("\\d,\\d" . ".") ;; not yet
     ("\\bjed(e|(en|n[aą])\\b)" . "1")
     ("\\bp[oó][lł]tor(a|ej)\\b" . "1.5")
@@ -146,7 +146,7 @@
     ("\\bjutro\\b" . "tomorrow")
     ("\\bpojutrze\\b" . "day after tomorrow")
     ("\\brano\\b" . "06:00")
-    ("\\bw po[lł]udnie\\b" . "12:00)
+    ("\\bw po[lł]udnie\\b" . "12:00")
     ("\\bpo po(ł|l)udniu\\b" . "14:00")
     ("\\bwiecz(o|ó)r(em)?\\b" . "17:00")
     ("\\b(o|w) p[oó][lł]nocy?\\b" . "0:00")
