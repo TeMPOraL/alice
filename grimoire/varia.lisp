@@ -119,7 +119,7 @@
 (register-matcher :repo-link
                   (list (match-score (lambda (input)
                                        (and (directedp input)
-                                            (mentions-regexp "źródł(o|a)" (unquoted-part input))))
+                                            (mentions-regexp "[źz]r[óo]d([łl][oa]|e[łl]k[ao])" (unquoted-part input))))
                                      0.9))
                   (lambda (input)
                     (say (reply-to input) :repo-link :to (author input))))
