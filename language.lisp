@@ -121,12 +121,35 @@
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
 (defparameter *timestring-preprocessing-mappings*
-  `(("\\bdzi(ś|s|siaj)\\b" . "today")
+  `(;("\\d,\\d" . ".") ;; not yet
+    ("\\bjed(e|(en|n[aą])\\b)" . "1")
+    ("\\bp[oó][lł]tor(a|ej)\\b" . "1.5")
+    ("\\bdw(a|ie\\b)" . "2")
+    ("\\btrzy" . "3")
+    ("\\bcztery?" . "4")
+    ("\\bpi[eę][cćt]" . "5")
+    ("\\bsze[sś][cć]" . "6")
+    ("\\bsiedem" . "7")
+    ("\\bosiem" . "8")
+    ("\\bdziewi[eę][cćt]" . "9")
+    ("\\bdziesi[eę][cć]\\b" . "10")
+    ; ("na[sś]cie\\b" . "1") ;; no idea how to prepend with "1"
+    ("dzie([sś]cia?|si[aą]t)\\b" . "0")
+    ;; also no idea what with "pięćdziesiąt sześć"
+    ("\\bsto\\b" . "100")
+    ("\\bdwie[sś]cie\\b" . "200")
+    ("s(ta|et)\\b" . "00")
+    ("\\btysi[aą]c\\b" . "1000")
+    ("\\btysi[aąeę]c[ey]\\b" . "000") ;; not really sure about this...
+    
+    ("\\bdzi(ś|s|siaj)\\b" . "today")
     ("\\bjutro\\b" . "tomorrow")
     ("\\bpojutrze\\b" . "day after tomorrow")
     ("\\brano\\b" . "06:00")
+    ("\\bw po[lł]udnie\\b" . "12:00")
     ("\\bpo po(ł|l)udniu\\b" . "14:00")
     ("\\bwiecz(o|ó)r(em)?\\b" . "17:00")
+    ("\\b(o|w) p[oó][lł]nocy?\\b" . "0:00")
 
     ("\\bp(o|ó)(l|ł) godziny\\b" . "30 minutes")
     ("\\bp(o|ó)(l|ł) minuty\\b" . "30 seconds")
@@ -151,7 +174,7 @@
     ("\\btygodniu\\b" . "week")
     ("\\btygodnie\\b" . "weeks")
     ("\\bmiesi(a|ą)c\\b" . "1 month")
-    ("\\bmiesi(a|ą)cu\\b" . "month")
+    ("\\bmiesi(a|ą)c[au]\\b" . "month")
     ("\\bmiesi(a|ą|ę)c(e|y)\\b" . "months")
     ("\\brok(u)?\\b" . "year")
     ("\\blat(a)?\\b" . "years")
