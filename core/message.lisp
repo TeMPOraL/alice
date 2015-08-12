@@ -2,6 +2,7 @@
 
 (defparameter *general-url-regexp* "((https?\\://\\S*)|(www\\.\\S*))")
 (define-constant +quoted-text-extraction-regexp+ "(\\\".*?\\\")" :test #'string=)
+(define-constant +words-split-regexp+ "[\\w\\|-]{2,}" :test #'string=)
 
 (defclass message ()
   ((raw-text :initarg :raw-text
@@ -101,12 +102,12 @@
 
 (defun extract-all-words (text)
   (delete-duplicates
-   (cl-ppcre:all-matches-as-strings "[\\w\\|]{2,}" text)
+   (cl-ppcre:all-matches-as-strings +words-split-regexp+ text)
    :test #'string=
    :from-end t))
 
 (defun extract-words (text)
-  (cl-ppcre:all-matches-as-strings "[\\w\\|]{2,}" text))
+  (cl-ppcre:all-matches-as-strings +words-split-regexp+ text))
 
 (defun extract-message-features (irc-message)
   (flet ((public-message-p (message)
