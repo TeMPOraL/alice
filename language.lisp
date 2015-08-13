@@ -4,6 +4,17 @@
 
 (defparameter *min-nick-length-for-stem-match* 4)
 
+(define-constant +regexp-special-characters+ ".^$*+?()[{\|\\" :test #'string=)
+(define-constant
+    +regexp-escape-special-characters-regexp-part+
+    (concatenate 'string
+                 "(["
+                 (coerce (mapcan (lambda (x) (list #\\ x))
+                                 (coerce +regexp-special-characters+ 'list))
+                         'string)
+                 "])")
+  :test #'string=)
+
 (defun stem-matches-p (word-checked target)
   (and (stringp word-checked)
        (stringp target)
@@ -27,17 +38,6 @@
 (defun escape-for-regexp (text)
   (cl-ppcre:regex-replace-all +regexp-escape-special-characters-regexp-part+ text "\\\\\\1"))
 
-
-(define-constant +regexp-special-characters+ ".^$*+?()[{\|\\" :test #'string=)
-(define-constant
-    +regexp-escape-special-characters-regexp-part+
-    (concatenate 'string
-                 "(["
-                 (coerce (mapcan (lambda (x) (list #\\ x))
-                                 (coerce +regexp-special-characters+ 'list))
-                         'string)
-                 "])")
-  :test #'string=)
 
 ;;; stems
 ;; wiktor owi

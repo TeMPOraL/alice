@@ -91,7 +91,7 @@
   ;; tone TODO
 
   (setf (quoted-parts message) (cl-ppcre:all-matches-as-strings +quoted-text-extraction-regexp+ (raw-text message)))
-  (setf (unquoted-part message) (cl-ppcre:regex-replace-all +quoted-text-extraction-regexp+ (raw-text message) ""))
+  (setf (unquoted-part message) (remove-quoted-parts (raw-text message)))
 
   ;; nicks known
   ;; nicks present
@@ -149,6 +149,9 @@
 (defun mentions-name (name string)
   (mentions name string))
 
+(defun remove-quoted-parts (msg)
+  (cl-ppcre:regex-replace-all +quoted-text-extraction-regexp+ msg ""))
+
 ;; types of message
 (defun public-message-p (message)
   (and
@@ -162,4 +165,4 @@
 (defun directed-message-p (message)
   (or (string-equal (first (irc:arguments message))
                     *nick*)
-      (mentions-name *nick* (second (irc:arguments message)))))
+      (mentions-name *nick* (remove-quoted-parts (second (irc:arguments message))))))
