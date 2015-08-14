@@ -10,7 +10,7 @@
 (defclass memo ()
   ((server :initarg :server
            :initform nil
-           :type string
+           ;; :type string
            :accessor server
            :documentation "Server for which this memo is relevant. Currently unused.")
    
@@ -39,7 +39,7 @@
    
    (deliver-after-time :initarg :deliver-after-time
                        :initform nil
-                       :type local-time:timestamp
+                       ;; :type local-time:timestamp
                        :accessor deliver-after-time)))
 
 (defgeneric immediatep (memo)
