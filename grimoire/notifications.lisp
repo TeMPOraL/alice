@@ -66,7 +66,8 @@
 
 (defmethod deliver ((memo memo))
   (funcall (pick-notifier (recipient memo) 'dispatch-memo-to-IRC)
-           memo))
+           memo)
+  (dump-memos))
 
 (defmethod to-spoken-string ((memo memo))
   (format nil "Wiadomość od ~A nadana ~A o ~A ⇒ ~A" (author memo) (format-date (send-time memo)) (format-time (send-time memo)) (text memo)))
@@ -83,6 +84,14 @@
                   (local-time:format-rfc1123-timestring nil deliver-after-time)
                   "IMMEDIATE")
               recipient))))
+
+(defmethod initialize-instance :after ((memo memo) &key)
+  ;; Fix strings of invalid specific type that interfere with serialization
+  ;; FIXME This is a big HACK because I don't understand how the type poisoning occur; also probably failure of cl-marshal to serialize type (VECTOR CHARACTER n) is a bug in cl-marshal itself.
+  ;; cf. https://github.com/wlbr/cl-marshal/issues/6
+  (setf (recipient memo) (format nil "~A" (recipient memo))
+        (author memo) (format nil "~A" (author memo))
+        (text memo) (format nil "~A" (text memo))))
 
 (defmethod marshal:class-persistant-slots ((memo memo))
   (mapcar #'closer-mop:slot-definition-name (closer-mop:class-direct-slots (class-of memo))))
@@ -216,7 +225,8 @@
   "Save a memo for user."
   (let ((memos (gethash (recipient memo) *memos*)))
     (setf (gethash (recipient memo) *memos*)
-          (append memos (list memo)))))
+          (append memos (list memo)))
+    (dump-memos)))
 
 (defun make-memo-matcher (user destination current-time)
   (lambda (memo)
@@ -316,3 +326,13 @@ Also check for private memos (sent by query), and if any found, send it to him/h
 (defun stop-delayed-notification-timer ()
   (when (trivial-timers:timer-scheduled-p *delayed-notifications-timer*)
     (trivial-timers:unschedule-timer *delayed-notifications-timer*)))
+
+
+;; PERSISTENCE
+(defun dump-memos ()
+  (serialize-hashtable-to-file *memos* "memos.dat")
+  (dump-list *delayed-notifications* "delayed.dat"))
+
+(defun load-dumped-memos ()
+  (setf *memos* (deserialize-hashtable-from-file "memos.dat"))
+  (setf *delayed-notifications* (read-back-list "delayed.dat")))

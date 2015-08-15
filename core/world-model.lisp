@@ -12,6 +12,8 @@
   (setf *connected-channels* '()))
 
 (defun load-persistent-world-model-data ()
+  (read-back-into-hashtable *canonical-nicks* "names.dat")
+  (load-dumped-memos)
   nil)                                  ;one day we'll be loading data from "memory" after restart
 
 ;; names tracking
@@ -108,4 +110,3 @@ If `NICK-FOR-SELF-REFERENCE' is specified, it is substituted for words like 'me'
   "Identifies a person's canonical name given it's alias - it can be an IRC nick or other registered way for referring to that person."
   (let ((name (find-canonical-entry-with-stem-matching alias)))
     (gethash name *canonical-nicks*)))
-
