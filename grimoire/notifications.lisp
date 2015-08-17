@@ -334,5 +334,6 @@ Also check for private memos (sent by query), and if any found, send it to him/h
   (dump-list *delayed-notifications* "delayed.dat"))
 
 (defun load-dumped-memos ()
-  (setf *memos* (deserialize-hashtable-from-file "memos.dat"))
+  (awhen (deserialize-hashtable-from-file "memos.dat")
+    (setf *memos* it))
   (setf *delayed-notifications* (read-back-list "delayed.dat")))

@@ -37,7 +37,8 @@
                (:module "utils"
                         :components ((:file "debug")
                                      (:file "persistence")
-                                     (:file "string")))
+                                     (:file "string")
+                                     (:file "macros")))
                
                (:file "language")
                
