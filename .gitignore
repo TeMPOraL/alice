@@ -6,3 +6,4 @@ __notepad.lisp
 *.*~
 \#*.*\#
 *.dat
+*.log
