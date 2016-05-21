@@ -29,7 +29,9 @@
                #:chronicity
                #:trivial-timers
                #:swank
-               #:marshal)
+               #:marshal
+               #:hunchentoot
+               #:cl-who)
   
   :components ((:file "package")
                (:file "version")
@@ -49,7 +51,8 @@
                                      (:file "person")
                                      (:file "world-model")
                                      (:file "input-matcher")
-                                     (:file "output-builder")))
+                                     (:file "output-builder")
+                                     (:file "server")))
 
                (:module "grimoire"
                         :components ((:file "email")

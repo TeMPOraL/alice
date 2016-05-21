@@ -11,4 +11,8 @@
            #:impersonate-part
            #:impersonate-slap
            #:mute
-           #:unmute))
+           #:unmute
+
+           #:start-server
+           #:stop-server
+           #:force-stop-server))
