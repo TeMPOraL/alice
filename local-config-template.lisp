@@ -20,7 +20,9 @@
       *password* "insert password"
       *autojoin-channels* '("#hackerspace-krk" "#TRC")
 
-      *excluded-from-replying-to* '("excluded-nick-1" "excluded-nick-2"))
+      *excluded-from-replying-to* '("excluded-nick-1" "excluded-nick-2")
+      
+      *remote-admin-magic-cookie* "kolorowekredki")
 
 
 ;; alternative notifications to memos - specify nick and alternative notification function
