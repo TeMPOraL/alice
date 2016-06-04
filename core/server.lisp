@@ -123,7 +123,7 @@ in such a way you can't stop or start it normally with `STOP-SERVER' or `START-S
 (defun http-test-pushover ()
   (setf (hunchentoot:content-type*) "application/json")
   (when (http-authenticated-user)
-    (send-pushover (concatenate 'string "A test Pushover sent at: " (local-time:format-timestring (local-time:now)) ".")
+    (send-pushover (concatenate 'string "A test Pushover sent at: " (local-time:format-timestring nil (local-time:now)) ".")
                    *pushover-admin-user*
                    "Alice Testing Service"))
   "ok")
