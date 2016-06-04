@@ -22,6 +22,9 @@
 (hunchentoot:define-easy-handler (relay-canned-message :uri "/message/relay-canned" :default-request-type :POST) (from to message lang)
   (http-relay-canned-message from to message lang))
 
+(hunchentoot:define-easy-handler (test-pushover :uri "/test/pushover" :default-request-type :POST) ()
+  (http-test-pushover))
+
 
 ;;; Webserver management interface
 
@@ -116,6 +119,13 @@ in such a way you can't stop or start it normally with `STOP-SERVER' or `START-S
   (setf (hunchentoot:content-type*) "application/json")
   (when (http-authenticatedp)
     (say to (concatenate 'string (canned-message-preamble from lang) " " (canned-message message lang)))))
+
+(defun http-test-pushover ()
+  (setf (hunchentoot:content-type*) "application/json")
+  (send-pushover (concatenate 'string "A test Pushover sent at: " (local-time:format-timestring (local-time:now)) ".")
+                 *pushover-admin-user*
+                 "Alice Testing Service")
+  "ok")
 
 
 ;;; Additional utils
