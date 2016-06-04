@@ -16,10 +16,10 @@
 (hunchentoot:define-easy-handler (status :uri "/status") ()
   (http-get-status-page))
 
-(hunchentoot:define-easy-handler (relay-message :uri "/message/relay" :default-request-type :POST) (to message lang)
+(hunchentoot:define-easy-handler (relay-message :uri "/message/relay") (to message lang)
   (http-relay-message to message lang))
 
-(hunchentoot:define-easy-handler (relay-canned-message :uri "/message/relay-canned" :default-request-type :POST) (to message lang)
+(hunchentoot:define-easy-handler (relay-canned-message :uri "/message/relay-canned") (to message lang)
   (http-relay-canned-message to message lang))
 
 (hunchentoot:define-easy-handler (test-pushover :uri "/test/pushover" :default-request-type :POST) ()
