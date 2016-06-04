@@ -22,7 +22,8 @@
 
       *excluded-from-replying-to* '("excluded-nick-1" "excluded-nick-2")
       
-      *remote-admin-magic-cookie* "kolorowekredki")
+      *remote-admin-allowed-users-alist* '(("user" . "pass")
+                                           ("user2" . "pass2")))
 
 
 ;; alternative notifications to memos - specify nick and alternative notification function

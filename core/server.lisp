@@ -4,7 +4,7 @@
 ;;; State
 
 (defvar *hunchentoot-acceptor* nil)
-(defparameter *remote-admin-magic-cookie* "")
+(defparameter *remote-admin-allowed-users-alist* '())
 
 
 ;;; Routes
@@ -16,11 +16,11 @@
 (hunchentoot:define-easy-handler (status :uri "/status") ()
   (http-get-status-page))
 
-(hunchentoot:define-easy-handler (relay-message :uri "/message/relay" :default-request-type :POST) (from to message lang)
-  (http-relay-message from to message lang))
+(hunchentoot:define-easy-handler (relay-message :uri "/message/relay" :default-request-type :POST) (to message lang)
+  (http-relay-message to message lang))
 
-(hunchentoot:define-easy-handler (relay-canned-message :uri "/message/relay-canned" :default-request-type :POST) (from to message lang)
-  (http-relay-canned-message from to message lang))
+(hunchentoot:define-easy-handler (relay-canned-message :uri "/message/relay-canned" :default-request-type :POST) (to message lang)
+  (http-relay-canned-message to message lang))
 
 (hunchentoot:define-easy-handler (test-pushover :uri "/test/pushover" :default-request-type :POST) ()
   (http-test-pushover))
@@ -110,27 +110,28 @@ in such a way you can't stop or start it normally with `STOP-SERVER' or `START-S
       (:ul (dolist (channel *connected-channels*)
              (who:htm (:li (who:str channel)))))))))
 
-(defun http-relay-message (from to message lang)
+(defun http-relay-message (to message lang)
   (setf (hunchentoot:content-type*) "application/json")
-  (when (http-authenticatedp)
-    (say to (concatenate 'string (relay-message-preamble from lang) " " message))))
+  (when-let ((user (http-authenticated-user)))
+    (say to (concatenate 'string (relay-message-preamble user lang) " " message))))
 
-(defun http-relay-canned-message (from to message lang)
+(defun http-relay-canned-message (to message lang)
   (setf (hunchentoot:content-type*) "application/json")
-  (when (http-authenticatedp)
-    (say to (concatenate 'string (canned-message-preamble from lang) " " (canned-message message lang)))))
+  (when-let ((user (http-authenticated-user)))
+    (say to (concatenate 'string (canned-message-preamble user lang) " " (canned-message message lang)))))
 
 (defun http-test-pushover ()
   (setf (hunchentoot:content-type*) "application/json")
-  (send-pushover (concatenate 'string "A test Pushover sent at: " (local-time:format-timestring (local-time:now)) ".")
-                 *pushover-admin-user*
-                 "Alice Testing Service")
+  (when (http-authenticated-user)
+    (send-pushover (concatenate 'string "A test Pushover sent at: " (local-time:format-timestring (local-time:now)) ".")
+                   *pushover-admin-user*
+                   "Alice Testing Service"))
   "ok")
 
 
 ;;; Additional utils
 
-(defun http-authenticatedp ()
+(defun http-authenticated-user ()
   (multiple-value-bind (user pass) (hunchentoot:authorization)
-    (declare (ignorable user))
-    (string= pass *remote-admin-magic-cookie*)))
+    (when (string= pass (cdr (assoc user *remote-admin-allowed-users-alist* :test #'string=)))
+      user)))
