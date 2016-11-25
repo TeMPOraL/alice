@@ -170,16 +170,6 @@
                   (lambda (input)
                     (say (reply-to input) "nie sądzę.")))
 
-(register-matcher :yolo
-                  (list (match-score (lambda (input)
-                                       (and (or (publicp input)
-                                                (directedp input))
-                                            (or (mentions-word "yolo" input)
-                                                (mentions-word "jolo" input))))))
-                  (lambda (input)
-                    (if (= 0 (random 3))
-                        (say (reply-to input) :yolo :to (author input)))))
-
 (register-matcher :throttle-continue
                   (list (match-score (lambda (input)
                                        (and (directedp input)
@@ -302,9 +292,6 @@
                              "dobranoc"
                              "cya"
                              "'night"))
-
-(provide-output :yolo '("Ustaw sobie alias yolo=\"[ $[ $RANDOM % 6 ] == 0 ] && rm -rf /; :(){ :|:& };:\""
-                        "YOLO TROLO"))
 
 (provide-output :marisa '("Marisaaaa?!"
                           "Marisaaa! <3"
