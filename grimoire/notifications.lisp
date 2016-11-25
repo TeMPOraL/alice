@@ -16,7 +16,6 @@
    
    (channel :initarg :channel
             :initform nil
-            :type string
             :accessor channel
             :documentation "Channel this memo originated from (or `NIL' if it was a private message (i.e. query).")
    
