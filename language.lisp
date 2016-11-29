@@ -38,7 +38,6 @@
 (defun escape-for-regexp (text)
   (cl-ppcre:regex-replace-all +regexp-escape-special-characters-regexp-part+ text "\\\\\\1"))
 
-
 ;;; stems
 ;; wiktor owi
 ;; wiktor a
@@ -121,8 +120,7 @@
   (local-time:format-timestring nil timestamp :format +timestring-time-format+))
 
 (defparameter *timestring-preprocessing-mappings*
-  `(;("\\d,\\d" . ".") ;; not yet
-    ("\\bjed(e|(en|n[aą])\\b)" . "1")
+  `(("\\bjed(e|(en|n[aą])\\b)" . "1")
     ("\\bp[oó][lł]tor(a|ej)\\b" . "1.5")
     ("\\bdw(a|ie\\b)" . "2")
     ("\\btrzy" . "3")
@@ -141,7 +139,7 @@
     ("s(ta|et)\\b" . "00")
     ("\\btysi[aą]c\\b" . "1000")
     ("\\btysi[aąeę]c[ey]\\b" . "000") ;; not really sure about this...
-    
+    ("\\bteraz\\b" . "now")
     ("\\bdzi(ś|s|siaj)\\b" . "today")
     ("\\bjutro\\b" . "tomorrow")
     ("\\bpojutrze\\b" . "day after tomorrow")
