@@ -51,6 +51,16 @@
           (eql match
                (car (first best-matches)))))))
 
+(defun no-match (input)
+  "Test if `INPUT' does not match to anything specific."
+  (= 0 (length (alice::best-matchers input))))
+
+(defmacro test-no-match (name &body inputs)
+  `(test ,name
+     (mapc (lambda (input)
+             (is (no-match (apply 'make-input input))))
+           ',inputs)))
+
 ;;; TODO add bindings to pass to `DEF-FIXTURE' / `WITH-TEMPORARY-ENVIRONMENT'.
 (defmacro test-is-primary-match (name matchspec bindings &body inputs)
   "Create test named `NAME' which ensures that each of `INPUTS' strings generates an distinct match to `MATCHSPEC'."
@@ -167,9 +177,6 @@
   ("przypadek?" :directedp nil)
   ("pszypadeg?":directedp nil))
 
-(test-is-primary-match primary-match-yolo :yolo ()
-  ("YOLO" :directedp nil))
-
 (test-is-primary-match primary-match-default-response :default-response ()
   ("Foo")
   ("Bar"))
@@ -183,5 +190,9 @@
 (test-is-primary-match primary-match-makes-sense-troll :makes-sense-troll () ;FIXME need to bind message's reply-to to "#hackerspace-krk" as it's channel-specific
   ("robi sens":directedp nil :channel "#hackerspace-krk"))
 
+;;; no match
+
+(test-no-match yolo-does-not-match-to-anything ;YOLO disabled by popular request
+  ("YOLO" :directedp nil))
 
 (add-suite 'input-matchers)

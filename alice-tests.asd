@@ -30,5 +30,6 @@
                                               :components ((:file "language")
                                                            (:file "string-utils")
 
-                                                           (:file "input-matchers")))))))
+                                                           (:module "behavioral"
+                                                                    :components ((:file "input-matchers")))))))))
 
